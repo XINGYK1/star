@@ -17,12 +17,21 @@
 
 @implementation TalkViewController
 
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden=NO;
+}
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"话题";
     [self _initNation];
 }
+
 #pragma mark 搜索
 -(void)_initNation{
     

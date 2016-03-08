@@ -45,11 +45,22 @@ typedef enum {
 
 @implementation LoginFirstViewController
 
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    self.tabBarController.tabBar.hidden = YES;
+    
+}
+
 -(void)loadView{
     UIScrollView *sv = [[UIScrollView alloc] init];
-    sv.frame = CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight);
+    sv.frame = CGRectMake(0, 500, YTHScreenWidth, YTHScreenHeight);
     sv.contentSize = CGSizeMake(YTHScreenWidth, YTHScreenHeight+216);
-    sv.backgroundColor = YTHColor(235, 235, 241);
+    //sv.backgroundColor = YTHColor(235, 235, 241);
+    
+    sv.backgroundColor = [UIColor whiteColor];
+
     sv.scrollEnabled = NO;
     self.scrollView = sv;
     self.view = sv;
@@ -60,6 +71,7 @@ typedef enum {
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.barTintColor  = YTHColor(255, 32, 52);
     self.title = @"登录";
+    
     if (!myDelegate) {
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
@@ -330,7 +342,7 @@ typedef enum {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     
     //导航栏返回按钮
-    [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
+    [cancelBtn addTarget:self action:@selector(loginBackButton) forControlEvents:UIControlEventTouchUpInside];
     //右边
     UIButton *rightButton = [[UIButton alloc] init];
     rightButton.frame = CGRectMake(0, 0, 40, 40);
@@ -354,7 +366,7 @@ typedef enum {
 }
 
 #pragma mark -导航栏取消按钮的点击方法
--(void)clickCode
+-(void)loginBackButton
 {
 
     [self.navigationController popViewControllerAnimated:YES];

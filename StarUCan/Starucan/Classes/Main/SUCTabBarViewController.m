@@ -21,9 +21,12 @@
 #import "LoginFirstViewController.h"
 #import "ShowViewController.h"
 #import "XZMPublishViewController.h"
-@interface SUCTabBarViewController ()<XYTabBarDelegate,UITabBarControllerDelegate>
+@interface SUCTabBarViewController ()<XYTabBarDelegate,UITabBarControllerDelegate,UITabBarDelegate>
 {
     AppDelegate *myDelegate;
+    
+    WXNavigationController *_selectedController;
+    
 }
 @property (nonatomic,strong)UIView * viewGray;
 
@@ -39,6 +42,9 @@
     self.delegate = self;
     // Do any additional setup after loading the view.
     HomeViewController*home = [[HomeViewController alloc] init];
+    
+    //谁都不选的时候，指向第一个页面
+    
     [self createChildVCWithVC:home Title:@"首页" Image:@"icon_home_show" SelectedImage:@"icon_home_show_fill"];
     
     TalkViewController *discover = [[TalkViewController alloc] init];
@@ -79,9 +85,6 @@
 -(void)createChildVCWithVC:(UIViewController *)childVC Title:(NSString *)title Image:(NSString *)image SelectedImage:(NSString *)selectedimage
 {
     //设置子控制器的文字
-    // childVC.tabBarItem.title =title;
-    // childVC.navigationItem.title =title;
-    //等价于
     childVC.title = title;//同时设置tabbar和navigation的标题
     
     //设置文字的样式
@@ -100,6 +103,8 @@
     
     //给子控制器包装导航控制器
     WXNavigationController *nav = [[WXNavigationController alloc] initWithRootViewController:childVC];
+    
+    _selectedController = nav;
     [self addChildViewController:nav];
 }
 
@@ -108,98 +113,55 @@
 {
    
     XZMPublishViewController *showVC = [[XZMPublishViewController alloc]init];
-    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
-    
-    
-    [self presentViewController:nav animated:NO completion:nil];
+
+    //    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
+
+    //
+ 
+    //
+
+    //    [self presentViewController:nav animated:NO completion:nil];
     
     
     //为什么不能用导航控制器推过去?
     //思路：首先取到当前控制器，然后用当前试图控制器的导航控制器推过去。
     
-
     
 }
 
-
-
-
--(void)buttonAction:(UIButton *)btn
-{
-    
-    
-    NSLog(@"dianji");
-    
-    
-    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
-        ShowViewController *showVC = [[ShowViewController alloc]init];
-        WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
-        [self presentViewController:nav animated:NO completion:nil];
-
-     //   [self.navigationController pushViewController:showVC animated:YES];
-        return;
-        
-    }else{
-       
-        LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
-        WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:loginVC];
-       
-        [self presentViewController:nav animated:YES completion:nil];
-
-    }
-    
-}
--(void)buttonTitle:(UIButton *)btn
-{
-    NSLog(@"dianji");
-    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
-        TopicViewController *topicVC = [[TopicViewController alloc]init];
-        
-        WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:topicVC];
-        [self presentViewController:nav animated:NO completion:nil];
-       // [self.navigationController pushViewController:topicVC animated:YES];
-        return;
-        
-    }else{
-        LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
-        WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:loginVC];
-        [self presentViewController:nav animated:NO completion:nil];
-        
-       // [self.navigationController pushViewController:loginVC animated:YES];
-    }
-    
-}
-
-
--(void)takePhoto
-{
-    
-}
-
--(void)takeFromAlbum
-{
-    
-}
+#pragma mark -UITableBarController的代理方法
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-     
+
     if ([viewController.tabBarItem.title isEqualToString:@"我的"]) {
         //还有再加一个账号判断
         if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
             return YES;
         }else{
             LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
-            WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:loginVC];
-            [self presentViewController:nav animated:YES completion:nil];
+        
+            [_selectedController pushViewController:loginVC animated:NO];
+            
             return NO;
         }
        
     }
       return YES;
 }
+
+-(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
+    
+    //当我进入某个页面的时候，把_selectedController指向他。
+    _selectedController=viewController;
+
+}
+
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+
 }
 
 /*

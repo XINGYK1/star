@@ -568,11 +568,11 @@
         return;
         
     }else{
+        
+        //非登录状态，推到登录页面
         LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
         
-        WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:loginVC];
-        
-        [self presentViewController:nav animated:YES completion:nil];
+        [self.navigationController pushViewController:loginVC animated:NO];
     }
 }
 
