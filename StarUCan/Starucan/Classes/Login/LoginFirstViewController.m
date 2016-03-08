@@ -344,12 +344,10 @@ typedef enum {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     
     //导航栏返回按钮
-<<<<<<< HEAD
+
     [cancelBtn addTarget:self action:@selector(loginBackButton) forControlEvents:UIControlEventTouchUpInside];
-=======
-    [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
-    
->>>>>>> 235b62d9ce8ce9fa57e5bbb244ed4b90b5b59b85
+
+
     //右边
     UIButton *rightButton = [[UIButton alloc] init];
     rightButton.frame = CGRectMake(0, 0, 40, 40);
