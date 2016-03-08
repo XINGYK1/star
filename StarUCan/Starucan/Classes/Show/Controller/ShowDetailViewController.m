@@ -41,30 +41,30 @@
     
 }
 //
-@property(nonatomic,strong)UIImageView *headImgV;//头像
-@property(nonatomic,strong)UIView *headView;//头试图
-@property(nonatomic,strong)NSString *urlString;
-@property(nonatomic,strong)UILabel *nameLabel;//姓名
-@property(nonatomic,strong)UIImageView *sexImV;//性别
-@property(nonatomic,strong)UILabel *uniserLabel;//学校
-@property(nonatomic,strong)UIButton *addAttionBtn;//加关注
-@property(nonatomic,strong)UIView *viewBgDesc;//文字详情view
-@property(nonatomic,strong)UILabel *labelDesc;
-@property(nonatomic,strong)UIButton *praiseButton;
+@property (nonatomic,strong) UIImageView *headImgV;//头像
+@property (nonatomic,strong) UIView      *headView;//头试图
+@property (nonatomic,strong) NSString    *urlString;
+@property (nonatomic,strong) UILabel     *nameLabel;//姓名
+@property (nonatomic,strong) UIImageView *sexImV;//性别
+@property (nonatomic,strong) UILabel     *uniserLabel;//学校
+@property (nonatomic,strong) UIButton    *addAttionBtn;//加关注
+@property (nonatomic,strong) UIView      *viewBgDesc;//文字详情view
+@property (nonatomic,strong) UILabel     *labelDesc;
+@property (nonatomic,strong) UIButton    *praiseButton;
 //大图
-@property(nonatomic,strong)UIImageView *bigImage;
+@property (nonatomic,strong ) UIImageView    *bigImage;
 @property (strong, nonatomic) NSMutableArray *photoNameList;
-@property(nonatomic,strong)UITableView *tableView;
-@property(nonatomic,strong)NSDictionary *jason;
-@property(nonatomic,strong)NSDictionary *commentJason;
-@property(nonatomic,strong)NSMutableArray *data;
-@property(nonatomic,strong)NSDictionary *attenJason;
-@property(nonatomic,strong)NSDictionary *praiseJason;
-@property(nonatomic,strong)NSDictionary *praiseListJason;
-@property(nonatomic,strong) NSDictionary *showdic;
-@property(nonatomic,strong)NSMutableArray *sourceArray;
-@property (nonatomic, assign) BOOL flag;
-@property(nonatomic,strong) NSString *bigString;
+@property (nonatomic,strong ) UITableView    *tableView;
+@property (nonatomic,strong ) NSDictionary   *jason;
+@property (nonatomic,strong ) NSDictionary   *commentJason;
+@property (nonatomic,strong ) NSMutableArray *data;
+@property (nonatomic,strong ) NSDictionary   *attenJason;
+@property (nonatomic,strong ) NSDictionary   *praiseJason;
+@property (nonatomic,strong ) NSDictionary   *praiseListJason;
+@property (nonatomic,strong ) NSDictionary   *showdic;
+@property (nonatomic,strong ) NSMutableArray *sourceArray;
+@property (nonatomic, assign) BOOL           flag;
+@property (nonatomic,strong ) NSString       *bigString;
 
 @end
 
@@ -121,8 +121,10 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comments",uS,_pinglun];
     NSLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//评论内容
         NSLog(@"评论%@",responseObject);
         self.commentJason =responseObject;
+//评论返回状态码
         NSLog(@"评论 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
@@ -287,9 +289,10 @@
             NSString *sexurl = [[showdic objectForKey:@"user"] objectForKey:@"sex"];
             if ([sexurl isEqualToString:@"0"]) {
                 self.sexImV.image = [UIImage imageNamed:@"sex_male"];
-            }else if ([sexurl isEqualToString:@"1"])
+            }
+            else if ([sexurl isEqualToString:@"1"])
             {
-                  self.sexImV.image = [UIImage imageNamed:@"sex_female"];
+                self.sexImV.image = [UIImage imageNamed:@"sex_female"];
             }
         
             
@@ -302,9 +305,9 @@
                 
             }else{
                 if ([sexurl isEqualToString:@"0"]) {
-                    self.headImgV.image =  [UIImage imageNamed:@"female"];
+                    self.headImgV.image = [UIImage imageNamed:@"female"];
                 }else if ([sexurl isEqualToString:@"1"]){
-                    self.headImgV.image =  [UIImage imageNamed:@"male"];
+                    self.headImgV.image = [UIImage imageNamed:@"male"];
                 }
             }
             
@@ -312,7 +315,8 @@
         [self.tableView reloadData];
         [_kPhotoCollectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"详情错误 %ld",(long)[operation.response statusCode]);
+#warning statusCode 500
+        NSLog(@"详情错误返回状态码 %ld",(long)[operation.response statusCode]);
         self.jason = operation.responseObject;
         NSLog(@"登录%@", self.jason);
         [MBProgressHUD showError:[self.jason objectForKey:@"info"]];

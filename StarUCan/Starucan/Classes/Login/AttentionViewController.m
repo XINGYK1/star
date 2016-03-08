@@ -91,7 +91,8 @@
 //   
 //    [cell.layer setCornerRadius:4.5];
 //    cell.layer.borderWidth = 1;
-    UIButton *btn = self.arrBools[indexPath.row];
+   
+    //UIButton *btn = self.arrBools[indexPath.row];
     
     if (self.data.count > 0) {
         [self.arrBools replaceObjectAtIndex:indexPath.row withObject:cell.selectButton];

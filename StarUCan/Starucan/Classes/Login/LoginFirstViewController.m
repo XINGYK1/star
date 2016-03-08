@@ -254,7 +254,9 @@ typedef enum {
             //保存1
             if ([archive online]) {
                 // 登录成功, 将用户信息保存到沙盒的 Document 路径下
+#warning 初始化两次
                 SUCUser *user = [SUCUser shareUser];
+               // SUCUser *user;
                 user = [SUCUser objectWithKeyValues:responseObject[@"userInfo"]];
                 NSMutableDictionary *md = [NSMutableDictionary dictionary];
                 md[@"uuid"] = user.uuid;
@@ -342,7 +344,12 @@ typedef enum {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     
     //导航栏返回按钮
+<<<<<<< HEAD
     [cancelBtn addTarget:self action:@selector(loginBackButton) forControlEvents:UIControlEventTouchUpInside];
+=======
+    [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
+    
+>>>>>>> 235b62d9ce8ce9fa57e5bbb244ed4b90b5b59b85
     //右边
     UIButton *rightButton = [[UIButton alloc] init];
     rightButton.frame = CGRectMake(0, 0, 40, 40);
@@ -351,6 +358,7 @@ typedef enum {
     rightButton.titleLabel.font = [UIFont systemFontOfSize:16];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    //导航栏注册按钮
     [rightButton addTarget:self action:@selector(regisButtonAction) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -369,6 +377,8 @@ typedef enum {
 -(void)loginBackButton
 {
 
+//  [self dismissViewControllerAnimated:NO completion:nil];
+    
     [self.navigationController popViewControllerAnimated:YES];
     
 }

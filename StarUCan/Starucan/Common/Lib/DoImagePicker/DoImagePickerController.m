@@ -60,6 +60,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewWillAppear:YES];
     if (_nResultType == DO_PICKER_RESULT_UIIMAGE)
         [ASSETHELPER clearData];
     
