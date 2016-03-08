@@ -86,9 +86,10 @@
 @implementation HomeViewController
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+     [super viewWillAppear:YES];
     //试图将要出现的时候显示tableBar,解决在遇见的大学搜索页面返回主页面时，tableBar不显示的问题
     self.tabBarController.tabBar.hidden= NO;
+   
     
 }
 
@@ -475,6 +476,7 @@
         [_collectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"瀑布流错误 %ld",(long)[operation.response statusCode]);
+#warning 初始化两次，检测内存泄露时出现问题
         NSDictionary *hMwatarDict = [[NSDictionary alloc]init];
         hMwatarDict = operation.responseObject;
         NSLog(@"瀑布流错误%@",hMwatarDict);

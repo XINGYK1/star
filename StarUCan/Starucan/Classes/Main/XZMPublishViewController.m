@@ -17,10 +17,6 @@
 #import "TopicViewController.h"
 
 
-
-#define XZMScreenW [UIScreen mainScreen].bounds.size.width
-#define XZMScreenH [UIScreen mainScreen].bounds.size.height
-
 @interface XZMPublishViewController ()
 {
     AppDelegate *myDelegate;
@@ -48,8 +44,8 @@ static CGFloat XZMSpringDelay = 0.1;
     CGFloat btnW = 60;
     CGFloat btnH = btnW + 30;
     CGFloat beginMargin = YTHAdaptation(82);//82
-    CGFloat middleMargin = (XZMScreenW - 2 * beginMargin - cols *btnW)/ (cols - 1);
-    CGFloat btnStartY = (XZMScreenH - 2 * btnH) * 0.5;
+    CGFloat middleMargin = (YTHScreenWidth - 2 * beginMargin - cols *btnW)/ (cols - 1);
+    CGFloat btnStartY = (YTHScreenHeight - 2 * btnH) * 0.5;
     
     for (int i = 0; i < images.count; i++) {
         
@@ -80,7 +76,7 @@ static CGFloat XZMSpringDelay = 0.1;
         
         
         
-        CGFloat benginBtnY = btnStartY - XZMScreenH;
+        CGFloat benginBtnY = btnStartY - YTHScreenHeight;
         
         /** 添加动画 */
         POPSpringAnimation *anima = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
@@ -109,15 +105,15 @@ static CGFloat XZMSpringDelay = 0.1;
     /** 添加sloganView指示条 */
     UIImageView *sloganView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"app_slogan"]];
     
-    sloganView.y = -XZMScreenW;
+    sloganView.y = -YTHScreenWidth;
     
     [self.view addSubview:sloganView];
     
-    CGFloat centerX = XZMScreenW * 0.5;
+    CGFloat centerX = YTHScreenWidth * 0.5;
     
-    CGFloat centerEndY = XZMScreenH * 0.15;
+    CGFloat centerEndY = YTHScreenHeight * 0.15;
     
-    CGFloat centerBenginY = centerEndY - XZMScreenH;
+    CGFloat centerBenginY = centerEndY - YTHScreenHeight;
     
     /** 添加动画 */
     POPSpringAnimation *anima = [POPSpringAnimation animationWithPropertyNamed:kPOPViewCenter];
@@ -186,7 +182,7 @@ static CGFloat XZMSpringDelay = 0.1;
         
         anima.beginTime = CACurrentMediaTime() + (i - index) * XZMSpringDelay;
         
-        CGFloat endCenterY = view.centerY + XZMScreenH;
+        CGFloat endCenterY = view.centerY + YTHScreenHeight;
         
         anima.toValue = [NSValue valueWithCGPoint:CGPointMake(view.centerX, endCenterY)];
         
@@ -317,21 +313,11 @@ static CGFloat XZMSpringDelay = 0.1;
 //                        }
                         
                         
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                         return;
                         
                    
                     }else{
-                        
+#pragma mark push LFVC
                         //如果是非登录状态，进入登录页面
                         LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
                         
@@ -358,6 +344,7 @@ static CGFloat XZMSpringDelay = 0.1;
                         
                     
                     }else{
+#pragma mark push LFVC
                         
                         //如果是非登录状态，进入登录页面
                         LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];

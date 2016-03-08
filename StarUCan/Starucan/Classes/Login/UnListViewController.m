@@ -74,15 +74,17 @@
     self.universityTableView.sectionIndexColor = YTHColor(255, 73, 120);
     self.universityTableView.sectionIndexBackgroundColor = [UIColor clearColor];
 
+     [self requestData];
 }
-- (void) locationBack:(CLLocationCoordinate2D ) loc{
-    locationCorrrdinate = loc;
-    NSLog(@"纬度--%f",locationCorrrdinate.latitude);
-    NSLog(@"经度%f",locationCorrrdinate.longitude);
-    
-    //请求数据
-    [self requestData];
-}
+
+//- (void) locationBack:(CLLocationCoordinate2D ) loc{
+//    locationCorrrdinate = loc;
+//    NSLog(@"纬度--%f",locationCorrrdinate.latitude);
+//    NSLog(@"经度%f",locationCorrrdinate.longitude);
+//    
+//    //请求数据
+//    [self requestData];
+//}
 
 
 -(void)requestData
@@ -96,7 +98,7 @@
     md[@"lng"] =longitude;
     md[@"name"]=_searchBar.text;
     
-    [MBProgressHUD showMessage:@"加载中"];
+  //  [MBProgressHUD showMessage:@"加载中"];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *url = Url;
@@ -104,32 +106,28 @@
     
     NSLog(@"地址为：%@",urlString);
     
-//    [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        NSLog(@"学校%@",responseObject);
-//        
-//        NSLog(@"error code %ld",(long)[operation.response statusCode]);
-//        
-//        if ([operation.response statusCode]/100==2) {
-//            
-//            [self saveDictionary:[responseObject objectForKey:@"universities"] forKey:@"universitys" toFile:@"universitys"];
-//            
-//                        [self showUniversitys:[responseObject objectForKey:@"universities"]];
-//            
-//            
-//        }
-//        
-//        [MBProgressHUD hideHUD];
-//        [MBProgressHUD showSuccess:@"加载完成"];
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//         NSLog(@"error code %ld",(long)[operation.response statusCode]);
-//        
-//    }];
-    
-    
-    
-    
+    [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"学校%@",responseObject);
+        
+        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        
+        if ([operation.response statusCode]/100==2) {
+            
+            [self saveDictionary:[responseObject objectForKey:@"universities"] forKey:@"universitys" toFile:@"universitys"];
+            
+                        [self showUniversitys:[responseObject objectForKey:@"universities"]];
+            
+            
+        }
+        
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showSuccess:@"加载完成"];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        
+    }];
     
     [MBProgressHUD showMessage:@"加载中"];
     [GXHttpTool POST:@"http://platform.vgool.cn/api/university/universityList" parameters:md success:^(id responseObject) {
@@ -141,6 +139,7 @@
         }
         
         if([[jsonDict objectForKey:@"code"] intValue] == 0){
+            
              NSMutableArray *list = [jsonDict objectForKey:@"nearUniversityList"];
             
             //保存

@@ -132,7 +132,7 @@
         return;
         
     }else{
-        
+#pragma mark  push LFVC
         LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
         
         [self.navigationController pushViewController:loginVC animated:YES];

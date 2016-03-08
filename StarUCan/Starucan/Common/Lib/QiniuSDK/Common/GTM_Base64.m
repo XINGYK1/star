@@ -527,7 +527,7 @@ NSUInteger GuessDecodedLength(NSUInteger srcLen) {
 		curDest[0] = charset[curSrc[0] >> 2];
 		curDest[1] = charset[(curSrc[0] & 0x03) << 4];
 		curDest += 2;
-		destLen -= 2;
+	//	destLen -= 2;
 		if (padded) {
 //                _GTMDevAssert(destLen >= 2, @"our calc for encoded length was wrong");
 			curDest[0] = kBase64PaddingChar;
@@ -544,7 +544,7 @@ NSUInteger GuessDecodedLength(NSUInteger srcLen) {
 		curDest[1] = charset[((curSrc[0] & 0x03) << 4) + (curSrc[1] >> 4)];
 		curDest[2] = charset[(curSrc[1] & 0x0f) << 2];
 		curDest += 3;
-		destLen -= 3;
+	//	destLen -= 3;
 		if (padded) {
 //                _GTMDevAssert(destLen >= 1, @"our calc for encoded length was wrong");
 			curDest[0] = kBase64PaddingChar;
