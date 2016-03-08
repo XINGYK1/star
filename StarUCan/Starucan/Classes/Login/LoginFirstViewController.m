@@ -243,8 +243,8 @@ typedef enum {
             if ([archive online]) {
                 // 登录成功, 将用户信息保存到沙盒的 Document 路径下
 #warning 初始化两次
-               // SUCUser *user = [SUCUser shareUser];
-                SUCUser *user;
+                SUCUser *user = [SUCUser shareUser];
+               // SUCUser *user;
                 user = [SUCUser objectWithKeyValues:responseObject[@"userInfo"]];
                 NSMutableDictionary *md = [NSMutableDictionary dictionary];
                 md[@"uuid"] = user.uuid;

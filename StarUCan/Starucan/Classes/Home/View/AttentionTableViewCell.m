@@ -318,7 +318,7 @@
     kDeleteButton.tag = [_kTitleArrays indexOfObject:title] + 999;
     _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
     // self.viewLabel.height =kMarkView.height;
-    float h;
+   // float h;
     NSLog(@"frame标签%f",kMarkView.frame.origin.y);
     
     
