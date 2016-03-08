@@ -599,13 +599,13 @@
 		5AB34A321C3A53A400721D84 /* AddInformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddInformationViewController.m; sourceTree = "<group>"; };
 		5AB34A341C3A558000721D84 /* UnListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnListViewController.h; sourceTree = "<group>"; };
 		5AB34A351C3A558000721D84 /* UnListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnListViewController.m; sourceTree = "<group>"; };
-		5AB34A371C3A5C4500721D84 /* citydict.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = citydict.plist; sourceTree = "<group>"; };
+		5AB34A371C3A5C4500721D84 /* citydict.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = citydict.plist; path = ../citydict.plist; sourceTree = "<group>"; };
 		5AB34A391C3A637C00721D84 /* LoginFirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginFirstViewController.h; sourceTree = "<group>"; };
 		5AB34A3A1C3A637C00721D84 /* LoginFirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFirstViewController.m; sourceTree = "<group>"; };
-		5AB34A3C1C3A818400721D84 /* SUCArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUCArchive.h; sourceTree = "<group>"; };
-		5AB34A3D1C3A818400721D84 /* SUCArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUCArchive.m; sourceTree = "<group>"; };
-		5AB34A3F1C3A820A00721D84 /* SUCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUCUser.h; sourceTree = "<group>"; };
-		5AB34A401C3A820A00721D84 /* SUCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUCUser.m; sourceTree = "<group>"; };
+		5AB34A3C1C3A818400721D84 /* SUCArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SUCArchive.h; path = ../SUCArchive.h; sourceTree = "<group>"; };
+		5AB34A3D1C3A818400721D84 /* SUCArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SUCArchive.m; path = ../SUCArchive.m; sourceTree = "<group>"; };
+		5AB34A3F1C3A820A00721D84 /* SUCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SUCUser.h; path = ../SUCUser.h; sourceTree = "<group>"; };
+		5AB34A401C3A820A00721D84 /* SUCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SUCUser.m; path = ../SUCUser.m; sourceTree = "<group>"; };
 		5AB34A441C3A837C00721D84 /* MJArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJArgument.h; sourceTree = "<group>"; };
 		5AB34A451C3A837C00721D84 /* MJArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJArgument.m; sourceTree = "<group>"; };
 		5AB34A461C3A837C00721D84 /* MJConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJConst.h; sourceTree = "<group>"; };
@@ -900,6 +900,11 @@
 		5A045A4E1C43991E008BA99A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5AB34A371C3A5C4500721D84 /* citydict.plist */,
+				5AB34A3C1C3A818400721D84 /* SUCArchive.h */,
+				5AB34A3D1C3A818400721D84 /* SUCArchive.m */,
+				5AB34A3F1C3A820A00721D84 /* SUCUser.h */,
+				5AB34A401C3A820A00721D84 /* SUCUser.m */,
 				5AB028C11C70CA3C0042FC04 /* area.plist */,
 				5AB028C21C70CA3C0042FC04 /* city.plist */,
 				5AB028C31C70CA3C0042FC04 /* HZAreaPickerView.h */,
@@ -1299,29 +1304,9 @@
 		5A988EEF1C34C8350073A89F /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				EC850B2A1C8EA95C00BCF8FB /* Controller */,
 				5A045A551C43BBF7008BA99A /* Model */,
 				5A045A4E1C43991E008BA99A /* View */,
-				5AB34A371C3A5C4500721D84 /* citydict.plist */,
-				5A988F301C3504170073A89F /* LoginViewController.h */,
-				5A988F311C3504170073A89F /* LoginViewController.m */,
-				5AB34A391C3A637C00721D84 /* LoginFirstViewController.h */,
-				5AB34A3A1C3A637C00721D84 /* LoginFirstViewController.m */,
-				5A988F331C352CF60073A89F /* RegisterViewController.h */,
-				5A988F341C352CF60073A89F /* RegisterViewController.m */,
-				5AB34A2E1C3A499900721D84 /* RegisterSecondViewController.h */,
-				5AB34A2F1C3A499900721D84 /* RegisterSecondViewController.m */,
-				5AB34A311C3A53A400721D84 /* AddInformationViewController.h */,
-				5AB34A321C3A53A400721D84 /* AddInformationViewController.m */,
-				5AB34A341C3A558000721D84 /* UnListViewController.h */,
-				5AB34A351C3A558000721D84 /* UnListViewController.m */,
-				5A988F361C352E100073A89F /* ForgetPassViewController.h */,
-				5A988F371C352E100073A89F /* ForgetPassViewController.m */,
-				5A045A521C439ADC008BA99A /* AttentionViewController.h */,
-				5A045A531C439ADC008BA99A /* AttentionViewController.m */,
-				5AB34A3C1C3A818400721D84 /* SUCArchive.h */,
-				5AB34A3D1C3A818400721D84 /* SUCArchive.m */,
-				5AB34A3F1C3A820A00721D84 /* SUCUser.h */,
-				5AB34A401C3A820A00721D84 /* SUCUser.m */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2023,6 +2008,29 @@
 				5AF7C63A1C38C78900E0E97F /* WXApiObject.h */,
 			);
 			path = WeChatSDK;
+			sourceTree = "<group>";
+		};
+		EC850B2A1C8EA95C00BCF8FB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5A988F301C3504170073A89F /* LoginViewController.h */,
+				5A988F311C3504170073A89F /* LoginViewController.m */,
+				5AB34A391C3A637C00721D84 /* LoginFirstViewController.h */,
+				5AB34A3A1C3A637C00721D84 /* LoginFirstViewController.m */,
+				5A988F331C352CF60073A89F /* RegisterViewController.h */,
+				5A988F341C352CF60073A89F /* RegisterViewController.m */,
+				5AB34A2E1C3A499900721D84 /* RegisterSecondViewController.h */,
+				5AB34A2F1C3A499900721D84 /* RegisterSecondViewController.m */,
+				5AB34A311C3A53A400721D84 /* AddInformationViewController.h */,
+				5AB34A321C3A53A400721D84 /* AddInformationViewController.m */,
+				5AB34A341C3A558000721D84 /* UnListViewController.h */,
+				5AB34A351C3A558000721D84 /* UnListViewController.m */,
+				5A988F361C352E100073A89F /* ForgetPassViewController.h */,
+				5A988F371C352E100073A89F /* ForgetPassViewController.m */,
+				5A045A521C439ADC008BA99A /* AttentionViewController.h */,
+				5A045A531C439ADC008BA99A /* AttentionViewController.m */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

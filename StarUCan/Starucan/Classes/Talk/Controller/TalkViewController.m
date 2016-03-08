@@ -7,6 +7,9 @@
 //
 
 #import "TalkViewController.h"
+#import "CustomBarItem.h"
+#import "UINavigationItem+CustomItem.h"
+#import "SearchViewController.h"
 
 @interface TalkViewController ()
 
@@ -18,6 +21,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"话题";
+    [self _initNation];
+}
+#pragma mark 搜索
+-(void)_initNation{
+    
+    // 右边的搜索按钮
+    UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    [searchButton setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
+    CustomBarItem *rightUtem = [self.navigationItem setItemWithCustomView:searchButton itemType:right];
+    [searchButton addTarget:self action:@selector(pushToSearchViewControll) forControlEvents:UIControlEventTouchUpInside];
+    [rightUtem setOffset:18];
+}
+-(void)pushToSearchViewControll
+{
+    //点击进入搜索页面
+    SearchViewController *searchVC = [[SearchViewController alloc]init];
+    [self.navigationController pushViewController:searchVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
