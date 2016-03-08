@@ -76,6 +76,8 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
 }
+
+//导航栏返回按钮的点击方法
 -(void)clickCode
 {
     
@@ -83,50 +85,56 @@
   //[self dismissViewControllerAnimated:YES completion:nil];
     
 }
+
+//发图片按钮的点击方法
 -(void)buttonAction:(UIButton *)btn
 {
     
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil   delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil   delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-            [sheet addButtonWithTitle:@"本地上传"];
-            [sheet addButtonWithTitle:@"拍照上传"];
-            [sheet addButtonWithTitle:@"取消"];
-            sheet.cancelButtonIndex = sheet.numberOfButtons-1;
-        }else {
-            [sheet addButtonWithTitle:@"本地上传"];
-            [sheet addButtonWithTitle:@"取消"];
-            sheet.cancelButtonIndex = sheet.numberOfButtons-1;
-        }
-        [sheet showInView:self.view];
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        
+        //判断相机可用的情况
+        [sheet addButtonWithTitle:@"本地上传"];
+        
+        [sheet addButtonWithTitle:@"拍照上传"];
+        
+        [sheet addButtonWithTitle:@"取消"];
+        
+        sheet.cancelButtonIndex = sheet.numberOfButtons-1;
+        
+    }else {
+        
+        //相机不可用的情况
+        [sheet addButtonWithTitle:@"本地上传"];
+        
+        [sheet addButtonWithTitle:@"取消"];
+        
+        sheet.cancelButtonIndex = sheet.numberOfButtons-1;
+    }
     
-    
-    
-//    ShowPhotoViewController *showVC = [[ShowPhotoViewController alloc]init];
-//    [self.navigationController pushViewController:showVC animated:YES];
-    
-    
-    
-//    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
-//        ShowPhotoViewController *showVC = [[ShowPhotoViewController alloc]init];
-//        [self.navigationController pushViewController:showVC animated:YES];
-//        return;
-//        
-//    }else{
-//        LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
-//        [self.navigationController pushViewController:loginVC animated:YES];
-//    }
+    [sheet showInView:self.view];
     
 }
+
+//发表话题按钮的点击方法
 -(void)buttonTitle:(UIButton *)btn
 {
+    
+    
+    
     if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
+        
         TopicViewController *topicVC = [[TopicViewController alloc]init];
+        
         [self.navigationController pushViewController:topicVC animated:YES];
+        
         return;
         
     }else{
+        
         LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
+        
         [self.navigationController pushViewController:loginVC animated:YES];
     }
     
@@ -135,26 +143,41 @@
 #pragma mark-UIActionSheet
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
+    
+    
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
         switch (buttonIndex) {
-            case 2:{}
+            
+            case 2:
+            {
+            
+            }
                 return;
+            
             case 1:
+            
             {
                 UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init] ;
+                
                 imagePickerController.delegate = self;
+                
                 imagePickerController.allowsEditing = NO;
+                
                 imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                
                 [self presentViewController:imagePickerController animated:YES completion:^{}];
-                //					[imagePickerController release];
+                
             }
                 break;
+            
             case 0:
+            {
                 [self showImagePicker];
+                
+            }
                 break;
         }
-        
     }
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -205,12 +228,19 @@
 }
 
 - (void)showImagePicker {
+    
     DoImagePickerController *cont = [[DoImagePickerController alloc] initWithNibName:@"DoImagePickerController" bundle:nil];
+    
     cont.flag = flag;
+    
     cont.delegate = self;
+    
     cont.nResultType = DO_PICKER_RESULT_UIIMAGE;
+    
     cont.nMaxCount = 9 - (self.photoNameList.count-1);//最大张数
+    
     cont.nColumnCount = 4;//选择器行数
+    
     [self presentViewController:cont animated:YES completion:nil];
 }
 

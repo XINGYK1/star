@@ -16,19 +16,16 @@
 #import "AppDelegate.h"
 #import "TopicViewController.h"
 
-//后加的两个类
-#import "DoImagePickerController.h"
-#import "AssetHelper.h"
+
 
 #define XZMScreenW [UIScreen mainScreen].bounds.size.width
 #define XZMScreenH [UIScreen mainScreen].bounds.size.height
 
-@interface XZMPublishViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,DoImagePickerControllerDelegate>
+@interface XZMPublishViewController ()
 {
     AppDelegate *myDelegate;
 
-    //后加的不知道干嘛
-    BOOL flag;
+    
 }
 
 @property (nonatomic, weak)UIImageView *imageView;
@@ -252,21 +249,73 @@ static CGFloat XZMSpringDelay = 0.1;
                         
                         //如果是登录状态，进入showViewController
                         ShowViewController *showVC = [[ShowViewController alloc]init];
-                        [self.navigationController pushViewController:showVC animated:YES];
+                        //[self.navigationController pushViewController:showVC animated:YES];
                         
                         
-//                        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil   delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-//                        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-//                            [sheet addButtonWithTitle:@"本地上传"];
-//                            [sheet addButtonWithTitle:@"拍照上传"];
-//                            [sheet addButtonWithTitle:@"取消"];
-//                            sheet.cancelButtonIndex = sheet.numberOfButtons-1;
-//                        }else {
-//                            [sheet addButtonWithTitle:@"本地上传"];
-//                            [sheet addButtonWithTitle:@"取消"];
-//                            sheet.cancelButtonIndex = sheet.numberOfButtons-1;
-//                        }
-//                        [sheet showInView:self.view];
+                        //初始化UIAlertController
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                        
+                        [self presentViewController:alertController animated:YES completion:nil];
+                        
+                        
+                        //添加本地上传按钮
+                        UIAlertAction *photoAction = [UIAlertAction actionWithTitle:@"本地上传" style:(UIAlertActionStyleDestructive) handler:^(UIAlertAction *action) {
+                            //在这里写本地上传的方法
+                            
+                            
+                        }];
+                        
+                        //添加相机上传按钮
+                        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机上传" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction *action) {
+                            //在这里写相机上传按钮的方法
+                            
+                        }];
+                        
+                        
+                        
+                        //创建取消按钮
+                        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction *action) {
+                            //在这里写取消按钮的方法
+                            
+                        }];
+                        
+                        
+                        //判断可不可以访问相机
+                        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                            //相机可用的情况，添加全部按钮
+                            
+                            //添加取消按钮
+                            [alertController addAction:cancelAction];
+                            //添加本地上传按钮
+                            [alertController addAction:photoAction];
+                            //添加相机上传按钮
+                            [alertController addAction:cameraAction];
+                            
+
+                            
+                            
+                        
+                        }else{
+                            //相机不可用的情况，不添加相机上传的按钮
+                            
+                            //添加取消按钮
+                            [alertController addAction:cancelAction];
+                            //添加本地上传按钮
+                            [alertController addAction:photoAction];
+                            
+                            
+                        }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         
                         return;
                         
@@ -310,110 +359,21 @@ static CGFloat XZMSpringDelay = 0.1;
                     NSLog(@"hdsbjkb");
                     
                     // 切换对应控制器
+                
                 }];
             }
-            
-            
-                   }];
-        
+        }];
     }];
-    
-   
-    
-
 }
 
 -(void)clickBack {
     //[self.navigationController popViewControllerAnimated:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
     
+
 }
 
-#pragma mark-UIActionSheet
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
-        switch (buttonIndex) {
-            case 2:{}
-                return;
-            case 1:
-            {
-                UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init] ;
-                imagePickerController.delegate = self;
-                imagePickerController.allowsEditing = NO;
-                imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-                [self presentViewController:imagePickerController animated:YES completion:^{}];
-                //					[imagePickerController release];
-            }
-                break;
-            case 0:
-                [self showImagePicker];
-                break;
-        }
-        
-    }
-}
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    [self.photoNameList insertObject:image atIndex:0];
-    //    [self.photoNameList addObject:image];
-    //self.photoImg.image = image;
-    //[self reloadPhotos];
-}
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [self dismissViewControllerAnimated:YES completion:^{}];
-}
 
-#pragma mark - DoImagePickerControllerDelegate
-- (void)didCancelDoImagePickerController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)didSelectPhotosFromDoImagePickerController:(DoImagePickerController *)picker result:(NSArray *)selectedImages
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    if (picker.nResultType == DO_PICKER_RESULT_UIIMAGE)
-    {
-        for (int i = 0; i < MIN(10, selectedImages.count); i++)
-        {
-            
-            [self.photoNameList insertObject:selectedImages[i] atIndex:self.photoNameList.count-1];
-            //            [self.photoNameList addObject:selectedImages[i]];
-        }
-    }
-    else if (picker.nResultType == DO_PICKER_RESULT_ASSET)
-    {
-        for (int i = 0; i < MIN(10, selectedImages.count); i++)
-        {
-            [self.photoNameList insertObject:[ASSETHELPER getImageFromAsset:selectedImages[i] type:ASSET_PHOTO_SCREEN_SIZE] atIndex:self.photoNameList.count-1];
-            //            [self.photoNameList addObject:[ASSETHELPER getImageFromAsset:selectedImages[i] type:ASSET_PHOTO_SCREEN_SIZE]];
-        }
-        
-        [ASSETHELPER clearData];
-    }
-    if (self.photoNameList.count > 0) {
-        //        [self reloadPhotos];
-        // [_kPhotoCollectionView reloadData];
-    }
-}
-
-- (void)showImagePicker {
-    DoImagePickerController *cont = [[DoImagePickerController alloc] initWithNibName:@"DoImagePickerController" bundle:nil];
-
-    cont.flag = flag;
-    cont.delegate = self;
-    cont.nResultType = DO_PICKER_RESULT_UIIMAGE;
-    cont.nMaxCount = 9 - (self.photoNameList.count-1);//最大张数
-    cont.nColumnCount = 4;//选择器行数
-    [self presentViewController:cont animated:YES completion:nil];
-}
 
 @end
-// 版权属于原作者
-// http://code4app.com (cn) http://code4app.net (en)
-// 发布代码于最专业的源码分享网站: Code4App.com
+

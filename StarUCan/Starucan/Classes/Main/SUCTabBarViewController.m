@@ -51,11 +51,17 @@
     MineViewController *profile = [[MineViewController alloc] init];
     [self createChildVCWithVC:profile Title:@"我的" Image:@"icon_home_myself" SelectedImage:@"icon_home_myself_fill"];
     
+    
     XYTabBar *tabBar = [[XYTabBar alloc] init];
+    
     tabBar.delegate = self;
+    
     [[XYTabBar appearance] setShadowImage:[[UIImage alloc] init]];
+    
     [self setValue:tabBar forKey:@"tabBar"];
+    
     self.tabBar.translucent = NO;
+    
     [self.tabBar setBackgroundImage:[[UIImage imageNamed:@"tabbar_bg.png"] stretchableImageWithLeftCapWidth:1 topCapHeight:10]];
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -102,14 +108,21 @@
 {
    
     XZMPublishViewController *showVC = [[XZMPublishViewController alloc]init];
-    //WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
-    //[self presentViewController:nav animated:NO completion:nil];
+    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
     
-    [self.tabBarController.navigationController pushViewController:showVC animated:YES];
     
-    NSLog(@"点击大按钮");
+    [self presentViewController:nav animated:NO completion:nil];
+    
+    
+    //为什么不能用导航控制器推过去?
+    //思路：首先取到当前控制器，然后用当前试图控制器的导航控制器推过去。
+    
 
+    
 }
+
+
+
 
 -(void)buttonAction:(UIButton *)btn
 {
