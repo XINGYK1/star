@@ -152,12 +152,16 @@
             case 2:
             {
             
+                //取消按钮的方法
+                
             }
                 return;
             
             case 1:
             
             {
+                
+                //调取相机方法
                 UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init] ;
                 
                 imagePickerController.delegate = self;
@@ -166,13 +170,19 @@
                 
                 imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
                 
-                [self presentViewController:imagePickerController animated:YES completion:^{}];
+                [self presentViewController:imagePickerController animated:YES completion:^{
+                
+                
+                
+                }];
                 
             }
                 break;
             
             case 0:
             {
+                
+                
                 [self showImagePicker];
                 
             }

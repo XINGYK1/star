@@ -249,62 +249,72 @@ static CGFloat XZMSpringDelay = 0.1;
                         
                         //如果是登录状态，进入showViewController
                         ShowViewController *showVC = [[ShowViewController alloc]init];
-                        //[self.navigationController pushViewController:showVC animated:YES];
+                        [self.navigationController pushViewController:showVC animated:YES];
                         
                         
                         //初始化UIAlertController
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                        
-                        [self presentViewController:alertController animated:YES completion:nil];
-                        
-                        
-                        //添加本地上传按钮
-                        UIAlertAction *photoAction = [UIAlertAction actionWithTitle:@"本地上传" style:(UIAlertActionStyleDestructive) handler:^(UIAlertAction *action) {
-                            //在这里写本地上传的方法
-                            
-                            
-                        }];
-                        
-                        //添加相机上传按钮
-                        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机上传" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction *action) {
-                            //在这里写相机上传按钮的方法
-                            
-                        }];
-                        
-                        
-                        
-                        //创建取消按钮
-                        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction *action) {
-                            //在这里写取消按钮的方法
-                            
-                        }];
-                        
-                        
-                        //判断可不可以访问相机
-                        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-                            //相机可用的情况，添加全部按钮
-                            
-                            //添加取消按钮
-                            [alertController addAction:cancelAction];
-                            //添加本地上传按钮
-                            [alertController addAction:photoAction];
-                            //添加相机上传按钮
-                            [alertController addAction:cameraAction];
-                            
-
-                            
-                            
-                        
-                        }else{
-                            //相机不可用的情况，不添加相机上传的按钮
-                            
-                            //添加取消按钮
-                            [alertController addAction:cancelAction];
-                            //添加本地上传按钮
-                            [alertController addAction:photoAction];
-                            
-                            
-                        }
+//                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//                        
+//                        [self presentViewController:alertController animated:YES completion:nil];
+//                        
+//                        
+//                        //添加本地上传按钮
+//                        UIAlertAction *photoAction = [UIAlertAction actionWithTitle:@"本地上传" style:(UIAlertActionStyleDestructive) handler:^(UIAlertAction *action) {
+//                            //在这里写本地上传的方法
+//                            
+//                            
+//                        }];
+//                        
+//                        //添加相机上传按钮
+//                        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机上传" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction *action) {
+//                            
+//                            //在这里写相机上传按钮的方法
+//                            
+//                            //初始化照片查看器
+//                            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
+//                            
+//                            //给照片查看器设置代理
+//                            imagePickerController.delegate = self;
+//                            
+//                            //关闭图像编辑功能
+//                            imagePickerController.allowsEditing = NO;
+//                            
+//                        }];
+//                        
+//                        
+//                        
+//                        //创建取消按钮
+//                        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction *action) {
+//                            //在这里写取消按钮的方法
+//                            
+//                        }];
+//                        
+//                        
+//                        //判断可不可以访问相机
+//                        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+//                            //相机可用的情况，添加全部按钮
+//                            
+//                            //添加取消按钮
+//                            [alertController addAction:cancelAction];
+//                            //添加本地上传按钮
+//                            [alertController addAction:photoAction];
+//                            //添加相机上传按钮
+//                            [alertController addAction:cameraAction];
+//                            
+//
+//                            
+//                            
+//                        
+//                        }else{
+//                            //相机不可用的情况，不添加相机上传的按钮
+//                            
+//                            //添加取消按钮
+//                            [alertController addAction:cancelAction];
+//                            //添加本地上传按钮
+//                            [alertController addAction:photoAction];
+//                            
+//                            
+//                        }
                         
                         
                         
