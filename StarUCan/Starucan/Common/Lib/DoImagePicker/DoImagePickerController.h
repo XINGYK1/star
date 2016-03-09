@@ -18,6 +18,7 @@
 #define DO_BOTTOM_TEXT_COLOR        DO_RGB(255, 255, 255)
 
 #define DO_PICKER_RESULT_UIIMAGE    0
+
 #define DO_PICKER_RESULT_ASSET      1
 
 #define DO_NO_LIMIT_SELECT          -1
@@ -59,6 +60,7 @@
 // side buttons
 @property (weak, nonatomic) IBOutlet UIButton           *btUp;
 @property (weak, nonatomic) IBOutlet UIButton           *btDown;
+
 
 - (IBAction)onUp:(id)sender;
 - (IBAction)onDown:(id)sender;

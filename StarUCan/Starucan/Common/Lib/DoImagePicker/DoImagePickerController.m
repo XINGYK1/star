@@ -5,6 +5,8 @@
 //  Created by Donobono on 2014. 1. 23..
 //
 
+
+
 #import "DoImagePickerController.h"
 #import "AssetHelper.h"
 #import "ShowPhotoViewController.h"
@@ -12,6 +14,7 @@
 #import "DoPhotoCell.h"
 #import "WXNavigationController.h"
 @implementation DoImagePickerController
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -23,10 +26,12 @@
 }
 
 - (void)viewDidLoad
+
 {
     [super viewDidLoad];
     
     [self initBottomMenu];
+    
     [self initControls];
     
     UINib *nib = [UINib nibWithNibName:@"DoPhotoCell" bundle:nil];
@@ -60,12 +65,14 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillAppear:YES];
+    [super viewDidDisappear:animated];
     if (_nResultType == DO_PICKER_RESULT_UIIMAGE)
         [ASSETHELPER clearData];
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
+
+
 
 - (void)handleEnterForeground:(NSNotification*)notification
 {
@@ -128,6 +135,7 @@
 //    [_btSelectAlbum setTitleColor:DO_BOTTOM_TEXT_COLOR forState:UIControlStateDisabled];
 	
     _ivLine1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"line.png"]];
+    
     _ivLine2.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"line.png"]];
     
     if (_nMaxCount == DO_NO_LIMIT_SELECT)
@@ -154,11 +162,52 @@
     }
 }
 
+
+#pragma mark -完成按钮的点击方法
 - (IBAction)onSelectPhoto:(id)sender
 {
     if (self.flag) {
-        NSLog(@"完成");
+        //如果flag为YES 执行以下的方法
+        
+        //用这种方法可以提高程序的运行速度
         NSMutableArray *aResult = [[NSMutableArray alloc] initWithCapacity:_dSelected.count];
+        
+        NSArray *aKeys = [_dSelected keysSortedByValueUsingSelector:@selector(compare:)];
+        
+        
+        //如果_nResultType 等于0
+        if (_nResultType == DO_PICKER_RESULT_UIIMAGE)
+        {
+            
+            for (int i = 0; i < _dSelected.count; i++)
+                //先选X张，再加一张会崩在这
+                //ASSETHELPER获取ASSETHELPER单例
+                [aResult addObject:[ASSETHELPER getImageAtIndex:[aKeys[i] integerValue] type:ASSET_PHOTO_SCREEN_SIZE]];
+        }else{
+            for (int i = 0; i < _dSelected.count; i++)
+                
+                [aResult addObject:[ASSETHELPER getAssetAtIndex:[aKeys[i] integerValue]]];
+        }
+
+        
+        //在这里把选择的照片传给ShowPhotoViewController的图片数组
+        ShowPhotoViewController *showVC = [[ShowPhotoViewController alloc]init];
+        
+        [showVC setPhotoNameList:aResult];
+        
+        
+        //并且模态试图到ShowPhotoViewController
+        WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
+        
+        [self presentViewController:nav animated:NO completion:nil];
+        
+
+    }else{
+    
+        ////如果flag为NO执行以下的方法
+        
+        NSMutableArray *aResult = [[NSMutableArray alloc] initWithCapacity:_dSelected.count];
+        
         NSArray *aKeys = [_dSelected keysSortedByValueUsingSelector:@selector(compare:)];
         
         if (_nResultType == DO_PICKER_RESULT_UIIMAGE)
@@ -171,31 +220,11 @@
             for (int i = 0; i < _dSelected.count; i++)
                 [aResult addObject:[ASSETHELPER getAssetAtIndex:[aKeys[i] integerValue]]];
         }
-
-                ShowPhotoViewController *showVC = [[ShowPhotoViewController alloc]init];
-        [showVC setPhotoNameList:aResult];
-        WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
-        [self presentViewController:nav animated:NO completion:nil];
-        NSLog(@"%lu",(unsigned long)aResult.count);
         
-
-    }else{
-    NSMutableArray *aResult = [[NSMutableArray alloc] initWithCapacity:_dSelected.count];
-    NSArray *aKeys = [_dSelected keysSortedByValueUsingSelector:@selector(compare:)];
-
-    if (_nResultType == DO_PICKER_RESULT_UIIMAGE)
-    {
-        for (int i = 0; i < _dSelected.count; i++)
-            [aResult addObject:[ASSETHELPER getImageAtIndex:[aKeys[i] integerValue] type:ASSET_PHOTO_SCREEN_SIZE]];
+        [_delegate didSelectPhotosFromDoImagePickerController:self result:aResult];
     }
-    else
-    {
-        for (int i = 0; i < _dSelected.count; i++)
-            [aResult addObject:[ASSETHELPER getAssetAtIndex:[aKeys[i] integerValue]]];
-    }
-
-    [_delegate didSelectPhotosFromDoImagePickerController:self result:aResult];
-    }
+    
+    //self.flag = !self.flag;
     
 }
 

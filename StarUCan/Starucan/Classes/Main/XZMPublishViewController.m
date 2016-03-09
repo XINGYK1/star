@@ -173,14 +173,12 @@ static CGFloat XZMSpringDelay = 0.1;
     //设置不响应用户事件
     self.view.userInteractionEnabled = NO;
     
-#pragma mark -添加发图片和发发话题按钮
     
 }
 
 - (void)cancelWithCompletionBlock:(void (^)())block
 {
     self.view.userInteractionEnabled = NO;
-    
     
     int index = 0;
     for (int i = index; i < self.view.subviews.count; i++) {
@@ -209,8 +207,6 @@ static CGFloat XZMSpringDelay = 0.1;
                 block();
             }];
         }
-        
-        
     }
 }
 
@@ -269,6 +265,7 @@ static CGFloat XZMSpringDelay = 0.1;
 
                         
                         //添加相机上传按钮
+                        
                         UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机上传" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction *action) {
                             
                             //调取相机方法
@@ -418,6 +415,7 @@ static CGFloat XZMSpringDelay = 0.1;
 
 
 #pragma mark -DoImagePickerController的代理方法
+//取消选择照片的代理方法。
 - (void)didCancelDoImagePickerController
 {
     
@@ -425,10 +423,12 @@ static CGFloat XZMSpringDelay = 0.1;
     
 }
 
+//选择照片以后的代理方法
 - (void)didSelectPhotosFromDoImagePickerController:(DoImagePickerController *)picker result:(NSArray *)selectedImages
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     
+    //判断如果选择的是图片 ： nResultType等于0
     if (picker.nResultType == DO_PICKER_RESULT_UIIMAGE)
     {
         for (int i = 0; i < MIN(10, selectedImages.count); i++)
@@ -438,12 +438,14 @@ static CGFloat XZMSpringDelay = 0.1;
             //            [self.photoNameList addObject:selectedImages[i]];
         }
     }
+    
+    //如果nResultType等于1
     else if (picker.nResultType == DO_PICKER_RESULT_ASSET)
     {
         for (int i = 0; i < MIN(10, selectedImages.count); i++)
         {
             [self.photoNameList insertObject:[ASSETHELPER getImageFromAsset:selectedImages[i] type:ASSET_PHOTO_SCREEN_SIZE] atIndex:self.photoNameList.count-1];
-            //            [self.photoNameList addObject:[ASSETHELPER getImageFromAsset:selectedImages[i] type:ASSET_PHOTO_SCREEN_SIZE]];
+            //[self.photoNameList addObject:[ASSETHELPER getImageFromAsset:selectedImages[i] type:ASSET_PHOTO_SCREEN_SIZE]];
         }
         
         [ASSETHELPER clearData];
@@ -451,6 +453,8 @@ static CGFloat XZMSpringDelay = 0.1;
     if (self.photoNameList.count > 0) {
         //        [self reloadPhotos];
         // [_kPhotoCollectionView reloadData];
+        
+        NSLog(@"你是干啥的");
     }
 }
 
@@ -460,10 +464,7 @@ static CGFloat XZMSpringDelay = 0.1;
 -(void)clickBack {
     
     //[self.navigationController popViewControllerAnimated:YES];
-    
     [self dismissViewControllerAnimated:YES completion:nil];
-    
-
 }
 
 

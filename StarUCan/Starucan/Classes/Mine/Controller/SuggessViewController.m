@@ -460,7 +460,7 @@
     }
 }
 
-- (void)showImagePicker {
+- (void)showImagePicker{
     DoImagePickerController *cont = [[DoImagePickerController alloc] initWithNibName:@"DoImagePickerController" bundle:nil];
     cont.delegate = self;
     cont.nResultType = DO_PICKER_RESULT_UIIMAGE;

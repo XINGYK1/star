@@ -61,6 +61,7 @@
 
 @implementation ShowPhotoViewController
 -(void)loadView{
+    
     UIScrollView *sv = [[UIScrollView alloc] init];
     sv.frame = CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight);
     sv.contentSize = CGSizeMake(YTHScreenWidth, YTHScreenHeight+216);
@@ -69,37 +70,26 @@
     self.scrollView = sv;
     self.view = sv;
 }
-//图片最多上传9张
 
+//图片最多上传9张
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
     if (!myDelegate) {
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
-    
-    
-    
-   // self.photoNameList = [[NSMutableArray alloc] init];
+
+    // self.photoNameList = [[NSMutableArray alloc] init];
     NSLog(@"之前图片%lu",(unsigned long)self.photoNameList.count);
     self.photoArry = [[NSMutableArray alloc]init];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.dict = responseObject;
-        if ([operation.response statusCode]/100==2) {
-            NSLog(@"获取七牛Token%@",self.dict);
-            self.tokenKey = [self.dict objectForKey:@"qntoken"];
-            self.domain = [NSString stringWithFormat:@"http://%@",[self.dict objectForKey:@"domain"]];
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //        [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
-        
-    }];
+    
+    
     
     self.title = @"show图片";
     self.view.backgroundColor = YTHBaseVCBackgroudColor;
+    
+    [self createData];
     //创建导航栏上的视图
     [self _loadNavigationViews];
     //Collection图片
@@ -110,6 +100,33 @@
     [self _initLabel];
     //谁都可以看
     [self _initLook];
+    
+    
+}
+
+//获取数据,这个方法为了获取7牛的qntoken和domain
+-(void)createData{
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        self.dict = responseObject;
+        
+        if ([operation.response statusCode]/100==2) {
+            
+            YTHLog(@"获取七牛Token%@",self.dict);
+            
+            self.tokenKey = [self.dict objectForKey:@"qntoken"];
+            
+            self.domain = [NSString stringWithFormat:@"http://%@",[self.dict objectForKey:@"domain"]];
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        //        [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
+        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        
+    }];
     
     
 }
@@ -153,6 +170,7 @@
     __block int num = 0;
     [self.photoNameList removeLastObject];
     [MBProgressHUD showMessage:@"发送中"];
+    
     for (UIImage *image in self.photoNameList) {
         NSData *data = UIImagePNGRepresentation(image);
         QNUploadManager *upManager = [[QNUploadManager alloc] init];
@@ -272,7 +290,8 @@
     _indexCollectionView.delegate = self;
     _indexCollectionView.dataSource = self;
     _indexCollectionView.pagingEnabled = YES;
-    [self.view addSubview:_indexCollectionView];
+    //[self.view addSubview:_indexCollectionView];
+    
     //将viewC插入到viewB的下面
     [self.view insertSubview:_indexCollectionView belowSubview:deleBtn];
     
@@ -314,11 +333,11 @@
     
     
 }
-#pragma mark-发布文字
+#pragma mark-发布文字模块
 -(void)_initViewBgDesc
 {
     UIView *viewBgDesc = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_kPhotoCollectionView.frame)+10, YTHScreenWidth, 100)];
-    viewBgDesc.backgroundColor = [UIColor whiteColor];
+    viewBgDesc.backgroundColor = [UIColor redColor];
     self.viewBgDesc = viewBgDesc;
     [self.view addSubview:viewBgDesc];
     labelText = [[UILabel alloc]initWithFrame:CGRectMake(16, 5, YTHScreenWidth-32, 20)];
@@ -488,20 +507,30 @@
         }
         [_kPhotoCollectionView reloadData];
     }
-    //    else{
-    //        [self magnifyingPhoto:self.photoNameList[indexPath.row]];
-    //    }
+//        else{
+//            
+//            
+//            [self magnifyingPhoto:self.photoNameList[indexPath.row]];
+//        }
     // //记录当前页
 }
 
+
 -(void)magnifyingPhoto:(UIImage *)image{
     _kVIPhotoView = [[VIPhotoView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) andImage:image];
+    
     _kVIPhotoView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    
     [_kVIPhotoView setContentMode:UIViewContentModeScaleAspectFit];
+    
     _kVIPhotoView.alpha = 0;
+    
     [self.view addSubview:_kVIPhotoView];
+    
     [UIView animateWithDuration:0.3 animations:^{
+        
         _kVIPhotoView.alpha = 1;
+    
     } completion:^(BOOL finished) {
         //创建一个点击手势
         UITapGestureRecognizer*kVIPhotoViewTap=[[UITapGestureRecognizer alloc]init];
@@ -515,53 +544,82 @@
         [_kVIPhotoView addGestureRecognizer:kVIPhotoViewTap];
     }];
 }
+
+
+//手势的方法
 -(void)closeVIPhotoView{
+    
     [_kVIPhotoView removeFromSuperview];
     _kVIPhotoView = nil;
-    NSLog(@"");
 }
--(void)addButtonAction
-{
+
+
+//
+-(void)addButtonAction{
+    
     if (self.photoNameList.count >= 10) {
-        // [self tishi:@"最多上传10张图片"];
+        
+        //在这里弹出提示，最多上传10张图片
         return;
     }
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil   delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        [sheet addButtonWithTitle:@"本地上传"];
-        [sheet addButtonWithTitle:@"拍照上传"];
-        [sheet addButtonWithTitle:@"取消"];
-        sheet.cancelButtonIndex = sheet.numberOfButtons-1;
-    }else {
-        [sheet addButtonWithTitle:@"本地上传"];
-        [sheet addButtonWithTitle:@"取消"];
-        sheet.cancelButtonIndex = sheet.numberOfButtons-1;
-    }
-    [sheet showInView:self.view];
     
-}
-#pragma mark-UIActionSheet
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 2:{}
-            return;
-        case 1:
-        {
-            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-                UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init] ;
-                imagePickerController.delegate = self;
-                imagePickerController.allowsEditing = NO;
-                imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-                [self presentViewController:imagePickerController animated:YES completion:^{}];
-            }
-            //					[imagePickerController release];
-        }
-            break;
-        case 0:
-            [self showImagePicker];
-            break;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    UIAlertAction * cancelAction  = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        //取消的方法
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    UIAlertAction * cameraAction  = [UIAlertAction actionWithTitle:@"相机上传" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //调取相机的方法
+        [self camera];
+    }];
+    
+    UIAlertAction * photographAction  = [UIAlertAction actionWithTitle:@"本地上传" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        //调取相册的方法
+        [self showImagePicker];
+    }];
+    
+    //判断可不可以访问相机
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        //相机可用的情况，添加全部按钮
+        
+        //添加相机上传按钮
+        [alert addAction:cameraAction];
+        
+        //添加本地上传按钮
+        [alert addAction:photographAction];
+        
+        //添加取消按钮
+        [alert addAction:cancelAction];
+
+    }else{
+        //相机不可用的情况，不添加相机上传的按钮
+        
+        //添加取消按钮
+        [alert addAction:cancelAction];
+        //添加本地上传按钮
+        [alert addAction:photographAction];
     }
 }
+
+//拍照上传的方法
+-(void)camera{
+    
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init] ;
+        imagePickerController.delegate = self;
+        imagePickerController.allowsEditing = NO;
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:imagePickerController animated:YES completion:^{}];
+    }
+}
+
+
+#pragma mark -UIImagePickerControllerDelegate的代理方法
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -573,6 +631,7 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
+
 
 #pragma mark - DoImagePickerControllerDelegate
 - (void)didCancelDoImagePickerController
@@ -590,7 +649,8 @@
         {
             
             [self.photoNameList insertObject:selectedImages[i] atIndex:self.photoNameList.count-1];
-            //            [self.photoNameList addObject:selectedImages[i]];
+            
+            //[self.photoNameList addObject:selectedImages[i]];
         }
     }
     else if (picker.nResultType == DO_PICKER_RESULT_ASSET)

@@ -83,7 +83,7 @@
     //发送按钮
     UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     // sendButton.imgName = @"button_icon_ok.png";
-    [sendButton setTitle:@"发送" forState:UIControlStateNormal];
+    [sendButton setTitle:@"确定" forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [sendButton addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *sendItem = [[UIBarButtonItem alloc] initWithCustomView:sendButton];
