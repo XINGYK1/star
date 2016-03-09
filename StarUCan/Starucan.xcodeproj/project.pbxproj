@@ -91,7 +91,6 @@
 		5A988F1C1C34C8350073A89F /* WXNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A988EF61C34C8350073A89F /* WXNavigationController.m */; };
 		5A988F1D1C34C8350073A89F /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A988EFA1C34C8350073A89F /* MineViewController.m */; };
 		5A988F1E1C34C8350073A89F /* NewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A988F001C34C8350073A89F /* NewsViewController.m */; };
-		5A988F1F1C34C8350073A89F /* ShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A988F061C34C8350073A89F /* ShowViewController.m */; };
 		5A988F201C34C8350073A89F /* TalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A988F0C1C34C8350073A89F /* TalkViewController.m */; };
 		5A988F211C34C8350073A89F /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A988F121C34C8350073A89F /* UIView+Extension.m */; };
 		5A988F221C34C8350073A89F /* UIWindow+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A988F141C34C8350073A89F /* UIWindow+Extension.m */; };
@@ -479,8 +478,6 @@
 		5A988EFA1C34C8350073A89F /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
 		5A988EFF1C34C8350073A89F /* NewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsViewController.h; sourceTree = "<group>"; };
 		5A988F001C34C8350073A89F /* NewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsViewController.m; sourceTree = "<group>"; };
-		5A988F051C34C8350073A89F /* ShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowViewController.h; sourceTree = "<group>"; };
-		5A988F061C34C8350073A89F /* ShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowViewController.m; sourceTree = "<group>"; };
 		5A988F0B1C34C8350073A89F /* TalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkViewController.h; sourceTree = "<group>"; };
 		5A988F0C1C34C8350073A89F /* TalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkViewController.m; sourceTree = "<group>"; };
 		5A988F111C34C8350073A89F /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
@@ -1457,8 +1454,6 @@
 				5A12C9181C4DEA1700DAAC92 /* LookViewController.h */,
 				5A12C9191C4DEA1700DAAC92 /* LookViewController.m */,
 				5A86F70D1C3F97120073C14F /* creatActivitybg4.png */,
-				5A988F051C34C8350073A89F /* ShowViewController.h */,
-				5A988F061C34C8350073A89F /* ShowViewController.m */,
 				5AD72E131C3F91D7005E4236 /* ShowPhotoViewController.h */,
 				5AD72E141C3F91D7005E4236 /* ShowPhotoViewController.m */,
 				5AF69F091C4A2A0C00B22C1A /* WordViewController.h */,
@@ -2256,7 +2251,6 @@
 				5A1CBDF01C44F74E006372FF /* QNSessionManager.m in Sources */,
 				5A1CBDE31C44F74E006372FF /* QNHex.m in Sources */,
 				5A1CBDDB1C44F74E006372FF /* QNNetworkInfo.m in Sources */,
-				5A988F1F1C34C8350073A89F /* ShowViewController.m in Sources */,
 				5A0F32C11C4123D3006EBAB1 /* NSData+AES256.m in Sources */,
 				5AB34A5F1C3A837C00721D84 /* MJMember.m in Sources */,
 				5A1CBDDC1C44F74E006372FF /* QNRecord.m in Sources */,

@@ -120,6 +120,7 @@
         make.top.equalTo(self.view).offset(marginH);
         make.left.equalTo(self.view).offset(YTHScreenWidth/2-YTHAdaptation(62));
         
+    
     }];
     
 //    [logoImv.layer setMasksToBounds:YES];

@@ -57,8 +57,8 @@ typedef enum {
     UIScrollView *sv = [[UIScrollView alloc] init];
     sv.frame = CGRectMake(0, 500, YTHScreenWidth, YTHScreenHeight);
     sv.contentSize = CGSizeMake(YTHScreenWidth, YTHScreenHeight+216);
-    //sv.backgroundColor = YTHColor(235, 235, 241);
     
+    //sv.backgroundColor = YTHColor(235, 235, 241);
     sv.backgroundColor = [UIColor whiteColor];
 
     sv.scrollEnabled = NO;

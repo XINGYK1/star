@@ -11,7 +11,6 @@
 #import "NewsViewController.h"
 #import "MineViewController.h"
 #import "WXNavigationController.h"
-#import "ShowViewController.h"
 #import "TalkViewController.h"
 #import "XYTabBar.h"
 #import "AppDelegate.h"
@@ -19,7 +18,6 @@
 #import "TopicViewController.h"
 #import "ShowPhotoViewController.h"
 #import "LoginFirstViewController.h"
-#import "ShowViewController.h"
 #import "XZMPublishViewController.h"
 @interface SUCTabBarViewController ()<XYTabBarDelegate,UITabBarControllerDelegate,UITabBarDelegate>
 {
@@ -69,7 +67,12 @@
     self.tabBar.translucent = NO;
     
     [self.tabBar setBackgroundImage:[[UIImage imageNamed:@"tabbar_bg.png"] stretchableImageWithLeftCapWidth:1 topCapHeight:10]];
+    
+    //第一次进入tabBar的时候把首页的导航控制器赋值给_selectedController
+    _selectedController = (WXNavigationController *)home.navigationController;
+
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -104,7 +107,6 @@
     //给子控制器包装导航控制器
     WXNavigationController *nav = [[WXNavigationController alloc] initWithRootViewController:childVC];
     
-    _selectedController = nav;
     [self addChildViewController:nav];
 }
 
@@ -114,30 +116,37 @@
    
     XZMPublishViewController *showVC = [[XZMPublishViewController alloc]init];
 
-    //    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
-
-    //
- 
-    //
-
-    //    [self presentViewController:nav animated:NO completion:nil];
+    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
     
+    [self presentViewController:nav animated:YES completion:nil];
     
-    //为什么不能用导航控制器推过去?
-    //思路：首先取到当前控制器，然后用当前试图控制器的导航控制器推过去。
-    
+    //[_selectedController pushViewController:showVC animated:NO];
     
 }
 
 #pragma mark -UITableBarController的代理方法
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
+    
+    //如果显示的是其他的页面，
+    if (![viewController.tabBarItem.title isEqualToString:@"我的"]){
+        
+        _selectedController=viewController;
+        
+    }
+    
 
     if ([viewController.tabBarItem.title isEqualToString:@"我的"]) {
         //还有再加一个账号判断
         if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
+            
+            //登录状态，返回yes，表示可以进入这个页面。
             return YES;
+        
+        
         }else{
+            
+            //非登录状态进入登录页面
             LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
         
             [_selectedController pushViewController:loginVC animated:NO];
@@ -148,14 +157,6 @@
     }
       return YES;
 }
-
--(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
-    
-    //当我进入某个页面的时候，把_selectedController指向他。
-    _selectedController=viewController;
-
-}
-
 
 
 - (void)didReceiveMemoryWarning {
