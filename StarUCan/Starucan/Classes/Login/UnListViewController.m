@@ -17,9 +17,12 @@
 {
     AppDelegate *myDelegate;
     CLLocationCoordinate2D locationCorrrdinate;
+    UITableView *TableView;
+    UIView *myUView;//我的学校View
+    UILabel *myUlabel;//我的学校
 
 }
-@property (weak, nonatomic) UITableView *universityTableView;
+//@property (weak, nonatomic) UITableView *universityTableView;
 
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (nonatomic, strong) NSMutableArray * dataSource;
@@ -60,19 +63,35 @@
 #pragma mark - 布局
 -(void)_initCreat
 {
+    if (myDelegate.university_name.length >0) {
+        
+        myUView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, YTHScreenWidth, 44.0)];
+
+        [self.view addSubview:myUView];
+        myUlabel = [[UILabel alloc]initWithFrame:CGRectMake(16.0f, 5.0f, YTHScreenWidth-16.0f, 40.0f)];
+        
+        [myUView addSubview:myUlabel];
+
+        // 添加一个tableview
+        TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, myUView.height+64.0f, YTHScreenWidth, YTHScreenHeight-myUView.height-64.0f) style:UITableViewStylePlain];
+        
+    }else{
     // 添加一个tableview
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight) style:UITableViewStylePlain];
+    TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight) style:UITableViewStylePlain];
+        
+    }
     
-    tableView.backgroundColor = YTHColor(240, 240, 240);
+    TableView.backgroundColor = YTHColor(240, 240, 240);
     
-    self.universityTableView = tableView;
+//    TableView = TableView;
+        [self.view addSubview:TableView];
     
-    [self.view addSubview:self.universityTableView];
+    TableView.delegate = self;
+    TableView.dataSource = self;
     
-    self.universityTableView.delegate = self;
-    self.universityTableView.dataSource = self;
-    self.universityTableView.sectionIndexColor = YTHColor(255, 73, 120);
-    self.universityTableView.sectionIndexBackgroundColor = [UIColor clearColor];
+    TableView.sectionIndexColor = YTHColor(180, 180, 180);//右侧索引文本颜色
+   
+    TableView.sectionIndexBackgroundColor = [UIColor clearColor];//右侧索引背景颜色
 
      [self requestData];
 }
@@ -108,7 +127,7 @@
     
     [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"学校%@",responseObject);
+   //     NSLog(@"学校%@",responseObject);
         
         NSLog(@"error code %ld",(long)[operation.response statusCode]);
         
@@ -123,6 +142,13 @@
         
         [MBProgressHUD hideHUD];
         [MBProgressHUD showSuccess:@"加载完成"];
+        //我的学校数据
+        myUlabel.text = [NSString stringWithFormat:@"我的学校：%@",myDelegate.university_name];
+        
+        NSLog(@"我的学校是 -------%@",myUlabel.text);
+        myUlabel.font = [UIFont systemFontOfSize:17];
+        myUlabel.textColor = [UIColor blackColor];
+
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
          NSLog(@"error code %ld",(long)[operation.response statusCode]);
@@ -181,8 +207,6 @@
         }
         if ([dataList count] > 0) {
             NSMutableDictionary *leterDic = [[NSMutableDictionary alloc] init];
-           
-            
 
             [leterDic setObject:leter forKey:@"indexTitle"];
             [leterDic setObject:dataList forKey:@"data"];
@@ -205,7 +229,7 @@
         [leterDic setObject:ortherlist forKey:@"data"];
         [self.dataSource addObject:leterDic];
     }
-    [self.universityTableView reloadData];
+    [TableView reloadData];
 }
 #pragma mark - 导航栏上的东西
 -(void)_initNation
@@ -241,8 +265,15 @@
 // 显示共有几个分组
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (tableView==self.universityTableView) {
-        
+    
+//    if (tableView==TableView) {
+//        if (myDelegate.university_name.length >0) {
+//            return self.dataSource.count+1;
+//            
+//        }else{
+//            return self.dataSource.count;
+//        }
+    if (tableView==TableView) {
         return self.dataSource.count;
     }else{
         return 1;
@@ -254,9 +285,22 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
  
-    if (tableView ==self.universityTableView) {
-    return [self.dataSource[section][@"data"] count];
+//    if (tableView ==TableView) {
+//        if (myDelegate.university_name.length >0) {
+//            if (section ==0) {
+//                return 1;
+//            }else{
+//                return [self.dataSource[section][@"data"] count];
+//            }
+//        }else{
+//             return [self.dataSource[section][@"data"] count];
+//        }
+//    }
+    
+    if (tableView ==TableView) {
+        return [self.dataSource[section][@"data"] count];
     }
+
     return 8;
    
 
@@ -273,8 +317,8 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (tableView==self.universityTableView) {
-        return 20;
+    if (tableView==TableView) {
+        return 26;//大学首字母
     }
     else {
         return 40;
@@ -283,7 +327,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView==self.universityTableView) {
+    if (tableView==TableView) {
         return 44;
     }else{
         return 40;
@@ -292,16 +336,25 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
- 
-    if (tableView==self.universityTableView) {
+    
+    if (tableView==TableView) {
         static NSString *ID = @"uniser";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
+//        if (myDelegate.university_name.length>0) {//大学
+//            cell.textLabel.text = [NSString stringWithFormat: @"我的学校：%@",myDelegate.university_name];
+//        }else{
+//            cell.textLabel.text = self.dataSource[indexPath.section][@"data"][indexPath.row][@"name"];
+//            cell.textLabel.tag = [self.dataSource[indexPath.section][@"data"][indexPath.row][@"uuid"] intValue];
+//            
+//        }
         cell.textLabel.text = self.dataSource[indexPath.section][@"data"][indexPath.row][@"name"];
         cell.textLabel.tag = [self.dataSource[indexPath.section][@"data"][indexPath.row][@"uuid"] intValue];
+
+       
         
         
         return cell;
@@ -326,15 +379,16 @@
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     myDelegate.university_name = cell.textLabel.text;
-    int tagid = cell.textLabel.tag;
-    myDelegate.universityId = [NSString stringWithFormat:@"%d",tagid];
-    NSLog(@"学校id:%@",myDelegate.universityId);
-    [self back];
 
+    myDelegate.universityId = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+     NSLog(@"学校id----------:%@",myDelegate.universityId);
+   
+    [self back];
     
 }
 -(void)back
 {
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"noticeRefreshCollectList" object:nil userInfo:nil];
     [self.navigationController popViewControllerAnimated:YES];
 
@@ -377,13 +431,15 @@
              }
              [self showUniversitys:slist];
          
-         
-         
      }
 
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    [myUView removeFromSuperview];
 
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -20,7 +20,7 @@
 #import "YHTHomeCollectionViewCell.h"
 #import "YHTHomeImageModel.h"
 #import "YHTHomeHeaderView.h"
-#import "AFHTTPRequestOperationManager.h"
+//#import "AFHTTPRequestOperationManager.h"
 #import "ImagePlayerView.h"
 #import "ShowDetailViewController.h"
 #import "AppDelegate.h"
@@ -317,7 +317,8 @@
 -(void)universityBtn:(MeetView *)meetview
 {
     UnListViewController *unListVC = [[UnListViewController alloc]init];
-    [self.navigationController pushViewController:unListVC animated:YES];
+    
+    [self.navigationController pushViewController:unListVC animated:NO];
     
 }
 -(void)pushToSearchViewControll

@@ -2,6 +2,7 @@
 
 #ifdef __OBJC__
 
+#import "AppDelegate.h"
 
 #import "portUrl.h"
 #import "UIButton+Extension.h"
@@ -14,4 +15,5 @@
 #import "UIView+Extension.h"
 #import "UIViewExt.h"
 #import "Masonry.h"
+#import "AFHTTPRequestOperationManager.h"
 #endif
