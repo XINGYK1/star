@@ -23,6 +23,7 @@
 {
     NSMutableArray *_digUpArray;
     UITableView *_kCatTableView;
+    UIImageView *lineIV;
     NSArray *_kCatTableViewTitles;
     NSMutableDictionary *_kIdMutabDict;
     
@@ -75,6 +76,7 @@
     }
     return self;
 }
+
 -(void)_initDataArray{
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -124,7 +126,7 @@
     
     
 }
-
+//初始化类别
 -(void)_initTableView
 {
     
@@ -136,7 +138,7 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //self.jason =responseObject;
         
-        NSLog(@"标签%@",responseObject);
+        NSLog(@"标签是--------%@",responseObject);
         
         NSLog(@"error code %ld",(long)[operation.response statusCode]);
         
@@ -148,7 +150,7 @@
         
         if ([operation.response statusCode]/100==2)
         {
-            NSArray *arry = [responseObject objectForKey:@"labelCats"];
+            NSArray *arry = [responseObject objectForKey:@"labelCats"];//类别数组
             
             myDelegate.labelId =[responseObject objectForKey:@"labelCats"];
             
@@ -206,23 +208,31 @@
     allButton.frame = CGRectMake(0, 0, YTHScreenWidth/2, 40);
     [allButton setTitle:@"所有类别" forState:UIControlStateNormal];
     [allButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    
+    [allButton setFont:[UIFont systemFontOfSize:16]];
     allButton.tag = 1;
     [allButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     self.allButton=allButton;
     [viewButton addSubview:allButton];
     
-    UIView *lineV = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(allButton.frame)+1, 9, 0.5, 21)];
-    lineV.backgroundColor = YTHColor(197, 197, 197);
-    [viewButton addSubview:lineV];
+//    UIView *lineV = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(allButton.frame)+1, 9, 0.5, 21)];
+//    lineV.backgroundColor = YTHColor(197, 197, 197);
+//    [viewButton addSubview:lineV];
     
     UIButton *unisverButton = [UIButton buttonWithType:UIButtonTypeCustom];
     unisverButton.frame = CGRectMake(YTHScreenWidth/2+1, 0, YTHScreenWidth/2, 40);
     [unisverButton setTitle:@"大学" forState:UIControlStateNormal];
+    [unisverButton setFont:[UIFont systemFontOfSize:16]];
+
     unisverButton.tag = 2;
     [unisverButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [unisverButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     self.unisverButton = unisverButton;
     [viewButton addSubview:unisverButton];
+    
+   
+
+    
 }
 //所有类别和大学的点击方法
 -(void)buttonAction:(UIButton *)btn
@@ -236,6 +246,7 @@
         
         if (self.catScrollView.frame.size.height == 0) {
             NSLog(@"点击");
+            [lineIV removeFromSuperview];
             
             _kCatTableView.frame = CGRectMake(0, 0, YTHScreenWidth, 0);
             
@@ -246,18 +257,28 @@
             
             [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
                 
-                _kCatTableView.frame = CGRectMake(0, 0, YTHScreenWidth, 300);
+                _kCatTableView.frame = CGRectMake(0, 0, YTHScreenWidth, 40.0f *7+28);
+                //类别、大学下面的线
+                lineIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 5)];
+                lineIV.image = [UIImage imageNamed:@"shadow"];
+                [self.catScrollView addSubview:lineIV];
             
             }completion:^(BOOL finished){}];
         
         
         }else{
+            [lineIV removeFromSuperview];
             self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, YTHScreenHeight- self.viewButton.frame.origin.y + self.viewButton.frame.size.height);
             
             [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
                 self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, 0);
                 
             } completion:^(BOOL finished){}];
+            //类别、大学下面的线
+            lineIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 5)];
+            lineIV.image = [UIImage imageNamed:@"shadow"];
+            [self.catScrollView addSubview:lineIV];
+
         }
         
         
@@ -457,7 +478,13 @@
     if (!kCatTabelViewCell) {
         kCatTabelViewCell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCatTabelViewCellId];
     }
+    
     kCatTabelViewCell.textLabel.text = _kCatTableViewTitles[indexPath.row];
+    
+    kCatTabelViewCell.textLabel.textColor = GXColor(150, 150, 150);//灰色字体
+
+    kCatTabelViewCell.textAlignment = UITextAlignmentCenter;
+    
     kCatTabelViewCell.textLabel.font = [UIFont systemFontOfSize:14];
     
     //       [[_kIdMutabDict objectForKey:[_kCatTableViewTitles[indexPath.row]];
@@ -475,7 +502,11 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _kCatTableViewTitles.count;
 }
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    [lineIV removeFromSuperview];
+
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [_allButton setTitle:cell.textLabel.text forState:UIControlStateNormal];
@@ -487,16 +518,19 @@
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     if (tableView == _kCatTableView) {
+        
         UIButton *kCatTabelViewFooterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        CGFloat kTopAndBottom = (15 - 6)/2.0f;
-        CGFloat kLeftAndRight = (YTHScreenWidth - 16)/2.0f;
-        kCatTabelViewFooterBtn.imageEdgeInsets = UIEdgeInsetsMake(kTopAndBottom, kLeftAndRight, kTopAndBottom, kLeftAndRight);
-        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"slide"] forState:UIControlStateNormal];
+        CGFloat kTopAndBottom = (15 - 5)/2.0f;//上下边距5.0f
+        CGFloat kLeftAndRight = (YTHScreenWidth - 16)/2.0f;//左右边距
+        kCatTabelViewFooterBtn.imageEdgeInsets = UIEdgeInsetsMake(kTopAndBottom+5.0f, kLeftAndRight, kTopAndBottom, kLeftAndRight);
+        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"icon_operate"] forState:UIControlStateNormal];
+        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"icon_operate_click"] forState:UIControlStateSelected];
         kCatTabelViewFooterBtn.backgroundColor = [UIColor whiteColor];
-        kCatTabelViewFooterBtn.frame = CGRectMake(0, 0, YTHScreenWidth, 15.0f);
+        kCatTabelViewFooterBtn.frame = CGRectMake(0, 0, YTHScreenWidth, 10.0f);
+        //线
         UIView *kGXian = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 0.4)];
         kGXian.backgroundColor = [UIColor colorWithRed:154.0f/255.0f green:154.0f/255.0f blue:154.0f/255.0f alpha:0.7f];
-        // kGXian.backgroundColor = [UIColor redColor];
+         //kGXian.backgroundColor = [UIColor redColor];
         [kCatTabelViewFooterBtn addSubview:kGXian];
         [kCatTabelViewFooterBtn addTarget:self action:@selector(kCatkCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
         return kCatTabelViewFooterBtn;
