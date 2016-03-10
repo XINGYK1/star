@@ -10,15 +10,17 @@
 #import <UIKit/UIKit.h>
 #define ASSETHELPER    [AssetHelper sharedAssetHelper]
 
-#define ASSET_PHOTO_THUMBNAIL           0
-#define ASSET_PHOTO_SCREEN_SIZE         1
-#define ASSET_PHOTO_FULL_RESOLUTION     2
+#define ASSET_PHOTO_THUMBNAIL           0//缩略图
+#define ASSET_PHOTO_SCREEN_SIZE         1//
+#define ASSET_PHOTO_FULL_RESOLUTION     2//分辨率
 
 @interface AssetHelper : NSObject
 
 - (void)initAsset;
 
+//可以实现查看相册列表，增加相册，保存图片到相册等功能
 @property (nonatomic, strong)   ALAssetsLibrary			*assetsLibrary;
+
 @property (nonatomic, strong)   NSMutableArray          *assetPhotos;
 @property (nonatomic, strong)   NSMutableArray          *assetGroups;
 

@@ -14,7 +14,10 @@
 #import "DoPhotoCell.h"
 #import "WXNavigationController.h"
 @implementation DoImagePickerController
-
+{
+    
+    NSMutableArray *_aResult;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -25,9 +28,14 @@
     return self;
 }
 
-- (void)viewDidLoad
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    _aResult = [[NSMutableArray alloc]initWithCapacity:_dSelected.count];
+}
 
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
     
     [self initBottomMenu];
@@ -130,21 +138,18 @@
 #pragma mark - for bottom menu
 - (void)initBottomMenu
 {
-//    _vBottomMenu.backgroundColor = DO_MENU_BACK_COLOR;
-//    [_btSelectAlbum setTitleColor:DO_BOTTOM_TEXT_COLOR forState:UIControlStateNormal];
-//    [_btSelectAlbum setTitleColor:DO_BOTTOM_TEXT_COLOR forState:UIControlStateDisabled];
-	
     _ivLine1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"line.png"]];
     
     _ivLine2.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"line.png"]];
     
+    //如果最大选择数等于-1
     if (_nMaxCount == DO_NO_LIMIT_SELECT)
     {
         _lbSelectCount.text = @"(0)";
         _lbSelectCount.textColor = DO_BOTTOM_TEXT_COLOR;
-    }
-    else if (_nMaxCount <= 1)
-    {
+        
+    }else if (_nMaxCount <= 1){
+        //如果选择数
         // hide ok button
         _btOK.hidden = YES;
         _ivLine1.hidden = YES;
@@ -152,13 +157,10 @@
         CGRect rect = _btSelectAlbum.frame;
         rect.size.width = rect.size.width + 60;
         _btSelectAlbum.frame = rect;
-        
         _lbSelectCount.hidden = YES;
-    }
-    else
-    {
+    }else{
         _lbSelectCount.text = [NSString stringWithFormat:@"(0/%d)", (int)_nMaxCount];
-//        _lbSelectCount.textColor = DO_BOTTOM_TEXT_COLOR;
+
     }
 }
 
@@ -170,30 +172,26 @@
         //如果flag为YES 执行以下的方法
         
         //用这种方法可以提高程序的运行速度
-        NSMutableArray *aResult = [[NSMutableArray alloc] initWithCapacity:_dSelected.count];
+        _aResult = [[NSMutableArray alloc] initWithCapacity:_dSelected.count];
         
         NSArray *aKeys = [_dSelected keysSortedByValueUsingSelector:@selector(compare:)];
         
-        
-        //如果_nResultType 等于0
         if (_nResultType == DO_PICKER_RESULT_UIIMAGE)
         {
-            
             for (int i = 0; i < _dSelected.count; i++)
                 //先选X张，再加一张会崩在这
                 //ASSETHELPER获取ASSETHELPER单例
-                [aResult addObject:[ASSETHELPER getImageAtIndex:[aKeys[i] integerValue] type:ASSET_PHOTO_SCREEN_SIZE]];
+                [_aResult addObject:[ASSETHELPER getImageAtIndex:[aKeys[i] integerValue] type:ASSET_PHOTO_SCREEN_SIZE]];
         }else{
             for (int i = 0; i < _dSelected.count; i++)
                 
-                [aResult addObject:[ASSETHELPER getAssetAtIndex:[aKeys[i] integerValue]]];
+                [_aResult addObject:[ASSETHELPER getAssetAtIndex:[aKeys[i] integerValue]]];
         }
 
-        
         //在这里把选择的照片传给ShowPhotoViewController的图片数组
         ShowPhotoViewController *showVC = [[ShowPhotoViewController alloc]init];
         
-        [showVC setPhotoNameList:aResult];
+        [showVC setPhotoNameList:_aResult];
         
         
         //并且模态试图到ShowPhotoViewController
@@ -351,20 +349,22 @@
         
 		if ((_dSelected[@(indexPath.row)] == nil) && (_nMaxCount > _dSelected.count))
 		{
-			// select
-			_dSelected[@(indexPath.row)] = @(_dSelected.count);
-			[cell setSelectMode:YES];
+			// select  选图片1
+            _dSelected[@(indexPath.row)] = @(_dSelected.count);
+			
+            [cell setSelectMode:YES];
 		}
 		else
 		{
-			// unselect
+			// unselect 取消图片1
 			[_dSelected removeObjectForKey:@(indexPath.row)];
 			[cell setSelectMode:NO];
 		}
         
         if (_nMaxCount == DO_NO_LIMIT_SELECT)
+            
             _lbSelectCount.text = [NSString stringWithFormat:@"(%d)", (int)_dSelected.count];
-        else
+        else//选图片2/取消图片2
             _lbSelectCount.text = [NSString stringWithFormat:@"(%d/%d)", (int)_dSelected.count, (int)_nMaxCount];
     }
     else

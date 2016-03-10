@@ -60,6 +60,15 @@
 @end
 
 @implementation ShowPhotoViewController
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    NSLog(@"照片张数%ld",self.photoNameList.count);
+    
+    
+}
+
 -(void)loadView{
     
     UIScrollView *sv = [[UIScrollView alloc] init];
@@ -81,11 +90,9 @@
     }
 
     // self.photoNameList = [[NSMutableArray alloc] init];
-    NSLog(@"之前图片%lu",(unsigned long)self.photoNameList.count);
+    //photoNameList里面存的是之前的图片吗
+    //NSLog(@"之前图片%lu",(unsigned long)self.photoNameList.count);
     self.photoArry = [[NSMutableArray alloc]init];
-    
-    
-    
     self.title = @"show图片";
     self.view.backgroundColor = YTHBaseVCBackgroudColor;
     
@@ -108,7 +115,6 @@
 -(void)createData{
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
     [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         self.dict = responseObject;
@@ -174,12 +180,14 @@
     for (UIImage *image in self.photoNameList) {
         NSData *data = UIImagePNGRepresentation(image);
         QNUploadManager *upManager = [[QNUploadManager alloc] init];
+        
         [upManager putData:data key:nil token:self.tokenKey
                   complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
                       NSLog(@"---%@", info);
                       
                       NSLog(@"++%@", resp);
                       _qiniuText = [resp objectForKey:@"key"];
+                      
                       self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
                       NSLog(@"----图片%@",self.urlString);
                       [self.photoArry addObject:self.urlString];
@@ -254,17 +262,10 @@
                               self.jsonDict = operation.responseObject;
                               [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
                           }];
-                          
                       }
-                      
                   } option:nil];
-        
         NSLog(@"结束");
-        
     }
-    
-    
-    
 }
 #pragma mark-Collection创建
 -(void)_initCollection
@@ -287,10 +288,13 @@
     [_indexCollectionView
      registerClass:[Index class]
      forCellWithReuseIdentifier:@"PhotoCollectionViewCellId"];
+    
+    //Index上面的cell
+    
     _indexCollectionView.delegate = self;
     _indexCollectionView.dataSource = self;
     _indexCollectionView.pagingEnabled = YES;
-    //[self.view addSubview:_indexCollectionView];
+    [self.view addSubview:_indexCollectionView];
     
     //将viewC插入到viewB的下面
     [self.view insertSubview:_indexCollectionView belowSubview:deleBtn];
@@ -311,8 +315,12 @@
      registerClass:[kSuggessPhotoCollectionViewCell class]
      forCellWithReuseIdentifier:@"kSuggessPhotoCollectionViewCellId"];
     
+    //kSuggessPhotoCollectionViewCell 下面的cell
+    
     [self.view addSubview:_kPhotoCollectionView];
+    
     [self.photoNameList addObject:[UIImage imageNamed:@"addpic"]];
+    
     [_kPhotoCollectionView reloadData];
     [_indexCollectionView reloadData];
     
@@ -337,9 +345,11 @@
 -(void)_initViewBgDesc
 {
     UIView *viewBgDesc = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_kPhotoCollectionView.frame)+10, YTHScreenWidth, 100)];
-    viewBgDesc.backgroundColor = [UIColor redColor];
+    
     self.viewBgDesc = viewBgDesc;
+    
     [self.view addSubview:viewBgDesc];
+    
     labelText = [[UILabel alloc]initWithFrame:CGRectMake(16, 5, YTHScreenWidth-32, 20)];
     labelText.text = @"秀的时候别忘了点我吹点牛逼";
     labelText.textColor = [UIColor grayColor];
@@ -422,7 +432,7 @@
 {
     wordVC = [[WordViewController alloc]init];
     wordVC.delegate = self;
-    [self.navigationController pushViewController:wordVC animated:YES];
+    [self.navigationController pushViewController:wordVC animated:NO];
 }
 #pragma mark - 点击添加标签
 -(void)addLabelButton:(UIButton *)btn
@@ -462,16 +472,29 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (collectionView==_kPhotoCollectionView) {
+        
         kSuggessPhotoCollectionViewCell *kPhotoCollectionViewCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"kSuggessPhotoCollectionViewCellId"  forIndexPath:indexPath];
+        
         kPhotoCollectionViewCell.kSuggessPhotoCollectionViewCellDelegate = self;
+        
         if (indexPath.row<self.photoNameList.count-1) {
+            
             [kPhotoCollectionViewCell setImage:self.photoNameList[indexPath.row] andDeleteBtnHidden:YES];
-            if (indexPath.row == self.currentItem) {
+            
+            //[kPhotoCollectionViewCell setPhotoImage:self.photoNameList[indexPath.row] andDeleteBtnHidden:YES];
+            
+            if (indexPath.row == self.currentItem){
+                
                 [kPhotoCollectionViewCell setPhotoImageLayer:YES];
+            
             }else{
+                
                 [kPhotoCollectionViewCell setPhotoImageLayer:NO];
             }
         }else{
+            
+            //[kPhotoCollectionViewCell setPhotoImage:self.photoNameList[indexPath.row] andDeleteBtnHidden:YES];
+            
             [kPhotoCollectionViewCell setImage:self.photoNameList[indexPath.row] andDeleteBtnHidden:YES];
             [kPhotoCollectionViewCell setPhotoImageLayer:NO];
         }
@@ -481,11 +504,14 @@
         
         Index *indexPhotoCollectionViewCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCellId"  forIndexPath:indexPath];
         indexPhotoCollectionViewCell.backgroundColor = [UIColor yellowColor];
+        
         if (indexPath.row<self.photoNameList.count) {
+            
             [indexPhotoCollectionViewCell setPhotoImage:self.photoNameList[indexPath.row]];
         }
         return indexPhotoCollectionViewCell;
     }
+    
 }
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     if (scrollView == _indexCollectionView) {
@@ -598,7 +624,6 @@
 
     }else{
         //相机不可用的情况，不添加相机上传的按钮
-        
         //添加取消按钮
         [alert addAction:cancelAction];
         //添加本地上传按钮
@@ -618,15 +643,33 @@
     }
 }
 
+- (void)showImagePicker {
+    DoImagePickerController *cont = [[DoImagePickerController alloc] initWithNibName:@"DoImagePickerController" bundle:nil];
+    cont.delegate = self;
+    cont.nResultType = DO_PICKER_RESULT_UIIMAGE;
+    cont.nMaxCount = 9 - (self.photoNameList.count-1);//最大张数
+    cont.nColumnCount = 4;//选择器行数
+    [self presentViewController:cont animated:YES completion:nil];
+}
+
+
 
 #pragma mark -UIImagePickerControllerDelegate的代理方法
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
     [self.photoNameList insertObject:image atIndex:0];
-    //    [self.photoNameList addObject:image];
-    //self.photoImg.image = image;
-    //    [self reloadPhotos];
+    
+    
+    /**以前写的
+    [self.photoNameList addObject:image];
+    
+     self.photoImg.image = image;
+    
+     [self reloadPhotos];
+     */
+    
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self dismissViewControllerAnimated:YES completion:^{}];
@@ -697,14 +740,7 @@
     }
 }
 
-- (void)showImagePicker {
-    DoImagePickerController *cont = [[DoImagePickerController alloc] initWithNibName:@"DoImagePickerController" bundle:nil];
-    cont.delegate = self;
-    cont.nResultType = DO_PICKER_RESULT_UIIMAGE;
-    cont.nMaxCount = 9 - (self.photoNameList.count-1);//最大张数
-    cont.nColumnCount = 4;//选择器行数
-    [self presentViewController:cont animated:YES completion:nil];
-}
+
 
 -(void)reloadPhotos
 {
