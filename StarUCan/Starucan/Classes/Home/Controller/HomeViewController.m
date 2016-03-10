@@ -87,7 +87,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
      [super viewWillAppear:YES];
-    //试图将要出现的时候显示tableBar,解决在遇见的大学搜索页面返回主页面时，tableBar不显示的问题
+    //视图将要出现的时候显示tableBar,解决在遇见的大学搜索页面返回主页面时，tableBar不显示的问题
     self.tabBarController.tabBar.hidden= NO;
    
     
@@ -178,6 +178,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
 }
 
 -(void)_initNation
@@ -189,7 +190,7 @@
     
     
     NSArray *titleArray = @[@"焦点",@"遇见",@"关注"];
-    
+    //焦点
     UIButton *buttonPoint = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat width = viewbg.frame.size.width/3;
     [buttonPoint setFrame:CGRectMake(0, 7, width, 30)];
@@ -200,7 +201,7 @@
     [viewbg addSubview:buttonPoint];
     
     
-    
+    //遇见
     UIButton *buttonMeet = [UIButton buttonWithType:UIButtonTypeCustom];
     [buttonMeet setFrame:CGRectMake(width, 7, width, 30)];
     [buttonMeet setTitle:titleArray[1] forState:UIControlStateNormal];
@@ -210,7 +211,7 @@
     [viewbg addSubview:buttonMeet];
     
     
-    
+    //关注
     UIButton *buttonAtten = [UIButton buttonWithType:UIButtonTypeCustom];
     [buttonAtten setFrame:CGRectMake(width*2, 7, width, 30)];
     [buttonAtten setTitle:titleArray[2] forState:UIControlStateNormal];
@@ -238,7 +239,7 @@
 {
     [UIView animateWithDuration:0.3
                      animations:^{
-                         btn.transform = CGAffineTransformMakeScale(1.2,1.2);
+                         btn.transform = CGAffineTransformMakeScale(1.1,1.1);
                          self.buttonMeet.transform = CGAffineTransformMakeScale(0.9,0.9);
                          self.buttonAtten.transform =CGAffineTransformMakeScale(0.9,0.9);
                           [self.buttonAtten setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
@@ -250,7 +251,6 @@
                          //隐藏状态栏，iOS7要改info里面的属性
                          
                      }];
-
    
     
     [self.tableview removeFromSuperview];
@@ -266,7 +266,7 @@
 {
     [UIView animateWithDuration:0.3
                      animations:^{
-                         btn.transform = CGAffineTransformMakeScale(1.2,1.2);
+                         btn.transform = CGAffineTransformMakeScale(1.1,1.1);
                          self.buttonPoint.transform = CGAffineTransformMakeScale(0.9,0.9);
                          self.buttonAtten.transform =CGAffineTransformMakeScale(0.9,0.9);
                          [self.buttonAtten setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
@@ -295,7 +295,7 @@
 
     [UIView animateWithDuration:0.3
                      animations:^{
-                         btn.transform = CGAffineTransformMakeScale(1.2,1.2);
+                         btn.transform = CGAffineTransformMakeScale(1.1,1.1);
                          self.buttonPoint.transform = CGAffineTransformMakeScale(0.9,0.9);
                          self.buttonMeet.transform =CGAffineTransformMakeScale(0.9,0.9);
                          [self.buttonPoint setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
@@ -434,6 +434,7 @@
     [videoPhotoView sd_setImageWithURL:[NSURL URLWithString:@"http://7xpt4p.com1.z0.glb.clouddn.com/Fo1EWuwKAniihGA_LYt53Y9JEaDx"]];
     [self.collectionViewHeaderView addSubview:videoPhotoView];
     
+    
 }
 
 -(void)tihuan:(YHTHomeImageModel *)model andSize:(CGSize)size{
@@ -516,7 +517,7 @@
 #pragma mark - <HMWaterflowLayoutDelegate>
 - (CGFloat)waterflowLayout:(HMWaterflowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath withItemWidth:(CGFloat)width {
     YHTHomeImageModel *model = self.dataArrays[indexPath.row];
-    NSLog(@"%f  %f  %f",model.width,model.height,YTHScreenWidth);
+    NSLog(@"model宽：%f  model高：%f  屏宽：%f",model.width,model.height,YTHScreenWidth);
     return model.height * width / model.width;
 }
 - (HMWaterflowLayoutSetting)settingInWaterflowLayout:(HMWaterflowLayout *)layout
@@ -602,8 +603,6 @@
     switch (index) {
         case 0:
         {
-//
-            
             //还有再加一个账号判断
             if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
                

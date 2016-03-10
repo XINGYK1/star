@@ -1705,7 +1705,6 @@
 		5AB34A421C3A837C00721D84 /* MJExtension */ = {
 			isa = PBXGroup;
 			children = (
-				5AB34A431C3A837C00721D84 /* MBProgressHUD */,
 				5AB34A441C3A837C00721D84 /* MJArgument.h */,
 				5AB34A451C3A837C00721D84 /* MJArgument.m */,
 				5AB34A461C3A837C00721D84 /* MJConst.h */,
@@ -1731,13 +1730,6 @@
 				5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */,
 			);
 			path = MJExtension;
-			sourceTree = "<group>";
-		};
-		5AB34A431C3A837C00721D84 /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		5AD72DFD1C3F877E005E4236 /* Controller */ = {
