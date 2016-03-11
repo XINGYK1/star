@@ -53,12 +53,15 @@ static SUCArchive *archiveManager;
 }
 
 - (void)synchronize{
+    
     [self.userDic writeToFile:self.path atomically:YES];
 }
 
 - (BOOL)online{
+    
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     return [user boolForKey:LoginStatus];
+    
 }
 
 

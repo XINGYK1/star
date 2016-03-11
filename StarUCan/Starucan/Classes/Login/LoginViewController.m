@@ -38,6 +38,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
 }
 
 - (UIScrollView *)scrollView
@@ -82,7 +83,13 @@
     
     }
     
+    
+    
     // [ShareSDK hasAuthorized:<#(SSDKPlatformType)#>]
+
+
+    
+
 }
 
 #define marginH (threeInch ||fourInch? 49.0f : 79.0f)
@@ -293,13 +300,13 @@
 #pragma mark - 登录
 -(void)loginButtonAction:(UIButton *)btn
 {
+    
     LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
     WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:loginVC];
       [self presentViewController:nav animated:YES completion:nil];
   
 //    RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
 //   [self presentViewController:regisSuccV animated:NO completion:nil];
-
     
 }
 - (UINavigationController *)navigationControllerV

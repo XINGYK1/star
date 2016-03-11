@@ -28,6 +28,10 @@
     
     AppDelegate *myDelegate;
     NSString *labelId;
+    
+    //话题
+    int start;
+    int count;
 }
 
 @property (strong, nonatomic)UIScrollView *catScrollView;//类别SV
@@ -58,6 +62,12 @@
     [self initTableView];
     [self _initTableView];//类别TV
     [self getData];
+    [self _initDataArray];
+    
+    start = 1;
+
+    count = 10;
+    
 }
 //
 //-(void)initTypeBtn:(NSString *)string{
@@ -182,14 +192,15 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     NSString *url1 = Url;
+    
     NSString *url =[NSString stringWithFormat:@"%@v1/label/cats",url1];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //self.jason =responseObject;
         
-        NSLog(@"标签是--------%@",responseObject);
+      //  NSLog(@"标签是--------%@",responseObject);
         
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+   //     NSLog(@"error code %ld",(long)[operation.response statusCode]);
         
         if (!_kIdMutabDict) {
             _kIdMutabDict = [[NSMutableDictionary alloc]init];
@@ -323,8 +334,8 @@
         CGFloat kTopAndBottom = (15 - 5)/2.0f;//上下边距5.0f
         CGFloat kLeftAndRight = (YTHScreenWidth - 16)/2.0f;//左右边距
         kCatTabelViewFooterBtn.imageEdgeInsets = UIEdgeInsetsMake(kTopAndBottom+5.0f, kLeftAndRight, kTopAndBottom, kLeftAndRight);
-        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"icon_operate"] forState:UIControlStateNormal];
-        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"icon_operate_click"] forState:UIControlStateSelected];
+        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"slide"] forState:UIControlStateNormal];
+        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"slide"] forState:UIControlStateSelected];
         kCatTabelViewFooterBtn.backgroundColor = [UIColor whiteColor];
         kCatTabelViewFooterBtn.frame = CGRectMake(0, 0, YTHScreenWidth, 10.0f);
         //线
@@ -339,8 +350,39 @@
 }
 //获取话题内容
 -(void)_initDataArray{
-    
-    
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSMutableDictionary *md = [NSMutableDictionary dictionary];
+        md[@"start"] = [NSString stringWithFormat:@"%d",start];
+        md[@"count"] =[NSString stringWithFormat:@"%d",count];
+        NSString *url = Url;
+        NSString *urlString = [NSString stringWithFormat:@"%@v1/topic",url];
+#warning 话题接口 无数据
+        [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *jasonDic = responseObject;
+            NSLog( @"------获取话题接口链接：%@",urlString);
+            
+            NSLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
+            if ([operation.response statusCode]/100==2) {
+                NSLog( @"------获取话题：%@",jasonDic);
+
+                
+                
+                }
+            
+            
+//            [_collectionView reloadData];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+#warning 初始化两次，检测内存泄露时出现问题
+            NSDictionary *topicDic = [[NSDictionary alloc]init];
+            
+            topicDic = operation.responseObject;
+
+            [MBProgressHUD showError:[topicDic objectForKey:@"info"]];
+            
+        }];
+        
+ 
     
 }
 

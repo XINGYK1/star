@@ -10,7 +10,11 @@
 #import "NewFeatureViewController.h"
 #import "LoginViewController.h"
 #import "WXNavigationController.h"
+#import "HomeViewController.h"
+#import "SUCTabBarViewController.h"
+
 @implementation UIWindow (Extension)
+
 - (void)switchRootViewController
 {
     NSString *key = @"CFBundleVersion";
@@ -23,6 +27,7 @@
         LoginViewController *loginVC = [[LoginViewController alloc]init];
         WXNavigationController *nav=[[WXNavigationController alloc]initWithRootViewController:loginVC];
         self.rootViewController = nav;
+        
     
     } else {
         

@@ -46,7 +46,7 @@
     MeetView *meetV;
     
 }
-@property(nonatomic,strong) CycleScrollView *cycleScorllView;
+@property (nonatomic,strong) CycleScrollView *cycleScorllView;
 @property (nonatomic,strong)UIPageControl *pageControl;
 @property (assign, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic)NSMutableArray *cycleArray;
@@ -59,7 +59,7 @@
 @property (nonatomic, strong)UIView *viewVideo;
 @property (nonatomic, strong) ImagePlayerView *imagePlayerView;
 @property (nonatomic, strong) NSMutableArray *imageURLs;
-@property(nonatomic,strong)NSDictionary *cycleDict;
+@property (nonatomic,strong)NSDictionary *cycleDict;
 
 
 //
@@ -460,7 +460,7 @@
         NSDictionary *jasonDic = responseObject;
         NSLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"瀑布流%@",jasonDic);
+            NSLog(@"------获取瀑布流%@",jasonDic);
             self.dataArrays = [NSMutableArray array];
             NSArray *showArry = [jasonDic objectForKey:@"shows"];
             for (NSDictionary *dict in showArry) {
@@ -567,8 +567,13 @@
         ShowDetailViewController *showVC = [[ShowDetailViewController alloc] init];
         
         showVC.uuid =imagLoveModel.uuid;
+//
+        WXNavigationController *showN = [[WXNavigationController alloc]initWithRootViewController:showVC];
+
         
-        [self.navigationController pushViewController:showVC animated:YES];
+        [self presentViewController:showN animated:NO completion:nil];
+        
+      //  [self.navigationController pushViewController:showVC animated:YES];
         return;
         
     }else{
@@ -611,9 +616,10 @@
                 ShowDetailViewController *showVC = [[ShowDetailViewController alloc] init];
                 
                 showVC.uuid =uuid;
-
+                WXNavigationController *showN = [[WXNavigationController alloc]initWithRootViewController:showVC];
                 
-                [self.navigationController pushViewController:showVC animated:YES];
+                
+                [self presentViewController:showN animated:NO completion:nil];
                 return;
                 
             }else{
@@ -656,6 +662,9 @@
     
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/attentions",uS];
+    
+    NSLog(@"我关注的话题接口链接 -----%@",urlStr);
+    
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         self.attenDic = responseObject;

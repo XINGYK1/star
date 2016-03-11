@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface PraiseTableViewCell : UITableViewCell
-@property(nonatomic,strong)UIButton *buttoncomment;
+@property(nonatomic,strong)UIButton *commentButton;
 @property(nonatomic,strong)UILabel *commentLabel;
-@property(nonatomic,strong)UIButton *button;
+@property(nonatomic,strong)UIButton *praiseButton;
 @property(nonatomic,strong)UILabel *praiseLabel;
 @property(nonatomic,strong)UIImageView *arrowImg;
+
 @end
