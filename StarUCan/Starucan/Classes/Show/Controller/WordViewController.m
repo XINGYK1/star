@@ -80,7 +80,9 @@
     [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
-    //发送按钮
+    
+    
+    //确定按钮
     UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     // sendButton.imgName = @"button_icon_ok.png";
     [sendButton setTitle:@"确定" forState:UIControlStateNormal];
@@ -88,13 +90,14 @@
     [sendButton addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *sendItem = [[UIBarButtonItem alloc] initWithCustomView:sendButton];
     self.navigationItem.rightBarButtonItem = sendItem;
+  
     
 }
 -(void)clickCode
 {
-    [self.navigationController popViewControllerAnimated:YES];
-    
+    [self.navigationController popViewControllerAnimated:NO];
 }
+
 - (void)sendAction
 {
     

@@ -11,11 +11,14 @@
 #import "SearchClassViewController.h"
 @interface SearchViewController ()<UISearchBarDelegate, UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
 {
-    UIView *view;
+    UIView *headerView;
+    UIView *clearView;
     UITableView *_tableViewSearchResult; //显示搜索记录的tableView
     NSMutableArray *filterData;
     NSMutableArray *pinyinData;
     NSMutableArray *data;
+    
+    
 
 
 }
@@ -64,7 +67,7 @@
 - (NSArray *)hotWords
 {
     if (!_hotWords) {
-        _hotWords = [[NSArray alloc] initWithObjects:@"新三国",@"三国志",@"完美世界 ",@"ios开发指南",@"西门吹雪",@"微微一笑很倾城",@"快看看",@"大数据",@"一杆禽兽狙",@"国破山河在",@"暴走大事件",@"非诚勿扰",@"最美的时光", nil];
+        _hotWords = [[NSArray alloc] initWithObjects:@"微微一笑很倾城",@"三国志",@"完美世界 ",@"ios开发指南",@"西门吹雪",@"新三国",@"快看看",@"大数据",@"非诚勿扰",@"国破山河在",@"暴走大事件",@"一杆禽兽狙",@"最美的时光", nil];
     }
     return _hotWords;
 }
@@ -83,7 +86,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 
-  
+    [self changeClearView];  
    
     [_tableViewSearchResult reloadData];
 }
@@ -99,14 +102,11 @@
     [self.saveGoodsNameArray addObjectsFromArray:dataArr];
     
     
-    view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 190)];
-    view.backgroundColor = YTHBaseVCBackgroudColor;
-    [self.scrollView addSubview:view];
-    UILabel *historyLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, CGRectGetMaxY(view.frame), 100, 30)];
-    historyLabel.text = @"历史搜索";
-    historyLabel.textColor = [UIColor grayColor];
-    historyLabel.font=[UIFont systemFontOfSize:12];
-    [self.scrollView addSubview:historyLabel];
+    headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 190)];
+    headerView.backgroundColor = YTHBaseVCBackgroudColor;
+    
+    [self.scrollView addSubview:headerView];
+ 
     self.view.backgroundColor = [UIColor whiteColor];
     //导航栏
     [self creatNavgationItem];
@@ -115,18 +115,114 @@
     //初始化搜索结果的视图
     [self initSearchReaultTableView];
     
+    [self initHistorySearch];
+    
+    [self initClearView];
+    
     
 }
+
+-(void)initHistorySearch {
+    
+    UIView *headV = [[UIView alloc]initWithFrame:CGRectMake(0, 190, YTHScreenWidth, 20)];
+    
+    UILabel *historyLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, 5, 100, 15)];
+    NSLog(@"历史搜索位置的Y值 ----------------%f",CGRectGetMaxY(headerView.frame));
+    historyLabel.text = @"历史搜索";
+    historyLabel.textColor = [UIColor grayColor];
+    historyLabel.font=[UIFont systemFontOfSize:12];
+    [headV addSubview:historyLabel];
+    [self.scrollView addSubview:headV];
+    
+}
+#pragma mark 清除历史记录
+-(void)initClearView{
+    
+    clearView  =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_tableViewSearchResult.frame), YTHScreenWidth, 36)];
+    
+    UILabel *clearLabel = [[UILabel alloc]initWithFrame:CGRectMake(YTHScreenWidth/2-30, 10, 120, 16)];
+    clearLabel.text = @"清除历史记录";
+    clearLabel.font = [UIFont systemFontOfSize:12];
+    
+    UIImageView *deleteIV = [[UIImageView alloc]initWithFrame:CGRectMake(YTHScreenWidth/2-50, 12, 12, 12)];
+    deleteIV.image = [UIImage imageNamed:@"clean_history"];
+    
+    [clearView addSubview:deleteIV];
+    [clearView addSubview:clearLabel];
+    
+    [self.scrollView addSubview:clearView];
+    
+    UIButton *clearbtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 36)];
+    [clearbtn addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+    [clearView addSubview:clearbtn];
+
+    
+}
+-(void)changeClearView{
+    
+    if (_saveGoodsNameArray.count>0) {
+        NSLog(@"----------------------搜索历史数组中有数据啦---------------------");
+        
+        [UIView animateWithDuration:.5 animations:^{
+
+            _tableViewSearchResult.height =_saveGoodsNameArray.count *44;
+
+            clearView.frame  =CGRectMake(0, CGRectGetMaxY(_tableViewSearchResult.frame), YTHScreenWidth, 36);
+            
+        }];
+    }else{
+        
+        NSLog(@"----------------------搜索历史数组中---没----有数据 =_= ---------------------");
+
+        
+        [UIView animateWithDuration:.5 animations:^{
+            
+            _tableViewSearchResult.frame  = CGRectMake(0, 215, YTHScreenWidth,0);
+            
+            clearView  =[[UIView alloc]initWithFrame:CGRectMake(0, 210, YTHScreenWidth, 36)];
+            
+        }];
+    }
+    
+}
+
+-(void)clearHistory{
+    
+    [_saveGoodsNameArray removeAllObjects];
+    
+    [_tableViewSearchResult reloadData];
+    
+    [UIView animateWithDuration:.5 animations:^{
+        
+       _tableViewSearchResult.frame  = CGRectMake(0, 215, YTHScreenWidth,0);
+        
+        clearView  =[[UIView alloc]initWithFrame:CGRectMake(0, 210, YTHScreenWidth, 36)];
+    }];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:self.saveGoodsNameArray forKey:@"searchHistory"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+}
+
 - (void)initSearchReaultTableView
 {
+    
     //tableView的height应该是动态改变的
-    _tableViewSearchResult = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, YTHScreenWidth,YTHScreenHeight) style:UITableViewStylePlain];
+    _tableViewSearchResult = [[UITableView alloc] initWithFrame:CGRectMake(0, 215, YTHScreenWidth,YTHScreenHeight) style:UITableViewStylePlain];
     _tableViewSearchResult.delegate = self;
     _tableViewSearchResult.dataSource = self;
-   
+    _tableViewSearchResult.height =_saveGoodsNameArray.count *44;
     // _tableViewSearchResult.sectionHeaderHeight=150;
-    [self.view addSubview:_tableViewSearchResult];
+    _tableViewSearchResult.bounces = NO;
+   
+    [self.scrollView addSubview:_tableViewSearchResult];
+    
+  
+    
 }
+
+
 -(void)creatNavgationItem
 {
     // 取消按钮
@@ -141,9 +237,11 @@
     // 搜索框
     [self.navigationItem setItemWithCustomView:self.searchBar itemType:left];
     [NSThread detachNewThreadSelector:@selector(hanzi2pinyin) toTarget:self withObject:nil];
-    data = [NSMutableArray arrayWithObjects:@"新三国",@"三国志",@"完美世界 ",@"ios开发指南",@"西门吹雪",@"微微一笑很倾城",@"快看看",@"大数据",@"一杆禽兽狙",@"国破山河在",@"暴走大事件",@"非诚勿扰",@"最美的时光", nil];
+    data = [NSMutableArray arrayWithObjects:@"微微一笑很倾城",@"三国志",@"完美世界 ",@"ios开发指南",@"西门吹雪",@"新三国",@"快看看",@"大数据",@"非诚勿扰",@"国破山河在",@"暴走大事件",@"一杆禽兽狙",@"最美的时光", nil];
     filterData = [NSMutableArray array];
 
+    
+    
     
 }
 - (void)clickBack
@@ -157,12 +255,12 @@
  */
 - (void)creatHotWord
 {
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 100, 30)];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 5, 100, 30)];
     label.text = @"大家都在搜";
     //label.backgroundColor = [UIColor yellowColor];
     label.textColor= [UIColor grayColor];
     label.font = [UIFont systemFontOfSize:12];
-    [view addSubview:label];
+    [headerView addSubview:label];
     
     
     CGFloat w = 0;//保存前一个button的宽以及前一个button距离屏幕边缘的距离
@@ -182,25 +280,26 @@
         //为button赋值
         [button setTitle:self.hotWords[i] forState:UIControlStateNormal];
         //设置button的frame
-        button.frame = CGRectMake(10 + w, h, length + 15 , 30);
+        button.frame = CGRectMake(15 + w, h, length + 15 , 30);
         //当button的位置超出屏幕边缘时换行 320 只是button所在父视图的宽度
-        if(10 + w + length + 15 > YTHScreenWidth){
+        if(15 + w + length + 15 > YTHScreenWidth){
             w = 0; //换行时将w置为0
             h = h + button.frame.size.height + 10;//距离父视图也变化
-            button.frame = CGRectMake(10 + w, h, length + 15, 30);//重设button的frame
+            button.frame = CGRectMake(15 + w, h, length + 15, 30);//重设button的frame
         }
         w = button.frame.size.width + button.frame.origin.x;
-        [view addSubview:button];
+        [headerView addSubview:button];
         // view.backgroundColor = [UIColor yellowColor];
         button.tag =  i;
         [button addTarget:self action:@selector(clickHotBtn:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
+
 #pragma mark -UITableView的代理方法-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView==_tableViewSearchResult) {
-        return _saveGoodsNameArray.count+1;
+        return _saveGoodsNameArray.count;
     }else
     {
         // 谓词搜索
@@ -235,6 +334,10 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+   
+    [self changeClearView];
+    
+    
     if (tableView==_tableViewSearchResult) {
         static NSString *reusableIndentifier = @"cell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reusableIndentifier];
@@ -242,21 +345,22 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableIndentifier];
             //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        if (indexPath.row < _saveGoodsNameArray.count) {
+//        if (indexPath.row < _saveGoodsNameArray.count) {
             cell.textLabel.textColor = [UIColor grayColor];
-            cell.textLabel.font = [UIFont systemFontOfSize:17];
+            cell.textLabel.font = [UIFont systemFontOfSize:14];
             cell.textLabel.textAlignment = NSTextAlignmentLeft;
             cell.textLabel.text = [_saveGoodsNameArray objectAtIndex:indexPath.row];
-            cell.contentView.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
-            
-        }else if (indexPath.row == _saveGoodsNameArray.count){
-            cell.textLabel.textColor = [UIColor blackColor];
-            cell.textLabel.text = @"清除历史记录";
-            cell.textLabel.font = [UIFont systemFontOfSize:18];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-//            cell.contentView.backgroundColor = [UIColor colorWithRed:209/255.0 green:209/255.0 blue:209/255.0 alpha:1.0];
-        }
+            cell.contentView.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:0.1];
+          //cell右侧删除按钮
+            UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [deleteButton setBackgroundImage:[UIImage imageNamed:@"delete_history"] forState:UIControlStateNormal];
+            [deleteButton setFrame:CGRectMake(YTHScreenWidth-40, 17, 10, 10)];
+            [deleteButton addTarget:self action:@selector(deletedHistory:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:deleteButton];
         
+            deleteButton.tag = indexPath.row;
+        
+
         return cell;
         
     }else{
@@ -270,29 +374,40 @@
         
         return cell;
     }
+
     
+}
+
+#pragma mark cell delete button
+
+-(void)deletedHistory:(UIButton *)button
+{
+    
+    NSArray *visiblecells = [_tableViewSearchResult visibleCells];
+    
+    for(UITableViewCell *cell in visiblecells)
+    {
+            //[array removeObjectAtIndex:[cell tag]];
+            [_saveGoodsNameArray removeObjectAtIndex:button.tag];
+            [_tableViewSearchResult reloadData];
+        
+           [[NSUserDefaults standardUserDefaults] setObject:self.saveGoodsNameArray forKey:@"searchHistory"];
+        
+           [[NSUserDefaults standardUserDefaults] synchronize];
+            break;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView==_tableViewSearchResult) {
-        if (indexPath.row == _saveGoodsNameArray.count) {
-            //选中“清除历史记录”响应的方法
-            [_saveGoodsNameArray removeAllObjects];
-            [_tableViewSearchResult reloadData];
-            [[NSUserDefaults standardUserDefaults] setObject:self.saveGoodsNameArray forKey:@"searchHistory"];
-            
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-        }else if(indexPath.row < _saveGoodsNameArray.count){
-            
-            //选中搜索出来的结果跳转到详情页
+                   //选中搜索出来的结果跳转到详情页
             SearchClassViewController *searchResultVC = [[SearchClassViewController alloc] init];
             
             [self.navigationController pushViewController:searchResultVC animated:YES];
             [self savaDataView:self.saveGoodsNameArray[indexPath.row]];
             
-        }
+        
         
     }else{
         
@@ -301,9 +416,10 @@
         [self.navigationController pushViewController:searchResultVC animated:YES];
         [self savaDataView:filterData[indexPath.row]];
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
 }
+
 #pragma mark-searchBarDelegte
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

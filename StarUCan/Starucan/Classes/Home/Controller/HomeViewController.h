@@ -12,7 +12,6 @@
 
 -(void)tihuan:(YHTHomeImageModel *)model andSize:(CGSize)size;
 
-
 @property(nonatomic,copy)NSString *pinglun;
 
 @end

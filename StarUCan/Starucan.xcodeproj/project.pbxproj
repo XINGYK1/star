@@ -1335,8 +1335,8 @@
 				5AED613A1C72CD9200D5B3A5 /* XZMPublishViewController.h */,
 				5AED613B1C72CD9200D5B3A5 /* XZMPublishViewController.m */,
 				5A649A961C6A2E600067EB58 /* View */,
-				5A988EF31C34C8350073A89F /* NewFeatureViewController.h */,
 				5A988EF41C34C8350073A89F /* NewFeatureViewController.m */,
+				5A988EF31C34C8350073A89F /* NewFeatureViewController.h */,
 				5A988EF51C34C8350073A89F /* WXNavigationController.h */,
 				5A988EF61C34C8350073A89F /* WXNavigationController.m */,
 				5AB34A251C3A1A9400721D84 /* BaseViewController.h */,
@@ -1705,7 +1705,6 @@
 		5AB34A421C3A837C00721D84 /* MJExtension */ = {
 			isa = PBXGroup;
 			children = (
-				5AB34A431C3A837C00721D84 /* MBProgressHUD */,
 				5AB34A441C3A837C00721D84 /* MJArgument.h */,
 				5AB34A451C3A837C00721D84 /* MJArgument.m */,
 				5AB34A461C3A837C00721D84 /* MJConst.h */,
@@ -1731,13 +1730,6 @@
 				5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */,
 			);
 			path = MJExtension;
-			sourceTree = "<group>";
-		};
-		5AB34A431C3A837C00721D84 /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		5AD72DFD1C3F877E005E4236 /* Controller */ = {
