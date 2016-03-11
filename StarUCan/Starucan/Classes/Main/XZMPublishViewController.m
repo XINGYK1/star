@@ -37,6 +37,7 @@ static CGFloat XZMSpringDelay = 0.1;
 //当试图将要出现的时候创建两个button
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
     //创建两个按钮并且添加出现动画
     [self createBUttonAndAddAnimated];
 }
@@ -52,7 +53,13 @@ static CGFloat XZMSpringDelay = 0.1;
     
     flag = YES;
     
+    if(!self.photoNameList){
+        
+        self.photoNameList = [[NSMutableArray alloc]init];
+    }
+    
     if (!myDelegate) {
+        
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     [self navigationBarSetting];
@@ -69,7 +76,6 @@ static CGFloat XZMSpringDelay = 0.1;
     [btn pop_addAnimation:anima forKey:nil];
     
 }
-
 
 //点击一个按钮后让另一个按钮也跟着消失
 - (void)cancelWithCompletionBlock:(void (^)())block
@@ -106,7 +112,6 @@ static CGFloat XZMSpringDelay = 0.1;
             }];
         }
     }
-    
 }
 
 #pragma mark -发表按钮UpInside点击方法
@@ -229,7 +234,6 @@ static CGFloat XZMSpringDelay = 0.1;
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    
     
     //在这里对拍摄的照片进行相关操作，把照片传到showPhotoViewController
     [self.photoNameList insertObject:image atIndex:0];

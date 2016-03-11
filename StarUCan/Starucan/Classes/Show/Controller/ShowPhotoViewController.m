@@ -61,14 +61,6 @@
 
 @implementation ShowPhotoViewController
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-    NSLog(@"照片张数%ld",self.photoNameList.count);
-    
-    
-}
-
 -(void)loadView{
     
     UIScrollView *sv = [[UIScrollView alloc] init];
@@ -91,15 +83,17 @@
 
     // self.photoNameList = [[NSMutableArray alloc] init];
     //photoNameList里面存的是之前的图片吗
-    //NSLog(@"之前图片%lu",(unsigned long)self.photoNameList.count);
+    YTHLog(@"之前图片%lu",(unsigned long)self.photoNameList.count);
+    
     self.photoArry = [[NSMutableArray alloc]init];
     self.title = @"show图片";
     self.view.backgroundColor = YTHBaseVCBackgroudColor;
     
+    //获取7牛的tocken
     [self createData];
     //创建导航栏上的视图
     [self _loadNavigationViews];
-    //Collection图片
+    //创建collectionView
     [self _initCollection];
     //发布文字
     [self _initViewBgDesc];
@@ -163,26 +157,31 @@
 #pragma mark-发送
 - (void)sendAction
 {
-//    //测试
-//    NSMutableArray *kIdArray = [[NSMutableArray alloc]init];
-//    for (NSString *key in _kTitleArrays) {
-//        [kIdArray addObject:[_kMutableTitleIdDict objectForKey:key]];
-//    }
-//    NSString *strId = [kIdArray componentsJoinedByString:@","];
-//    // md[@"labelIds"] = strId;//标签列表
-//    NSLog(@"标签id%@",strId);
-    //    BOOL test = false;
-    //    if(test){
+    //测试
+    /*
+     NSMutableArray *kIdArray = [[NSMutableArray alloc]init];
+     for (NSString *key in _kTitleArrays) {
+     [kIdArray addObject:[_kMutableTitleIdDict objectForKey:key]];
+     }
+     NSString *strId = [kIdArray componentsJoinedByString:@","];
+     // md[@"labelIds"] = strId;//标签列表
+     NSLog(@"标签id%@",strId);
+     BOOL test = false;
+     if(test){}
+     */
+    
     __block int num = 0;
     [self.photoNameList removeLastObject];
     [MBProgressHUD showMessage:@"发送中"];
     
     for (UIImage *image in self.photoNameList) {
+        
         NSData *data = UIImagePNGRepresentation(image);
         QNUploadManager *upManager = [[QNUploadManager alloc] init];
         
         [upManager putData:data key:nil token:self.tokenKey
                   complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
+                     
                       NSLog(@"---%@", info);
                       
                       NSLog(@"++%@", resp);
@@ -191,16 +190,20 @@
                       self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
                       NSLog(@"----图片%@",self.urlString);
                       [self.photoArry addObject:self.urlString];
-                      
+                      //把数组转变成字符串并用逗号隔开
                       self.photoString= [self.photoArry componentsJoinedByString:@","] ;
                       NSLog(@"图片拼接%@",self.photoString);
                       num++;
+                      
+                      //如果是最后一张图片，
                       if (num==self.photoNameList.count) {
                           NSLog(@"****图片字段%@",self.photoString);
                           NSMutableDictionary *md = [NSMutableDictionary dictionary];
                           //内容
                           md[@"content"]=labelText.text;//内容
+                          
                           NSMutableArray *kIdArray = [[NSMutableArray alloc]init];
+                          
                           for (NSString *key in _kTitleArrays) {
                               [kIdArray addObject:[_kMutableTitleIdDict objectForKey:key]];
                           }
@@ -231,7 +234,9 @@
                           md[@"photoUrl"] = self.photoString;
                           NSLog(@"****图片字段%@",self.photoString);
                           NSString *urlShow = @"v1/show";
+                          
                           NSString *text = [NSData AES256EncryptWithPlainText:urlShow passtext:myDelegate.accessToken];
+                          
                           AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
                           
                           //请求头
@@ -262,11 +267,13 @@
                               self.jsonDict = operation.responseObject;
                               [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
                           }];
-                      }
+                      }//如果是最后一张图片，走以上方法
                   } option:nil];
         NSLog(@"结束");
     }
 }
+
+
 #pragma mark-Collection创建
 -(void)_initCollection
 {

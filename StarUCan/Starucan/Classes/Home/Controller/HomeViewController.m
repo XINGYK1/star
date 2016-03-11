@@ -48,7 +48,7 @@
 }
 @property(nonatomic,strong) CycleScrollView *cycleScorllView;
 @property (nonatomic,strong)UIPageControl *pageControl;
-@property (strong, nonatomic) UIScrollView *scrollView;
+@property (assign, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic)NSMutableArray *cycleArray;
 
 @property (nonatomic, strong)UICollectionView *collectionView;
@@ -73,11 +73,11 @@
 @property(nonatomic,strong)UIView *viewBgDesc;//文字详情view
 @property(nonatomic,strong)UILabel *labelDesc;
 @property(nonatomic,strong)NSDictionary *attenDic;
-@property(nonatomic,strong)UITableView *tableview;
+@property(nonatomic,assign)UITableView *tableview;
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,strong)NSDictionary *commentJason;
 @property(nonatomic,strong)UIButton *buttonMeet;
-@property(nonatomic,strong) UIButton *buttonPoint;
+@property(nonatomic,strong)UIButton *buttonPoint;
 @property(nonatomic,strong)UIButton *buttonAtten;
 
 
@@ -184,7 +184,7 @@
 -(void)_initNation
 {
     
-    ////设置标题视图
+    //设置标题视图
     UIView *viewbg = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth-200, 44)];
     [self.navigationItem setItemWithCustomView:viewbg itemType:center];
     
@@ -276,8 +276,6 @@
                          
                      }
                      completion:^(BOOL finished) {
-                       
-                         
                      }];
    
     [meetV removeFromSuperview];
@@ -493,11 +491,13 @@
     HMWaterflowLayout *layout = [[HMWaterflowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     //    layout.headerReferenceSize = CGSizeMake(YTHScreenWidth, YTHAdaptation(20));
+    
     layout.delegate = self;
     self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight-64-49) collectionViewLayout:layout];
     //注册代理
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
+    
     [self.scrollView addSubview:self.collectionView];
     
     //添加collectionView的头试图
@@ -517,7 +517,7 @@
 #pragma mark - <HMWaterflowLayoutDelegate>
 - (CGFloat)waterflowLayout:(HMWaterflowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath withItemWidth:(CGFloat)width {
     YHTHomeImageModel *model = self.dataArrays[indexPath.row];
-    NSLog(@"model宽：%f  model高：%f  屏宽：%f",model.width,model.height,YTHScreenWidth);
+    YTHLog(@"model宽：%f  model高：%f  屏宽：%f",model.width,model.height,YTHScreenWidth);
     return model.height * width / model.width;
 }
 - (HMWaterflowLayoutSetting)settingInWaterflowLayout:(HMWaterflowLayout *)layout
