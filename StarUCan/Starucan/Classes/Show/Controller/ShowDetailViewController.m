@@ -34,9 +34,22 @@
     NSMutableArray *_kTitleArrays;
     AppDelegate *myDelegate;
     VIPhotoView *_kVIPhotoView;
-   
     
-    PraiseTableViewCell *praisecell;
+    UIImageView *arrowImg;
+    UIImageView *praiseImg;
+    
+    UIView *commentView;//底部View
+    UIButton *praiseButton;
+    UIButton *moreButton;
+    UIButton *commentButton;
+    
+    UIView *moreView;//更多操作View
+    UIButton *collectButton;//收藏
+    UIButton *shareButton;//分享
+    
+    
+    PraiseTableViewCell *praiseCell;
+    BOOL isPraise;
     
     
 }
@@ -50,7 +63,7 @@
 @property (nonatomic,strong) UIButton    *addAttionBtn;//加关注
 @property (nonatomic,strong) UIView      *viewBgDesc;//文字详情view
 @property (nonatomic,strong) UILabel     *labelDesc;
-@property (nonatomic,strong) UIButton    *praiseButton;
+
 //大图
 @property (nonatomic,strong ) UIImageView    *bigImage;
 @property (strong, nonatomic) NSMutableArray *photoNameList;
@@ -96,9 +109,25 @@
     
     [self _initLabel];
     
-    [self _initComment];
-    
     [self _initViewBgDesc];
+    
+     [self _initComment];
+    
+    
+    // 左边的取消按钮
+    UIButton *cancelBtn = [[UIButton alloc] init];
+    cancelBtn.frame = CGRectMake(0, 0, 30, 30);
+    [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+}
+
+-(void)clickCode{
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
     
 }
 - (void)requestDatatable:(NSNotification*)notification
@@ -147,6 +176,7 @@
         self.commentJason = operation.responseObject;
         NSLog(@"登录%@", self.commentJason);
         [MBProgressHUD showError:[self.commentJason objectForKey:@"info"]];
+        NSLog(@"详情获取错误------%@",[self.commentJason objectForKey:@"info"]);
         
     }];
     
@@ -189,6 +219,7 @@
               [self _initComment];
             [self _initViewBgDesc];
             [self requestTable];
+            
             self.labelDesc.text = [showdic objectForKey:@"content"];
             self.labelDesc.backgroundColor =[UIColor clearColor];
             
@@ -201,6 +232,7 @@
             
             self.labelDesc.numberOfLines = 0;
             self.labelDesc.frame = CGRectMake(10, 5, YTHScreenWidth-20, size.height);
+            //self.labelDesc.backgroundColor = [UIColor orangeColor];
             //            [self.labelDesc sizeToFit];
             //self.viewBgDesc.backgroundColor = [UIColor orangeColor];
             
@@ -325,36 +357,135 @@
     
 }
 
-#pragma mark-底下评论
+#pragma mark--创建底部 赞、更多、评论
 -(void)_initComment
 {
-    UIView *commentView = [[UIView alloc]initWithFrame:CGRectMake(0, YTHScreenHeight-YTHAdaptation(46), YTHScreenWidth,YTHAdaptation(46))];
-    [self.view addSubview:commentView];
-    commentView.backgroundColor = [UIColor whiteColor];
+    //底部View
+    commentView = [[UIView alloc]initWithFrame:CGRectMake(0, YTHScreenHeight-YTHAdaptation(46), YTHScreenWidth,46)];
     
-    UIButton *praiseButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(30), YTHAdaptation(10), YTHAdaptation(18),YTHAdaptation(18) )];
+    [self.view addSubview:commentView];
+    
+    [self.view bringSubviewToFront:commentView];
+    
+    UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 1)];
+    
+    lineLabel.backgroundColor = YTHColor(229, 229, 229);
+    
+    [commentView addSubview:lineLabel];
+    
+   
+    //赞按钮
+    praiseButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(35), YTHAdaptation(13), YTHAdaptation(18),YTHAdaptation(18) )];
+    
     [praiseButton setImage:[UIImage imageNamed:@"icon_zan"] forState:UIControlStateNormal];
+    
     praiseButton.tag = 10;
+    
     [praiseButton addTarget:self action:@selector(buttonCommentBtn:) forControlEvents:UIControlEventTouchUpInside];
-    self.praiseButton = praiseButton;
+    
+    
     [commentView addSubview:praiseButton];
     
-    UIButton *commentBtn = [[UIButton alloc]initWithFrame:CGRectMake(YTHScreenWidth/2, 0, YTHScreenWidth/2, YTHAdaptation(46))];
-    [commentBtn setTitle:@"评论" forState:UIControlStateNormal];
-    [commentBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    commentBtn.tag = 20;
-    [commentBtn addTarget:self action:@selector(buttonCommentBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [commentView addSubview:commentBtn];
+    
+    
+    //更多按钮
+    moreButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(35)+YTHScreenWidth/4, YTHAdaptation(14), YTHAdaptation(18),YTHAdaptation(16) )];
+    
+    [moreButton setImage:[UIImage imageNamed:@"icon_operate"] forState:UIControlStateNormal];
+    
+    moreButton.tag = 15;
+    
+    [moreButton addTarget:self action:@selector(buttonCommentBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //self.praiseButton = moreButton;
+    
+    [commentView addSubview:moreButton];
+    //竖线
+    
+    UILabel *middleL = [[UILabel alloc]initWithFrame:CGRectMake(YTHScreenWidth/4-.5, 0, 1, commentView.height)];
+    
+    middleL.backgroundColor = YTHColor(229, 229, 229);
+    
+    [commentView addSubview:middleL];
+    
+    //评论按钮
+    
+    commentButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHScreenWidth/2, 0, YTHScreenWidth/2, commentView.height)];
+    
+    commentButton.backgroundColor = YTHColor(255, 70, 80);
+    
+    [commentButton setTitle:@"评论" forState:UIControlStateNormal];
+    
+    [commentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    commentButton.tag = 20;
+    
+    [commentButton addTarget:self action:@selector(buttonCommentBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [commentView addSubview:commentButton];
+    
+    //更多操作View
+    moreView = [[UIView alloc]initWithFrame:CGRectMake(YTHScreenWidth/4-10, YTHScreenHeight-YTHAdaptation(46), YTHScreenWidth/4+20, 0)];
+    
+    moreView.backgroundColor = YTHColor(255, 255, 255);
+    
+    moreView.layer.cornerRadius = 5;
+    
+    moreView.layer.masksToBounds = YES;
+    
+    moreView.layer.borderWidth = 1;
+    
+    moreView.layer.borderColor = [[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1] CGColor];
+    
+    [self.view addSubview:moreView];
+
+    //收藏按钮
+    
+    collectButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth/4+20, YTHAdaptation(40))];
+    
+    [collectButton setTitle:@"收藏" forState:UIControlStateNormal];
+    
+    [collectButton setTitleColor:[UIColor grayColor]];
+    
+    [moreView addSubview:collectButton];
+    
+    
+    //分享按钮
+    shareButton = [[UIButton alloc]initWithFrame:CGRectMake(0, YTHAdaptation(40), YTHScreenWidth/4+20, YTHAdaptation(40))];
+    
+    [shareButton setTitle:@"分享" forState:UIControlStateNormal];
+    
+    [shareButton setTitleColor:[UIColor grayColor]];
+
+    
+    [moreView addSubview:shareButton];
+    
+    
+    moreView.clipsToBounds = YES;
+    
+    UILabel *lineL = [[UILabel alloc]initWithFrame:CGRectMake(0, YTHAdaptation(40)-.5, YTHScreenWidth/4+20, 1)];
+    
+    lineL.backgroundColor = [UIColor lightGrayColor];
+    
+    [moreView addSubview:lineL];
     
     
 }
-#pragma mark - 点击评论-赞
+
+
+#pragma mark -- 点击 赞、 更多、评论
 -(void)buttonCommentBtn:(UIButton *)btn
 {
+    
+    NSLog(@"-----------------------点击了底部某个按钮----------------");
+
     if(btn.tag==10){
-        NSLog(@"评论/赞");
+        
+        NSLog(@"-----------------------点击了赞----------------");
+
+
         btn.selected = !btn.selected;
-        if (btn.selected==YES) {
+        if (btn.selected==YES) {//点赞
             NSString *uS = Url;
             
             NSString *ueltext = [NSString stringWithFormat:@"v1/show/%@/praise", self.praiseuuid];
@@ -371,10 +502,9 @@
                 NSLog(@"赞%@",responseObject);
                 self.praiseJason = responseObject;
                 NSLog(@"赞 %ld",(long)[operation.response statusCode]);
-                if ([operation.response statusCode]/100==2)
+                if ([operation.response statusCode]/100==2)//赞 成功
                 {
-                    [self.praiseButton setImage:[UIImage imageNamed:@"icon_zan_red"] forState:UIControlStateNormal];
-                    
+                    [praiseButton setImage:[UIImage imageNamed:@"icon_zan_red"] forState:UIControlStateNormal];
                     
                     
                 }
@@ -387,14 +517,10 @@
                 
                 
             }];
+    
             
-            
-            
-            
-}else if(btn.tag==20){
-            
-            
-            
+       }else {//取消赞
+           
             NSString *uS = Url;
             
             NSString *ueltext = [NSString stringWithFormat:@"v1/show/%@/praise", self.praiseuuid];
@@ -414,7 +540,7 @@
                 if ([operation.response statusCode]/100==2)
                 {
                     
-                    [self.praiseButton setImage:[UIImage imageNamed:@"icon_zan"] forState:UIControlStateNormal];
+                    [praiseButton setImage:[UIImage imageNamed:@"icon_zan"] forState:UIControlStateNormal];
                     
                     
                 }
@@ -428,14 +554,35 @@
                 
                 
             }];
-            
-            
-            
-            
+           
         }
+    }else if (btn.tag==15)//点击更多
         
-    }else if (btn.tag==20)
     {
+        NSLog(@"-----------------------点击了更多----------------");
+
+        btn.selected = !btn.selected;
+        if (btn.selected==YES) {//点击更多
+        
+        [UIView animateWithDuration:.5 animations:^{
+
+           moreView.frame = CGRectMake(YTHScreenWidth/4-10, YTHScreenHeight-YTHAdaptation(40)-100, YTHScreenWidth/4+20, YTHAdaptation(40)*2) ;
+
+        }];
+            
+        }else{  //再次点击更多
+        [UIView animateWithDuration:.5 animations:^{
+            moreView.frame = CGRectMake(YTHScreenWidth/4-10, YTHScreenHeight-YTHAdaptation(46), YTHScreenWidth/4+20, 0);
+
+        
+        }];
+         
+        }
+    }else if (btn.tag==20)//点击评论
+    {
+        NSLog(@"-----------------------点击了评论----------------");
+
+        
         CommentViewController *commentVC = [[CommentViewController alloc]init];
         commentVC.uuid = self.uuid;
         commentVC.userUuid = self.userUuid;
@@ -519,10 +666,13 @@
     _kPhotoCollectionViewFlowLayout.minimumInteritemSpacing = 0;
     _kPhotoCollectionViewFlowLayout.minimumLineSpacing = 10;
     _kPhotoCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.bigImage.frame)+10, YTHScreenWidth, 99) collectionViewLayout:_kPhotoCollectionViewFlowLayout];
+    
+    
     _kPhotoCollectionView.delegate = self;
     _kPhotoCollectionView.dataSource = self;
     _kPhotoCollectionView.bounces = NO;
     _kPhotoCollectionView.backgroundColor = [UIColor whiteColor];
+    
     [_kPhotoCollectionView
      registerClass:[kSuggessPhotoCollectionViewCell class]
      forCellWithReuseIdentifier:@"kSuggessPhotoCollectionViewCellId"];
@@ -537,7 +687,7 @@
 {
     UIView *viewBgDesc = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.bigImage.frame)+10, YTHScreenWidth, 25)];
     
-    // viewBgDesc.backgroundColor = [UIColor whiteColor];
+   // viewBgDesc.backgroundColor = [UIColor whiteColor];
     self.viewBgDesc = viewBgDesc;
     [self.view addSubview:viewBgDesc];
     UILabel *labelDesc = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, YTHScreenWidth-20, 25)];
@@ -574,21 +724,25 @@
     }
     
 }
-#pragma mark - uitableview
+#pragma mark - UITableView
 -(void)_initTableView
 {
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, YTHAdaptation(64), YTHScreenWidth, YTHScreenHeight-115)style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, YTHScreenWidth, YTHScreenHeight-110) style:UITableViewStyleGrouped];
     tableView.dataSource = self;
     tableView.delegate = self;
     self.tableView = tableView;
     
+    //tableView.backgroundColor = [UIColor orangeColor];
+    
     tableView.tableHeaderView = self.headView;
     [self.view addSubview:tableView];
     
+   
     
 }
 #pragma mark-关注
 - (void)attention:(UIButton *)sender{
+    
     
     sender.selected = !sender.selected;
     
@@ -690,53 +844,47 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    
     UITableViewCell *cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     
     switch (indexPath.section) {
-        case 0:
+        case 0:   //赞列表
         {
-           praisecell = [[PraiseTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+           praiseCell = [[PraiseTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             
-            [praisecell.buttoncomment addTarget:self action:@selector(buttonComment:) forControlEvents:UIControlEventTouchUpInside];
-             [praisecell.button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-//            UIButton *buttoncomment = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 100, 44)];
-//            UILabel *commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
-//            
-//            
-//            commentLabel.text = [NSString stringWithFormat:@"评论%@", [self.showdic objectForKey:@"commitCount"]];
-//            commentLabel.font = [UIFont systemFontOfSize:14];
-//            commentLabel.textAlignment = NSTextAlignmentCenter;
-//            commentLabel.textColor = [UIColor grayColor];
-//            [buttoncomment addSubview:commentLabel];
-//            [buttoncomment addTarget:self action:@selector(buttonComment:) forControlEvents:UIControlEventTouchUpInside];
-//            arrowImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44, 100, 2)];
-//            arrowImg.backgroundColor = [UIColor redColor];
-//            arrowImg.hidden = NO;
-//            [buttoncomment addSubview:arrowImg];
-//            [cell.contentView addSubview:buttoncomment];
-//            
-//            UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(110, 0, 100, 44)];
-//            
-//            UILabel *praiseLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
-//            
-//            praiseLabel.text =[NSString stringWithFormat:@"赞%@",[self.showdic objectForKey:@"praiseCount"]];
-//            praiseLabel.font = [UIFont systemFontOfSize:14];
-//            praiseLabel.textColor = [UIColor grayColor];
-//            [button addSubview:praiseLabel];
-//            [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-//            praiseImg=[[UIImageView alloc]initWithFrame:CGRectMake(0, 44, 100, 2)];
-//            praiseLabel.textAlignment = NSTextAlignmentCenter;
-//            praiseImg.backgroundColor = [UIColor redColor];
-//            praiseImg.hidden = YES;
-//            [button addSubview:praiseImg];
-//            [cell.contentView addSubview:button];
-            return praisecell;
+            [praiseCell.commentButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            praiseCell.commentButton.tag = 0;
+            
+           // praiseCell.commentButton.backgroundColor = [UIColor greenColor];
+            
+            [praiseCell.praiseButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            praiseCell.praiseButton.tag = 1;
+            
+            NSUserDefaults *praiseArrow = [NSUserDefaults standardUserDefaults];
+            
+            BOOL what;
+            
+            what = [praiseArrow objectForKey:@"praiseStatus"];
+            
+            if (what ==YES) {
+                
+                praiseCell.arrowImg.alpha = 1;
+                
+            }else{
+                praiseCell.arrowImg.alpha = 0;
+
+            }
+                        
+            
+            return praiseCell;
         }
             break;
-        case 1:
+        case 1://评论列表
         {
             if (self.flag) {
-                static NSString *indetify = @"showcommentcell";
+                static NSString *indetify = @"showCommentCell";
                 ShowTableViewCell *showTableCell = [tableView dequeueReusableCellWithIdentifier:indetify];
                 if (showTableCell==nil) {
                     showTableCell=[[ShowTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:indetify];
@@ -769,8 +917,32 @@
 -(void)buttonAction:(UIButton *)btn
 {
     
-   
-    self.flag = NO;
+    if (btn.tag ==0) {//点击列表上部的评论
+        
+        isPraise = YES;
+        
+        NSUserDefaults *praiseArrow = [NSUserDefaults standardUserDefaults];
+        
+        [praiseArrow setBool:isPraise  forKey:@"praiseStatus"];
+        
+        [praiseArrow synchronize];
+        
+        [self requestTable];
+
+
+        
+    }else{   //点击列表上部的赞
+        
+        isPraise =NO;
+        
+        NSUserDefaults *praiseArrow = [NSUserDefaults standardUserDefaults];
+        
+        [praiseArrow setBool:isPraise  forKey:@"praiseStatus"];
+        
+        [praiseArrow synchronize];
+
+        
+  
     //赞列表
     NSLog(@"赞列表");
     NSString *userUuid =_pinglun;
@@ -806,22 +978,10 @@
         [MBProgressHUD showError:[_praiseListJason objectForKey:@"info"]];
         
     }];
-    [UIView animateWithDuration:0.15 animations:^{
-        praisecell.arrowImg.frame = CGRectMake(100, 44, 100, 2);
-    }];
-    
+     }
 }
--(void)buttonComment:(UIButton *)btn
-{
-    
-   
-    
-    self.flag = YES;
-    [self requestTable];
-    [UIView animateWithDuration:0.15 animations:^{
-        praisecell.arrowImg.frame = CGRectMake(0, 44, 100, 2);
-    }];
-}
+
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.section) {
         case 0:
@@ -871,10 +1031,6 @@
     {
         return 0.01;
     }
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.1;
 }
 
 -(void)_addTitleBtn:(NSString *)title andAdd:(BOOL)add{

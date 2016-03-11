@@ -106,6 +106,7 @@
     }];
     
     
+    
     //分享平台授权
 //    [ShareSDK authorize:<#(SSDKPlatformType)#> settings:<#(NSDictionary *)#> onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
 //        
