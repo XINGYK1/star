@@ -285,6 +285,8 @@
 		EC7D0D521C9002550061BAA9 /* SDCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7D0D491C9002550061BAA9 /* SDCollectionViewCell.m */; };
 		EC7D0D531C9002550061BAA9 /* SDCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7D0D4B1C9002550061BAA9 /* SDCycleScrollView.m */; };
 		EC7D0D541C9002550061BAA9 /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7D0D4D1C9002550061BAA9 /* UIView+SDExtension.m */; };
+		EC923B251C92C93000FF1A8B /* TopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC923B241C92C93000FF1A8B /* TopicCell.m */; };
+		EC923B281C92C9EB00FF1A8B /* TopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC923B271C92C9EB00FF1A8B /* TopicModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -485,8 +487,8 @@
 		5A988EFA1C34C8350073A89F /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
 		5A988EFF1C34C8350073A89F /* NewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsViewController.h; sourceTree = "<group>"; };
 		5A988F001C34C8350073A89F /* NewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsViewController.m; sourceTree = "<group>"; };
-		5A988F0B1C34C8350073A89F /* TalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkViewController.h; sourceTree = "<group>"; };
-		5A988F0C1C34C8350073A89F /* TalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkViewController.m; sourceTree = "<group>"; };
+		5A988F0B1C34C8350073A89F /* TalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkViewController.h; path = ../../Talk/Controller/TalkViewController.h; sourceTree = "<group>"; };
+		5A988F0C1C34C8350073A89F /* TalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkViewController.m; path = ../../Talk/Controller/TalkViewController.m; sourceTree = "<group>"; };
 		5A988F111C34C8350073A89F /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		5A988F121C34C8350073A89F /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		5A988F131C34C8350073A89F /* UIWindow+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+Extension.h"; sourceTree = "<group>"; };
@@ -848,6 +850,10 @@
 		EC7D0D4B1C9002550061BAA9 /* SDCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCycleScrollView.m; sourceTree = "<group>"; };
 		EC7D0D4C1C9002550061BAA9 /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
 		EC7D0D4D1C9002550061BAA9 /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
+		EC923B231C92C93000FF1A8B /* TopicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TopicCell.h; path = Starucan/Classes/Topic/TopicCell.h; sourceTree = SOURCE_ROOT; };
+		EC923B241C92C93000FF1A8B /* TopicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TopicCell.m; path = Starucan/Classes/Topic/TopicCell.m; sourceTree = SOURCE_ROOT; };
+		EC923B261C92C9EB00FF1A8B /* TopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TopicModel.h; path = Starucan/Classes/Topic/TopicModel.h; sourceTree = SOURCE_ROOT; };
+		EC923B271C92C9EB00FF1A8B /* TopicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TopicModel.m; path = Starucan/Classes/Topic/TopicModel.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1263,7 +1269,6 @@
 				5A988EF71C34C8350073A89F /* Mine */,
 				5A988EFD1C34C8350073A89F /* News */,
 				5A988F031C34C8350073A89F /* Show */,
-				5A988F091C34C8350073A89F /* Talk */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1517,39 +1522,6 @@
 				5A10D7951C5213C000495D73 /* ShowTableViewCell.m */,
 				5AE7D7191C7AF77A00F11DA1 /* PraiseTableViewCell.h */,
 				5AE7D71A1C7AF77A00F11DA1 /* PraiseTableViewCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		5A988F091C34C8350073A89F /* Talk */ = {
-			isa = PBXGroup;
-			children = (
-				5A988F0A1C34C8350073A89F /* Controller */,
-				5A988F0D1C34C8350073A89F /* Model */,
-				5A988F0E1C34C8350073A89F /* View */,
-			);
-			path = Talk;
-			sourceTree = "<group>";
-		};
-		5A988F0A1C34C8350073A89F /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				5A988F0B1C34C8350073A89F /* TalkViewController.h */,
-				5A988F0C1C34C8350073A89F /* TalkViewController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		5A988F0D1C34C8350073A89F /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		5A988F0E1C34C8350073A89F /* View */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1932,6 +1904,8 @@
 		5AF164451C4F87A70081D743 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5A988F0B1C34C8350073A89F /* TalkViewController.h */,
+				5A988F0C1C34C8350073A89F /* TalkViewController.m */,
 				5AF164461C4F87A70081D743 /* TopicViewController.h */,
 				5AF164471C4F87A70081D743 /* TopicViewController.m */,
 			);
@@ -1941,6 +1915,8 @@
 		5AF164481C4F87A70081D743 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EC923B261C92C9EB00FF1A8B /* TopicModel.h */,
+				EC923B271C92C9EB00FF1A8B /* TopicModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1948,6 +1924,8 @@
 		5AF164491C4F87A70081D743 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EC923B231C92C93000FF1A8B /* TopicCell.h */,
+				EC923B241C92C93000FF1A8B /* TopicCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2261,6 +2239,7 @@
 				5A1CBDF21C44F74E006372FF /* QNUserAgent.m in Sources */,
 				5A1CBDE21C44F74E006372FF /* QNDes.m in Sources */,
 				5A2FFC6D1C50B1C200AC08C2 /* IAPagedFlowCell.m in Sources */,
+				EC923B251C92C93000FF1A8B /* TopicCell.m in Sources */,
 				5A86F6F51C3F96C30073C14F /* kSuggessPhotoCollectionViewCell.m in Sources */,
 				5A988F991C3532F70073A89F /* NSTimer+Addition.m in Sources */,
 				5A988F211C34C8350073A89F /* UIView+Extension.m in Sources */,
@@ -2384,6 +2363,7 @@
 				5AED612F1C72CD4400D5B3A5 /* POPCGUtils.mm in Sources */,
 				5A10D79C1C523ABE00495D73 /* ShowCommentModel.m in Sources */,
 				5A988F201C34C8350073A89F /* TalkViewController.m in Sources */,
+				EC923B281C92C9EB00FF1A8B /* TopicModel.m in Sources */,
 				EC7D0D501C9002550061BAA9 /* TADotView.m in Sources */,
 				5AE93F8B1C449E430058E64F /* YHTHomeCollectionViewCell.m in Sources */,
 				5AED612C1C72CD4400D5B3A5 /* POPAnimationTracer.mm in Sources */,

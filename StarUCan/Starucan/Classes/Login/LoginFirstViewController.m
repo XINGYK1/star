@@ -31,12 +31,13 @@ typedef enum {
 @interface LoginFirstViewController ()<UITextFieldDelegate, UIScrollViewDelegate>
 {
     AppDelegate *myDelegate;
-    
+    UITextField *accountTF;//账号输入框
+    UITextField *passwordTF;//密码输入框
+
 }
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) AFHTTPRequestOperationManager *manager;
-@property (nonatomic, weak) UITextField *accountTF;
-@property (nonatomic, weak) UITextField *passwordTF;
+
 @property (nonatomic, weak) UIButton *loginBtn;
 @property (nonatomic,strong)NSDictionary *jsonDict;
 @property (nonatomic, assign)BOOL loginStatus;
@@ -78,7 +79,7 @@ typedef enum {
     
     //一进来就取到账户
     NSString *u_account = [self getDictionaryWithKey:@"u_account" fromFile:@"login"];
-    self.accountTF.text = u_account;
+    accountTF.text = u_account;
     
     [self _initNation];
     //设置帐号输入框
@@ -98,7 +99,7 @@ typedef enum {
 }
 #pragma mark - 设置帐号输入框
 - (void)setAccountTextFied{
-    UITextField *accountTF = [[UITextField alloc] initWithFrame:CGRectMake(YTHAdaptation(16), YTHAdaptation(32), YTHScreenWidth-YTHAdaptation(32), YTHAdaptation(40))];
+    accountTF = [[UITextField alloc] initWithFrame:CGRectMake(YTHAdaptation(16), YTHAdaptation(32), YTHScreenWidth-YTHAdaptation(32), YTHAdaptation(40))];
     accountTF.delegate = self;
     accountTF.borderStyle = UITextBorderStyleNone;
     accountTF.backgroundColor = [UIColor whiteColor];
@@ -120,14 +121,13 @@ typedef enum {
     accountTF.placeholder = @"请输入手机手机号";
     accountTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    accountTF.text = @"18800035956";//
+    accountTF.text = [NSString stringWithFormat:@"%@",myDelegate.account];//
     accountTF.tag = YTHLoginTextFieldAccount;
-    self.accountTF = accountTF;
     [self.view addSubview:accountTF];
 }
 #pragma mark - 设置密码输入框
 - (void)setPasswordTextFied{
-    UITextField *passwordTF = [[UITextField alloc] initWithFrame:CGRectMake(YTHAdaptation(16), CGRectGetMaxY(self.accountTF.frame)+YTHAdaptation(20), YTHScreenWidth-YTHAdaptation(32),YTHAdaptation(40))];
+    passwordTF = [[UITextField alloc] initWithFrame:CGRectMake(YTHAdaptation(16), CGRectGetMaxY(accountTF.frame)+YTHAdaptation(20), YTHScreenWidth-YTHAdaptation(32),YTHAdaptation(40))];
     passwordTF.delegate = self;
     passwordTF.borderStyle = UITextBorderStyleNone;
     passwordTF.backgroundColor = [UIColor whiteColor];
@@ -151,14 +151,19 @@ typedef enum {
     passwordTF.returnKeyType = UIReturnKeyGo;
     UIButton *eyeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     eyeButton.frame = CGRectMake(YTHScreenWidth-30-30
-                                 , CGRectGetMaxY(self.accountTF.frame)+30, 24,24 );
+                                 , CGRectGetMaxY(accountTF.frame)+30, 24,24 );
     [eyeButton setImage:[UIImage imageNamed:@"look_off"] forState:UIControlStateNormal];
     [eyeButton addTarget:self action:@selector(eyeButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:eyeButton];
     
-    self.passwordTF = passwordTF;
     [self.view addSubview:passwordTF];
-    [self.view insertSubview:self.passwordTF belowSubview:eyeButton];
+    [self.view insertSubview:passwordTF belowSubview:eyeButton];
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    accountTF.text = [user objectForKey:@"phoneNum"];
+    
+    passwordTF.text = [user objectForKey:@"myPassword"];
 }
 -(void)eyeButtonAction:(UIButton *)btn
 {
@@ -166,17 +171,17 @@ typedef enum {
     if (btn.selected == YES) {
         [btn setImage:[UIImage imageNamed:@"look"] forState:UIControlStateNormal];
         
-        self.passwordTF.secureTextEntry = NO;
+        passwordTF.secureTextEntry = NO;
         
     } else {
         [btn setImage:[UIImage imageNamed:@"look_off"] forState:UIControlStateNormal];
-        self.passwordTF.secureTextEntry = YES;
+        passwordTF.secureTextEntry = YES;
     }
     
 }
 #pragma mark - 设置登录按钮
 - (void)setLoginButton{
-    UIButton *loginBtn = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(16),CGRectGetMaxY(self.passwordTF.frame)+YTHAdaptation(44), YTHScreenWidth-YTHAdaptation(32),YTHAdaptation(40))];
+    UIButton *loginBtn = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(16),CGRectGetMaxY(passwordTF.frame)+YTHAdaptation(44), YTHScreenWidth-YTHAdaptation(32),YTHAdaptation(40))];
     
     [loginBtn setBackgroundImage:[UIImage imageNamed:@"btn_tile"] forState:UIControlStateNormal];
     loginBtn.layer.borderColor = YTHColor(200, 200, 200).CGColor;
@@ -188,7 +193,7 @@ typedef enum {
     [loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [loginBtn addTarget:self action:@selector(clickLoginButton:) forControlEvents:UIControlEventTouchUpInside];
     self.loginBtn = loginBtn;
-    self.loginBtn.enabled = NO;
+    self.loginBtn.enabled = YES;
     [self.scrollView addSubview:loginBtn];
 }
 #pragma mark - 忘记密码
@@ -218,13 +223,13 @@ typedef enum {
     
     YTHLog(@"passtext=%@",passtext);
     
-    NSString *text = [NSData AES256EncryptWithPlainText:passtext passtext:[self md5:self.passwordTF.text]];
+    NSString *text = [NSData AES256EncryptWithPlainText:passtext passtext:[self md5:passwordTF.text]];
     
     //保存taken：密码md5
-    myDelegate.accessToken = [self md5:self.passwordTF.text];
+    myDelegate.accessToken = [self md5:passwordTF.text];
     // 封装请求参数
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
-    md[@"account"] =self.accountTF.text;
+    md[@"account"] =accountTF.text;
     md[@"accessToken"] =text;
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -245,7 +250,13 @@ typedef enum {
             NSUserDefaults *user=[NSUserDefaults standardUserDefaults];
             
             _loginStatus = YES;
+            
             [user setBool:self.loginStatus forKey:LoginStatus];
+            
+            [user setObject:accountTF.text forKey:@"phoneNum"];
+            
+            [user setObject:passwordTF.text forKey:@"myPassword"];
+            
             [user synchronize];
             
             // 网络请求成功不一定登录成功, 要根据请求返回的状态来判断是否真的登录成功
@@ -267,22 +278,24 @@ typedef enum {
                 archive.userDic = md;
                 
                 [archive synchronize];
+                
+                
             }
             
-            
             //密码清空
-            self.passwordTF.text = @"";
+            passwordTF.text = @"";
             //登录账号
-            myDelegate.account = self.accountTF.text;
+            myDelegate.account = accountTF.text;
             myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
             //还要判断一下学校是否为空
             NSString *universityId = [[responseObject objectForKey:@"userInfo"]objectForKey:@"universityId"];
             NSLog(@"学校id%@",universityId);
-            if (!IsNilOrNull([[responseObject objectForKey:@"userInfo"]objectForKey:@"universityId"])) {
+            if (!IsNilOrNull([[responseObject objectForKey:@"userInfo"]objectForKey:@"universityId"])) {//学校不为空
                 
                 [self performSelector:@selector(goBackMine) withObject:nil afterDelay:0.3];
                 
-            }else {
+            }else {  //学校为空时跳到补充信息
+                
                 AddInformationViewController *addForVC = [[AddInformationViewController alloc]init];
                 [self.navigationController pushViewController:addForVC animated:YES];
                 
@@ -313,6 +326,7 @@ typedef enum {
 }
 
 - (void)goBackMine{
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     [self performSelector:@selector(doNext) withObject:nil afterDelay:0.5];
@@ -356,8 +370,10 @@ typedef enum {
     rightButton.titleLabel.font = [UIFont systemFontOfSize:16];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    
     //导航栏注册按钮
     [rightButton addTarget:self action:@selector(regisButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    
     
     
 }
@@ -403,7 +419,7 @@ typedef enum {
 }
 
 - (void)textChanged{
-    self.loginBtn.enabled = (self.accountTF.text.length>0 && self.passwordTF.text.length>0);
+    self.loginBtn.enabled = (accountTF.text.length>0 && passwordTF.text.length>0);
 }
 //- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
 //    NSString * toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string]; //得到输入框的内容

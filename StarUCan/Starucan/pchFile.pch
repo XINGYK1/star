@@ -16,4 +16,7 @@
 #import "UIViewExt.h"
 #import "Masonry.h"
 #import "AFHTTPRequestOperationManager.h"
+#import "MBProgressHUD.h"
+#import "MBProgressHUD+NJ.h"
+
 #endif

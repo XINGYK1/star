@@ -17,38 +17,46 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UIButton *buttoncomment = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 100, 44)];
-        UILabel *commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
+        _commentButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
         
+        _commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
         
-//        commentLabel.text = [NSString stringWithFormat:@"评论%@", [self.showdic objectForKey:@"commitCount"]];
-         commentLabel.text = @"评论";
-        commentLabel.font = [UIFont systemFontOfSize:14];
-        commentLabel.textAlignment = NSTextAlignmentCenter;
-        commentLabel.textColor = [UIColor grayColor];
-        [buttoncomment addSubview:commentLabel];
-//        [buttoncomment addTarget:self action:@selector(buttonComment:) forControlEvents:UIControlEventTouchUpInside];
-        self.commentLabel = commentLabel;
-        self.buttoncomment = buttoncomment;
-        [self.contentView addSubview:buttoncomment];
+        _commentLabel.text = @"评论";
         
-        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(110, 0, 100, 44)];
+        _commentLabel.font = [UIFont systemFontOfSize:14];
         
-        UILabel *praiseLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
-        praiseLabel.text = @"赞";
-//        praiseLabel.text =[NSString stringWithFormat:@"赞%@",[self.showdic objectForKey:@"praiseCount"]];
-        praiseLabel.font = [UIFont systemFontOfSize:14];
-        praiseLabel.textColor = [UIColor grayColor];
-        [button addSubview:praiseLabel];
-//        [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-        self.praiseLabel = praiseLabel;
-        self.button = button;
-        //self.backgroundColor=[UIColor redColor];
-        [self.contentView addSubview:button];
-        _arrowImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44, 100, 2)];
-        _arrowImg.backgroundColor = [UIColor redColor];
-        [self.contentView addSubview:_arrowImg];
+        _commentLabel.textAlignment = NSTextAlignmentCenter;
+        
+        _commentLabel.textColor = [UIColor grayColor];
+        
+        [_commentButton addSubview:_commentLabel];
 
+        [self.contentView addSubview:_commentButton];
+        
+        _praiseButton = [[UIButton alloc]initWithFrame:CGRectMake(100, 0, 100, 44)];
+        
+        _praiseLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
+        
+        _praiseLabel.text = @"赞";
+        
+        _praiseLabel.font = [UIFont systemFontOfSize:14];
+        
+        _praiseLabel.textAlignment = NSTextAlignmentCenter;
+        
+        _praiseLabel.textColor = [UIColor grayColor];
+        
+        [_praiseButton addSubview:_praiseLabel];
+        
+        
+        [self.contentView addSubview:_praiseButton];
+        
+        
+        
+        _arrowImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44, 100, 2)];
+        
+        _arrowImg.backgroundColor = [UIColor redColor];
+        
+        [self.contentView addSubview:_arrowImg];
         
     }
     return self;
