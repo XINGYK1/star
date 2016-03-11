@@ -323,8 +323,8 @@
         CGFloat kTopAndBottom = (15 - 5)/2.0f;//上下边距5.0f
         CGFloat kLeftAndRight = (YTHScreenWidth - 16)/2.0f;//左右边距
         kCatTabelViewFooterBtn.imageEdgeInsets = UIEdgeInsetsMake(kTopAndBottom+5.0f, kLeftAndRight, kTopAndBottom, kLeftAndRight);
-        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"icon_operate"] forState:UIControlStateNormal];
-        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"icon_operate_click"] forState:UIControlStateSelected];
+        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"slide"] forState:UIControlStateNormal];
+        [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"slide"] forState:UIControlStateSelected];
         kCatTabelViewFooterBtn.backgroundColor = [UIColor whiteColor];
         kCatTabelViewFooterBtn.frame = CGRectMake(0, 0, YTHScreenWidth, 10.0f);
         //线
