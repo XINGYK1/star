@@ -115,20 +115,20 @@
     NSString *userUuid =[myDelegate.userInfo objectForKey:@"uuid"];
     NSString *url1 = [NSString stringWithFormat:@"v1/user/%@",userUuid];
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"我的 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我的 %ld",(long)[operation.response statusCode]);
         self.dictMine = responseObject;
         if ([operation.response statusCode]/100==2)
         {
-            NSLog(@"%@",responseObject);
+            YTHLog(@"%@",responseObject);
             
             myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
             
@@ -144,7 +144,7 @@
             
             //头像
             NSString *urlString = [[responseObject objectForKey:@"userInfo"]objectForKey:@"avatar"];
-            NSLog(@"头像%@",urlString);
+            YTHLog(@"头像%@",urlString);
             
             if (!IsNilOrNull([[responseObject objectForKey:@"userInfo"]objectForKey:@"avatar"])&&!urlString.length==0) {
                 //                    [self.headImgV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@",self.urlString]] placeholderImage:nil];
@@ -169,11 +169,11 @@
             
             
             self.popularString = [[responseObject objectForKey:@"userInfo"]objectForKey:@"popularity"];
-            NSLog(@"人气%@",self.popularString);
+            YTHLog(@"人气%@",self.popularString);
             self.fansString = [[responseObject objectForKey:@"userInfo"]objectForKey:@"fans"];
-            NSLog(@"粉丝%@",self.fansString);
+            YTHLog(@"粉丝%@",self.fansString);
             self.attentionString = [[responseObject objectForKey:@"userInfo"]objectForKey:@"follows"];
-            NSLog(@"人气%@",self.attentionString);
+            YTHLog(@"人气%@",self.attentionString);
             self.popularLabel.text = [NSString stringWithFormat:@"%@",self.popularString];
             self.fansLabel.text = [NSString stringWithFormat:@"%@",self.fansString];
             self.attentionLabel.text = [NSString stringWithFormat:@"%@",self.attentionString];
@@ -193,9 +193,9 @@
         [self.tableView reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"我的 错误%ld",(long)[operation.response statusCode]);
+        YTHLog(@"我的 错误%ld",(long)[operation.response statusCode]);
         self.dictMine = operation.responseObject;
-        NSLog(@"登录%@", self.dictMine);
+        YTHLog(@"登录%@", self.dictMine);
         [MBProgressHUD showError:[ self.dictMine objectForKey:@"info"]];
     }];
     
@@ -320,7 +320,7 @@
     }
     
     
-    //    NSLog(@"=====biaotou====%f", self.tableView.tableHeaderView.frame.size.height);
+    //    YTHLog(@"=====biaotou====%f", self.tableView.tableHeaderView.frame.size.height);
 }
 -(void)receiveClick:(UIButton *)button
 {
@@ -432,7 +432,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section==0&&indexPath.row==0) {
+    if (indexPath.section==0&&indexPath.row==0) {//我的秀 跳转崩溃
                 MyShowViewController *myVC = [[MyShowViewController alloc]init];
                 [self.navigationController pushViewController:myVC animated:YES];
      //另外一种展示

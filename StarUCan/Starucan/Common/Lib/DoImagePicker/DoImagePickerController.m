@@ -228,8 +228,10 @@
 
 - (IBAction)onCancel:(id)sender
 {
-    NSLog(@"keys : %@", _dSelected.allKeys );
-    NSLog(@"values : %@", _dSelected);
+    
+    YTHLog(@"keys : %@", _dSelected.allKeys );
+    
+    YTHLog(@"values : %@", _dSelected);
     
     [_delegate didCancelDoImagePickerController];
 }

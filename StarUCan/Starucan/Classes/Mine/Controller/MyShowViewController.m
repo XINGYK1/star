@@ -51,20 +51,20 @@
 {
 //    NSString *url1 = @"v1/show/attentions";
 //    NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-//    NSLog(@"登录密码=%@",myDelegate.accessToken);
+//    YTHLog(@"登录密码=%@",myDelegate.accessToken);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 //    [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
 //    [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
 //    
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/user_created/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
        
-        NSLog(@"我的秀 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我的秀 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"我的秀%@",responseObject);
+            YTHLog(@"我的秀%@",responseObject);
             NSArray *showArray = [responseObject objectForKey:@"shows"];
             for (NSDictionary *dic in showArray) {
                 ShowDetailModel *showModel = [[ShowDetailModel alloc]initContentWithDic:dic];
@@ -79,7 +79,7 @@
         [self.tableview reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"我的秀error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我的秀error code %ld",(long)[operation.response statusCode]);
         
     }];
     
@@ -96,7 +96,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"cellForRowAtIndexPath");
+    YTHLog(@"cellForRowAtIndexPath");
     
     static NSString *identify = @"kIdentifier";
     MyShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
@@ -110,7 +110,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"heightForRowAtIndexPath");
+    YTHLog(@"heightForRowAtIndexPath");
     MyShowLayoutFrame *weiboF = self.data[indexPath.section];
     return weiboF.cellHeight;
 }

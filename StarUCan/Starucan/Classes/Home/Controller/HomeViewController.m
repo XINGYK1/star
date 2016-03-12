@@ -58,27 +58,29 @@
 //视频view
 @property (nonatomic, strong)UIView *viewVideo;
 @property (nonatomic, strong) ImagePlayerView *imagePlayerView;
+
 @property (nonatomic, strong) NSMutableArray *imageURLs;
+
 @property (nonatomic,strong)NSDictionary *cycleDict;
 
 
 //
 @property(nonatomic,strong)UIImageView *headImgV;//头像
-@property(nonatomic,strong)UIView *headView;//头试图
+@property(nonatomic,strong)UIView *headView;//头视图
 @property(nonatomic,strong)NSString *urlString;
 @property(nonatomic,strong)UILabel *nameLabel;//姓名
 @property(nonatomic,strong)UIImageView *sexImV;//性别
 @property(nonatomic,strong)UILabel *uniserLabel;//学校
-@property(nonatomic,strong)UIImageView *bigImage;
+@property(nonatomic,strong)UIImageView *bigImage;//大图
 @property(nonatomic,strong)UIView *viewBgDesc;//文字详情view
-@property(nonatomic,strong)UILabel *labelDesc;
+@property(nonatomic,strong)UILabel *labelDesc;//文字详情内容
 @property(nonatomic,strong)NSDictionary *attenDic;
-@property(nonatomic,assign)UITableView *tableview;
+@property(nonatomic,strong)UITableView *tableview;
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,strong)NSDictionary *commentJason;
-@property(nonatomic,strong)UIButton *buttonMeet;
-@property(nonatomic,strong)UIButton *buttonPoint;
-@property(nonatomic,strong)UIButton *buttonAtten;
+@property(nonatomic,strong)UIButton *buttonPoint;//焦点 按钮
+@property(nonatomic,strong)UIButton *buttonMeet;//遇见 按钮
+@property(nonatomic,strong)UIButton *buttonAtten;//关注 按钮
 
 
 @end
@@ -98,10 +100,13 @@
 - (NSMutableArray *)imageURLs
 {
     if (!_imageURLs) {
+        
 #warning 首页轮播图的请求地址    http://192.168.30.25:8082/ythbk/app/home/getHomeJosn
         NSMutableArray *imageURLs = [NSMutableArray array];
         _imageURLs = imageURLs;
+    
     }
+    
     return _imageURLs;
 }
 
@@ -119,7 +124,7 @@
 - (ImagePlayerView *)imagePlayerView
 {
     
-    //imagePlayerView封装好的轮播试图。
+    //imagePlayerView封装好的轮播视图。
     if (!_imagePlayerView) {
         ImagePlayerView *imagePlayerView= [[ImagePlayerView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHAdaptation(175))];//175
         
@@ -139,6 +144,7 @@
     }
     
     return _imagePlayerView;
+    
 }
 
 - (void)viewDidLoad {
@@ -178,6 +184,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
     
 }
 
@@ -368,7 +375,7 @@
         
         //NSDictionary *dataDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         self.cycleDict =responseObject;
         
@@ -377,7 +384,7 @@
         if ([operation.response statusCode]/100==2) {
             
             //打印的是一个字典
-            NSLog(@"轮播图%@",jasonDic);
+            YTHLog(@"轮播图%@",jasonDic);
             
             NSArray *cinemaList = [jasonDic objectForKey:@"banners"];
             
@@ -394,7 +401,7 @@
                 NSString *uuid  = [NSString stringWithFormat:@"%@",[dict objectForKey:@"uuid"]];
                 
                 //uuid是什么东西
-                NSLog(@"id轮播%@",uuid);
+                YTHLog(@"id轮播%@",uuid);
                 
                 [self.cycleArray addObject:uuid];
             }
@@ -406,7 +413,7 @@
     
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         
     }];
@@ -436,9 +443,13 @@
 }
 
 -(void)tihuan:(YHTHomeImageModel *)model andSize:(CGSize)size{
+    
     YTHLog(@"执行");
+    
     model.width = size.width;
+    
     model.height = size.height;
+    
     [self performSelector:@selector(collectReload) withObject:self afterDelay:0.1];
     
 }
@@ -458,9 +469,9 @@
     
     [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *jasonDic = responseObject;
-        NSLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"------获取瀑布流%@",jasonDic);
+            YTHLog(@"------获取瀑布流%@",jasonDic);
             self.dataArrays = [NSMutableArray array];
             NSArray *showArry = [jasonDic objectForKey:@"shows"];
             for (NSDictionary *dict in showArry) {
@@ -475,11 +486,11 @@
         
         [_collectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"瀑布流错误 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"瀑布流错误 %ld",(long)[operation.response statusCode]);
 #warning 初始化两次，检测内存泄露时出现问题
         NSDictionary *hMwatarDict = [[NSDictionary alloc]init];
         hMwatarDict = operation.responseObject;
-        NSLog(@"瀑布流错误%@",hMwatarDict);
+        YTHLog(@"瀑布流错误%@",hMwatarDict);
         [MBProgressHUD showError:[hMwatarDict objectForKey:@"info"]];
 
           }];
@@ -517,7 +528,9 @@
 #pragma mark - <HMWaterflowLayoutDelegate>
 - (CGFloat)waterflowLayout:(HMWaterflowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath withItemWidth:(CGFloat)width {
     YHTHomeImageModel *model = self.dataArrays[indexPath.row];
-    YTHLog(@"model宽：%f  model高：%f  屏宽：%f",model.width,model.height,YTHScreenWidth);
+
+  //  YTHLog(@"model宽：%f  model高：%f  屏宽：%f",model.width,model.height,YTHScreenWidth);
+
     return model.height * width / model.width;
 }
 - (HMWaterflowLayoutSetting)settingInWaterflowLayout:(HMWaterflowLayout *)layout
@@ -548,7 +561,7 @@
     static NSString *identify = @"cell";
     YHTHomeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identify forIndexPath:indexPath];
     if (!cell) {
-        NSLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
+        YTHLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
     cell.delegate = self;
     cell.model = self.dataArrays[indexPath.row];
@@ -587,7 +600,7 @@
 
 //头部显示的内容
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"头部显示");
+    YTHLog(@"头部显示");
     if (kind == UICollectionElementKindSectionHeader) {
         YHTHomeHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView" forIndexPath:indexPath];
         [headerView addSubview:self.collectionViewHeaderView];//头部广告栏
@@ -604,7 +617,7 @@
 
 - (void)imagePlayerView:(ImagePlayerView *)imagePlayerView didTapAtIndex:(NSInteger)index
 {
-    NSLog(@"点击了%ld", (long)index);
+    YTHLog(@"点击了%ld", (long)index);
     switch (index) {
         case 0:
         {
@@ -612,7 +625,7 @@
             if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
                
                 NSString *uuid  = [self.cycleArray objectAtIndex:index];
-                NSLog(@"id轮播%@",uuid);
+                YTHLog(@"id轮播%@",uuid);
                 ShowDetailViewController *showVC = [[ShowDetailViewController alloc] init];
                 
                 showVC.uuid =uuid;
@@ -663,12 +676,12 @@
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/attentions",uS];
     
-    NSLog(@"我关注的话题接口链接 -----%@",urlStr);
+    YTHLog(@"我关注的话题接口链接 -----%@",urlStr);
     
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         self.attenDic = responseObject;
-        NSLog(@"关注error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"关注error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
 
             NSArray *showArray = [responseObject objectForKey:@"shows"];
@@ -686,9 +699,9 @@
         [self.tableview reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"关注error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"关注error code %ld",(long)[operation.response statusCode]);
          self.attenDic = operation.responseObject;
-        NSLog(@"登录%@", self.attenDic);
+        YTHLog(@"登录%@", self.attenDic);
         [MBProgressHUD showError:[self.attenDic objectForKey:@"info"]];
       }];
     

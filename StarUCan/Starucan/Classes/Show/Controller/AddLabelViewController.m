@@ -74,8 +74,10 @@
     NSString *url =[NSString stringWithFormat:@"%@v1/label",url1];
     
     [manager GET:url parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"标签信息%@",responseObject);
-        NSLog(@"标签返回error code %ld",(long)[operation.response statusCode]);
+        
+        YTHLog(@"标签信息%@",responseObject);
+        
+        YTHLog(@"标签返回error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             NSArray *arry = [responseObject objectForKey:@"labels"];
@@ -90,13 +92,13 @@
                 [self.dataArr addObject: [dic objectForKey:@"name"]];
                 
             }
-            NSLog(@"个数个数%lu",(unsigned long)self.dataArr.count);
+            YTHLog(@"个数个数%lu",(unsigned long)self.dataArr.count);
         }
         
         [self.resultTableView reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
     }];
     
 }
@@ -135,7 +137,7 @@
         return 1;
     }else{
         if (self.dataArr.count!=0) {
-            NSLog(@"标签个数%lu",(unsigned long)self.dataArr.count);
+            YTHLog(@"标签个数%lu",(unsigned long)self.dataArr.count);
             return self.dataArr.count+1;
         }
         return 1;
@@ -177,7 +179,9 @@
                 cell.textLabel.text = @"添加标签";
             }
         }
-        NSLog(@"-----%@",self.dataArr);
+        
+        YTHLog(@"-----%@",self.dataArr);
+        
         return cell;
     }
     
@@ -192,23 +196,25 @@
             md[@"name"]=mySearchBar.text;
             NSString *urlShow = @"v1/label";
             NSString *text = [NSData AES256EncryptWithPlainText:urlShow passtext:myDelegate.accessToken];
-            NSLog(@"登录密码=%@",myDelegate.accessToken);
-            NSLog(@"taken=%@",text);
+            YTHLog(@"登录密码=%@",myDelegate.accessToken);
+            YTHLog(@"taken=%@",text);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             //请求头
             [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
             [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
             NSString *uS = Url;
             NSString *urlStr = [NSString stringWithFormat:@"%@v1/label",uS];
-            NSLog(@"拼接之后%@",urlStr);
+            YTHLog(@"拼接之后%@",urlStr);
             [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"新增标签信息%@",responseObject);
-                NSLog(@"新增标签返回error code %ld",(long)[operation.response statusCode]);
+                YTHLog(@"新增标签信息%@",responseObject);
+                YTHLog(@"新增标签返回error code %ld",(long)[operation.response statusCode]);
                 if ([operation.response statusCode]/100==2)
                 {
                     NSDictionary *dic = [responseObject objectForKey:@"label"];
                     //  [myDelegate.labelIDict removeAllObjects];
-                    NSLog(@"**%@",myDelegate.labelIDict);
+                 
+                    YTHLog(@"**%@",myDelegate.labelIDict);
+                    
                     [myDelegate.labelIDict setObject:[dic objectForKey:@"uuid"] forKey:[dic objectForKey:@"name"]];
                     if ([self.delegate respondsToSelector:@selector(AddLabelView:didClickTag:didClickTitle:)]) {
                         [self.delegate AddLabelView:self didClickTag:[dic objectForKey:@"uuid"] didClickTitle:mySearchBar.text];
@@ -218,7 +224,8 @@
                 label.text = @"";
                 [self.resultTableView reloadData];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"新增标签错误返回error code %ld",(long)[operation.response statusCode]);
+               
+                YTHLog(@"新增标签错误返回error code %ld",(long)[operation.response statusCode]);
                 
             }];
             
@@ -235,7 +242,7 @@
 #pragma mark-SearchBar代理
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    NSLog(@"任务编辑文本");
+    YTHLog(@"任务编辑文本");
     grayView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
     grayView.alpha = 0.5;
     grayView.backgroundColor = [UIColor grayColor];
@@ -254,7 +261,7 @@
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-    NSLog(@"开始编辑");
+    YTHLog(@"开始编辑");
     mySearchBar.showsCancelButton = YES;
     
     NSArray *subViews;
@@ -279,7 +286,7 @@
 }
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
-    NSLog(@"要求");
+    YTHLog(@"要求");
     if (mySearchBar.text.length > 0) {
         // 创建搜索结果显示的tableView
         [self.resultTableView reloadData];
@@ -294,25 +301,25 @@
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     
-    NSLog(@"当编辑完成之后调用此函数");
+    YTHLog(@"当编辑完成之后调用此函数");
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     
-    //    NSLog(@"当textView的文本改变或者清除的时候调用此方法：%@",searchText);
+    //    YTHLog(@"当textView的文本改变或者清除的时候调用此方法：%@",searchText);
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self requestData];
-    NSLog(@"点击按钮");
+    YTHLog(@"点击按钮");
     [mySearchBar resignFirstResponder];//这句话时让search失去焦点的意思
     //    [mySearchBar endEditing:YES];
     grayView.hidden = YES;
     mySearchBar.showsCancelButton = NO;
     
-    NSLog(@"搜索词%@",searchBar.text);
+    YTHLog(@"搜索词%@",searchBar.text);
     
     
     

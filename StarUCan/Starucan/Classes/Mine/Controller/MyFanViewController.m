@@ -46,22 +46,22 @@
     NSString *userUuid =[myDelegate.userInfo objectForKey:@"uuid"];
     NSString *url1 = [NSString stringWithFormat:@"v1/user/%@/fans",userUuid];
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@/fans",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"粉丝 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"粉丝 %ld",(long)[operation.response statusCode]);
        _sourceArray = [[NSMutableArray alloc]init];
         
        
         if ([operation.response statusCode]/100==2)
         {
-            NSLog(@"粉丝%@",responseObject);
+            YTHLog(@"粉丝%@",responseObject);
              NSArray *usersArray = [responseObject objectForKey:@"users"];
             for (NSDictionary *dict in usersArray) {
                 ShowDetailModel *model = [[ShowDetailModel alloc]initContentWithDic:dict];
@@ -72,7 +72,7 @@
          [self.tableView reloadData];
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         NSLog(@"粉丝错误 %ld",(long)[operation.response statusCode]);
+         YTHLog(@"粉丝错误 %ld",(long)[operation.response statusCode]);
         
     }];
 

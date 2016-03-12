@@ -62,10 +62,10 @@
     md[@"name"] = _nickField.text;
     NSString *urlUpdate = @"v1/user/";
     NSString *url1 = [NSString stringWithFormat:@"%@%@",urlUpdate,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"URL11=%@",url1);
+    YTHLog(@"URL11=%@",url1);
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
-    NSLog(@"加密后密码%@",text);
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
+    YTHLog(@"加密后密码%@",text);
     //
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -74,10 +74,10 @@
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager PUT:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"更新信息%@",responseObject);
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"更新信息%@",responseObject);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             
@@ -87,7 +87,7 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"完成error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"完成error code %ld",(long)[operation.response statusCode]);
     }];
     
 

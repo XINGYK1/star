@@ -39,7 +39,7 @@
     f.size.width = _tableView.frame.size.width;
     _view.frame = f;
     
-//    NSLog(@"%f", scrollView.contentOffset.y);
+//    YTHLog(@"%f", scrollView.contentOffset.y);
     
     if(scrollView.contentOffset.y < 0) {
         CGFloat offsetY = (scrollView.contentOffset.y + scrollView.contentInset.top) * -1;
@@ -48,7 +48,7 @@
         _view.frame = initialFrame;
     }
     
-//    NSLog(@"%f", _view.frame.size.height);
+//    YTHLog(@"%f", _view.frame.size.height);
 }
 
 - (void)resizeView
@@ -56,7 +56,7 @@
     initialFrame.size.width = _tableView.frame.size.width;
     _view.frame = initialFrame;
     
-    //    NSLog(@"%f", _view.frame.size.height);
+    //    YTHLog(@"%f", _view.frame.size.height);
 }
 
 

@@ -122,7 +122,7 @@
     for (int i = 0; i < self.data.count; i++) {
                 attenModel *model = (attenModel *)self.data[i];
         NSString *str2 = model.seckill_name;
-               NSLog(@"%@",str2
+               YTHLog(@"%@",str2
               );
     }
 }
@@ -135,7 +135,7 @@
         UIButton *selectbtn = self.arrBools[i];
         if (selectbtn.selected) {
             NSString *str2 = model.seckill_name;
-            NSLog(@"%@",str2
+            YTHLog(@"%@",str2
                   );
             [shopCarts addObject:model];
         }

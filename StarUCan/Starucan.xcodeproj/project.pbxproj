@@ -166,7 +166,6 @@
 		5AB34A631C3A837C00721D84 /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A561C3A837C00721D84 /* NSObject+MJCoding.m */; };
 		5AB34A641C3A837C00721D84 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A581C3A837C00721D84 /* NSObject+MJKeyValue.m */; };
 		5AB34A651C3A837C00721D84 /* NSObject+MJMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */; };
-		5AC08D771C880A4200A6BD14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AC08D761C880A4200A6BD14 /* Assets.xcassets */; };
 		5AD72E0D1C3F877E005E4236 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E011C3F877E005E4236 /* HomeViewController.m */; };
 		5AD72E0E1C3F877E005E4236 /* SearchClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E031C3F877E005E4236 /* SearchClassViewController.m */; };
 		5AD72E0F1C3F877E005E4236 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E051C3F877E005E4236 /* SearchViewController.m */; };
@@ -287,6 +286,9 @@
 		EC7D0D541C9002550061BAA9 /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7D0D4D1C9002550061BAA9 /* UIView+SDExtension.m */; };
 		EC923B251C92C93000FF1A8B /* TopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC923B241C92C93000FF1A8B /* TopicCell.m */; };
 		EC923B281C92C9EB00FF1A8B /* TopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC923B271C92C9EB00FF1A8B /* TopicModel.m */; };
+		ECD35BEA1C93AE9D000D32FA /* TopicDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECD35BE91C93AE9D000D32FA /* TopicDetailModel.m */; };
+		ECD35BED1C93AEDA000D32FA /* TopicDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECD35BEC1C93AEDA000D32FA /* TopicDetailCell.m */; };
+		ECD35BF11C9411B3000D32FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECD35BF01C9411B3000D32FA /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -637,7 +639,6 @@
 		5AB34A581C3A837C00721D84 /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
 		5AB34A591C3A837C00721D84 /* NSObject+MJMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJMember.h"; sourceTree = "<group>"; };
 		5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJMember.m"; sourceTree = "<group>"; };
-		5AC08D761C880A4200A6BD14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5AD72E001C3F877E005E4236 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		5AD72E011C3F877E005E4236 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		5AD72E021C3F877E005E4236 /* SearchClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchClassViewController.h; sourceTree = "<group>"; };
@@ -855,6 +856,11 @@
 		EC923B241C92C93000FF1A8B /* TopicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TopicCell.m; path = Starucan/Classes/Topic/TopicCell.m; sourceTree = SOURCE_ROOT; };
 		EC923B261C92C9EB00FF1A8B /* TopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TopicModel.h; path = Starucan/Classes/Topic/TopicModel.h; sourceTree = SOURCE_ROOT; };
 		EC923B271C92C9EB00FF1A8B /* TopicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TopicModel.m; path = Starucan/Classes/Topic/TopicModel.m; sourceTree = SOURCE_ROOT; };
+		ECD35BE81C93AE9D000D32FA /* TopicDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TopicDetailModel.h; path = Starucan/Classes/Topic/TopicDetailModel.h; sourceTree = SOURCE_ROOT; };
+		ECD35BE91C93AE9D000D32FA /* TopicDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TopicDetailModel.m; path = Starucan/Classes/Topic/TopicDetailModel.m; sourceTree = SOURCE_ROOT; };
+		ECD35BEB1C93AEDA000D32FA /* TopicDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TopicDetailCell.h; path = Starucan/Classes/Topic/TopicDetailCell.h; sourceTree = SOURCE_ROOT; };
+		ECD35BEC1C93AEDA000D32FA /* TopicDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TopicDetailCell.m; path = Starucan/Classes/Topic/TopicDetailCell.m; sourceTree = SOURCE_ROOT; };
+		ECD35BF01C9411B3000D32FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Starucan/Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1192,6 +1198,7 @@
 			isa = PBXGroup;
 			children = (
 				5A1CBD801C44F520006372FF /* libresolv.tbd */,
+				ECD35BF01C9411B3000D32FA /* Assets.xcassets */,
 				5AE749BF1C3E421500631DAA /* Foundation.framework */,
 				5AE749BD1C3E3EDA00631DAA /* MessageUI.framework */,
 				5A988EB21C34C7EB0073A89F /* Starucan */,
@@ -1221,7 +1228,6 @@
 				5A988EB91C34C7EB0073A89F /* ViewController.h */,
 				5A988EBA1C34C7EB0073A89F /* ViewController.m */,
 				5A988EBC1C34C7EB0073A89F /* Main.storyboard */,
-				5AC08D761C880A4200A6BD14 /* Assets.xcassets */,
 				5A988EC11C34C7EB0073A89F /* LaunchScreen.storyboard */,
 				5A988EC41C34C7EB0073A89F /* Info.plist */,
 				5A988EB31C34C7EB0073A89F /* Supporting Files */,
@@ -1262,13 +1268,13 @@
 			isa = PBXGroup;
 			children = (
 				5AED60E21C72CD4400D5B3A5 /* Other */,
-				5AF164441C4F87A70081D743 /* Topic */,
-				5A988EE71C34C8350073A89F /* Home */,
 				5A988EEF1C34C8350073A89F /* Login */,
-				5A988EF01C34C8350073A89F /* Main */,
-				5A988EF71C34C8350073A89F /* Mine */,
-				5A988EFD1C34C8350073A89F /* News */,
+				5A988EE71C34C8350073A89F /* Home */,
 				5A988F031C34C8350073A89F /* Show */,
+				5AF164441C4F87A70081D743 /* Topic */,
+				5A988EF01C34C8350073A89F /* Main */,
+				5A988EFD1C34C8350073A89F /* News */,
+				5A988EF71C34C8350073A89F /* Mine */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1919,6 +1925,8 @@
 			children = (
 				EC923B261C92C9EB00FF1A8B /* TopicModel.h */,
 				EC923B271C92C9EB00FF1A8B /* TopicModel.m */,
+				ECD35BE81C93AE9D000D32FA /* TopicDetailModel.h */,
+				ECD35BE91C93AE9D000D32FA /* TopicDetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1928,6 +1936,8 @@
 			children = (
 				EC923B231C92C93000FF1A8B /* TopicCell.h */,
 				EC923B241C92C93000FF1A8B /* TopicCell.m */,
+				ECD35BEB1C93AEDA000D32FA /* TopicDetailCell.h */,
+				ECD35BEC1C93AEDA000D32FA /* TopicDetailCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2162,7 +2172,6 @@
 				5AEAA8B31C45EF7C00B39068 /* DoImagePickerController.xib in Resources */,
 				5AB34A2D1C3A1D8500721D84 /* movie163_detail.json in Resources */,
 				5AF7C6441C38C78900E0E97F /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
-				5AC08D771C880A4200A6BD14 /* Assets.xcassets in Resources */,
 				5AB34A381C3A5C4500721D84 /* citydict.plist in Resources */,
 				5AE7498D1C3E0BD400631DAA /* release_notes_ios.txt in Resources */,
 				5AED61241C72CD4400D5B3A5 /* pop-ios-Info.plist in Resources */,
@@ -2181,6 +2190,7 @@
 				5A86F70E1C3F97120073C14F /* creatActivitybg4.png in Resources */,
 				5AF7C64F1C38C78900E0E97F /* ShareSDKUI.bundle in Resources */,
 				5AF7C6481C38C78900E0E97F /* read_me.txt in Resources */,
+				ECD35BF11C9411B3000D32FA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2217,6 +2227,7 @@
 				EC7D0D4F1C9002550061BAA9 /* TAAnimatedDotView.m in Sources */,
 				5AED61371C72CD4400D5B3A5 /* POPVector.mm in Sources */,
 				5A988F691C35306B0073A89F /* UIImage+GIF.m in Sources */,
+				ECD35BEA1C93AE9D000D32FA /* TopicDetailModel.m in Sources */,
 				5A649A8C1C69BDFD0067EB58 /* MASLayoutConstraint.m in Sources */,
 				5A86F6F91C3F96F50073C14F /* VIPhotoView.m in Sources */,
 				5A1CBDD91C44F74E006372FF /* QNDnsManager.m in Sources */,
@@ -2241,6 +2252,7 @@
 				5A1CBDE21C44F74E006372FF /* QNDes.m in Sources */,
 				5A2FFC6D1C50B1C200AC08C2 /* IAPagedFlowCell.m in Sources */,
 				EC923B251C92C93000FF1A8B /* TopicCell.m in Sources */,
+				ECD35BED1C93AEDA000D32FA /* TopicDetailCell.m in Sources */,
 				5A86F6F51C3F96C30073C14F /* kSuggessPhotoCollectionViewCell.m in Sources */,
 				5A988F991C3532F70073A89F /* NSTimer+Addition.m in Sources */,
 				5A988F211C34C8350073A89F /* UIView+Extension.m in Sources */,
@@ -2589,6 +2601,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = itcast.Starucan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2617,6 +2630,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = itcast.Starucan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

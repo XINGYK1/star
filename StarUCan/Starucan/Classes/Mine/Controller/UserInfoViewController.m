@@ -115,7 +115,7 @@
         UIImageView *faceImg = [[UIImageView alloc] initWithFrame:CGRectMake(16, 10, 54, 54)];
         //头像
         NSString *urlString = [myDelegate.userInfo objectForKey:@"avatar"];
-        NSLog(@"头像%@",urlString);
+        YTHLog(@"头像%@",urlString);
         //性别
         NSString *sexurl = [myDelegate.userInfo objectForKey:@"sex"];
         if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"avatar"])&&!urlString.length==0) {
@@ -306,7 +306,7 @@
         [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.dict = responseObject;
             if ([operation.response statusCode]/100==2) {
-                NSLog(@"获取七牛Token%@",self.dict);
+                YTHLog(@"获取七牛Token%@",self.dict);
                 self.tokenKey = [self.dict objectForKey:@"qntoken"];
                 // self.domain = [self.dict objectForKey:@"domain"];
                 self.domain = [NSString stringWithFormat:@"http://%@",[self.dict objectForKey:@"domain"]];
@@ -314,12 +314,12 @@
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
-            NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+            YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
             
         }];
         
         
-        NSLog(@"上传头像");
+        YTHLog(@"上传头像");
         UIActionSheet *sheet;
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
             sheet  = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照上传",@"本地上传", nil];
@@ -341,7 +341,7 @@
         
         [self _initTool];
         
-        NSLog(@"我的生日");
+        YTHLog(@"我的生日");
     }
     if (1==indexPath.row && 2==indexPath.section) {
         [self cancelLocatePicker];
@@ -358,7 +358,7 @@
 //打印配送地区并赋值给cell
 -(void)pickerDidChaneStatus:(HZAreaPickerView *)picker
 {
-    NSLog(@"%@",[NSString stringWithFormat:@"%@-%@-%@", picker.locate.state, picker.locate.city, picker.locate.district]);
+    YTHLog(@"%@",[NSString stringWithFormat:@"%@-%@-%@", picker.locate.state, picker.locate.city, picker.locate.district]);
   self.areaValue = [NSString stringWithFormat:@"%@ %@ %@", picker.locate.state, picker.locate.city, picker.locate.district];
     
     [self.tableView reloadData];
@@ -405,7 +405,7 @@
     self.brithLabel.text = title;
     self.brithTest = title;
     [self requestUpdata];
-    NSLog(@"确定%@",title);
+    YTHLog(@"确定%@",title);
 }
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -475,12 +475,12 @@
     [MBProgressHUD showMessage:@"上传中"];
     [upManager putData:data key:nil token:self.tokenKey
               complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
-                  NSLog(@"---%@", info);
+                  YTHLog(@"---%@", info);
                   
-                  NSLog(@"++%@", resp);
+                  YTHLog(@"++%@", resp);
                   _qiniuText = [resp objectForKey:@"key"];
                   self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-                  NSLog(@"图片%@",self.urlString);
+                  YTHLog(@"图片%@",self.urlString);
                   
                   [MBProgressHUD hideHUD];
                   [MBProgressHUD showSuccess:@"上传成功"];
@@ -490,10 +490,10 @@
 //                                    md[@"avatar"] = self.urlString;
 //                                    NSString *urlUpdate = @"v1/user/";
 //                                    NSString *url1 = [NSString stringWithFormat:@"%@%@",urlUpdate,[myDelegate.userInfo objectForKey:@"uuid"]];
-//                                    NSLog(@"URL11=%@",url1);
+//                                    YTHLog(@"URL11=%@",url1);
 //                                    NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-//                                    NSLog(@"登录密码=%@",myDelegate.accessToken);
-//                                    NSLog(@"加密后密码%@",text);
+//                                    YTHLog(@"登录密码=%@",myDelegate.accessToken);
+//                                    YTHLog(@"加密后密码%@",text);
 //                                    //
 //                                    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 //                  
@@ -502,10 +502,10 @@
 //                                    [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
 //                                    NSString *uS = Url;
 //                                    NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-//                                    NSLog(@"拼接之后%@",urlStr);
+//                                    YTHLog(@"拼接之后%@",urlStr);
 //                                    [manager PUT:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//                                        NSLog(@"更新信息%@",responseObject);
-//                                        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+//                                        YTHLog(@"更新信息%@",responseObject);
+//                                        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
 //                                        if ([operation.response statusCode]/100==2)
 //                                        {
 //                  
@@ -515,14 +515,14 @@
 //                  
 //                  
 //                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                                        NSLog(@"完成error code %ld",(long)[operation.response statusCode]);
+//                                        YTHLog(@"完成error code %ld",(long)[operation.response statusCode]);
 //                                    }];
                   
                   
               } option:nil];
     
     self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-    NSLog(@"图片%@",self.urlString);
+    YTHLog(@"图片%@",self.urlString);
     
     
     
@@ -536,10 +536,10 @@
     md[@"birthday"] =self.brithTest;
     NSString *urlUpdate = @"v1/user/";
     NSString *url1 = [NSString stringWithFormat:@"%@%@",urlUpdate,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"URL11=%@",url1);
+    YTHLog(@"URL11=%@",url1);
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
-    NSLog(@"加密后密码%@",text);
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
+    YTHLog(@"加密后密码%@",text);
     //
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -548,10 +548,10 @@
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager PUT:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"更新信息%@",responseObject);
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"更新信息%@",responseObject);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             
@@ -561,7 +561,7 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"完成error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"完成error code %ld",(long)[operation.response statusCode]);
     }];
     
     

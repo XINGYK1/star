@@ -289,7 +289,7 @@ typedef enum {
             myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
             //还要判断一下学校是否为空
             NSString *universityId = [[responseObject objectForKey:@"userInfo"]objectForKey:@"universityId"];
-            NSLog(@"学校id%@",universityId);
+            YTHLog(@"学校id%@",universityId);
             if (!IsNilOrNull([[responseObject objectForKey:@"userInfo"]objectForKey:@"universityId"])) {//学校不为空
                 
                 [self performSelector:@selector(goBackMine) withObject:nil afterDelay:0.3];
@@ -307,7 +307,7 @@ typedef enum {
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         
-        NSLog(@"登录错误error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"登录错误error code %ld",(long)[operation.response statusCode]);
         self.jsonDict = operation.responseObject;
         [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
         

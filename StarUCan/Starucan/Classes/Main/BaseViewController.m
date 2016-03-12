@@ -45,7 +45,7 @@
 
 -(void)shareButtonAction
 {
-    NSLog(@"分享");
+    YTHLog(@"分享");
     //1、创建分享参数
     NSArray* imageArray = @[[UIImage imageNamed:@"120-1"]];
     //（注意：图片必须要在Xcode左边目录里面，名称必须要传正确，如果要分享网络图片，可以这样传iamge参数 images:@[@"http://mob.com/Assets/images/logo.png?v=20150320"]）
@@ -66,7 +66,7 @@
                        switch (state) {
                            case SSDKResponseStateSuccess:
                            {
-                               NSLog(@"成功");
+                               YTHLog(@"成功");
                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
                                                                                    message:nil
                                                                                   delegate:nil
@@ -78,7 +78,7 @@
                            case SSDKResponseStateFail:
                            {
                                
-                               NSLog(@"失败");
+                               YTHLog(@"失败");
                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
                                                                                message:[NSString stringWithFormat:@"%@",error]
                                                                               delegate:nil

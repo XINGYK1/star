@@ -316,7 +316,7 @@ static CGFloat XZMSpringDelay = 0.1;
         //        [self reloadPhotos];
         // [_kPhotoCollectionView reloadData];
         
-        NSLog(@"你是干啥的");
+        YTHLog(@"你是干啥的");
     }
 }
  

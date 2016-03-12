@@ -77,7 +77,7 @@
 {
     switch (btn.tag) {
         case 0:
-            NSLog(@"我发起的");
+            YTHLog(@"我发起的");
         {
             
         }
@@ -86,14 +86,14 @@
             break;
         case 1:
         {
-            NSLog(@"我关注的");
+            YTHLog(@"我关注的");
             [self.data removeAllObjects];
             [self requestMyatten];
             
         }
             break;
         case 2:
-            NSLog(@"我参与的");
+            YTHLog(@"我参与的");
             [self.data removeAllObjects];
             [self requestAdd];
             
@@ -116,11 +116,11 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/topic/user_participated/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"我参与 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我参与 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"我参与%@",responseObject);
+            YTHLog(@"我参与%@",responseObject);
             NSArray *showArray = [responseObject objectForKey:@"topics"];
             for (NSDictionary *dic in showArray) {
                 ShowCommentModel *showModel = [[ShowCommentModel alloc]initContentWithDic:dic];
@@ -135,7 +135,7 @@
         [self.tableview reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"我参与error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我参与error code %ld",(long)[operation.response statusCode]);
         
     }];
     
@@ -148,13 +148,13 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/topic/user_attented/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         
-        NSLog(@"我关注 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我关注 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"我关注%@",responseObject);
+            YTHLog(@"我关注%@",responseObject);
             NSArray *showArray = [responseObject objectForKey:@"topics"];
             for (NSDictionary *dic in showArray) {
                 ShowCommentModel *showModel = [[ShowCommentModel alloc]initContentWithDic:dic];
@@ -169,7 +169,7 @@
         [self.tableview reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"我关注error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我关注error code %ld",(long)[operation.response statusCode]);
         
     }];
 
@@ -180,13 +180,13 @@
        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
        NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/topic/user_created/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         
-        NSLog(@"我的话题 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我的话题 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"我的话题%@",responseObject);
+            YTHLog(@"我的话题%@",responseObject);
             NSArray *showArray = [responseObject objectForKey:@"topics"];
             for (NSDictionary *dic in showArray) {
                 ShowCommentModel *showModel = [[ShowCommentModel alloc]initContentWithDic:dic];
@@ -201,7 +201,7 @@
         [self.tableview reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"我的话题error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我的话题error code %ld",(long)[operation.response statusCode]);
         
     }];
     
@@ -210,12 +210,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.data.count;
-    NSLog(@"行个数****888%lu",(unsigned long)self.data.count);
+    YTHLog(@"行个数****888%lu",(unsigned long)self.data.count);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"cellForRowAtIndexPath");
+    YTHLog(@"cellForRowAtIndexPath");
     
     static NSString *identify = @"kIdentifier";
     MyTopTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
@@ -229,7 +229,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"heightForRowAtIndexPath");
+    YTHLog(@"heightForRowAtIndexPath");
     MyTopicLayoutFtame *myTopF = self.data[indexPath.row];
     return myTopF.cellHeight;
 }

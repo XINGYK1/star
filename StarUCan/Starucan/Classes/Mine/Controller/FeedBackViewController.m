@@ -108,10 +108,12 @@
     UIView *viewJoin = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(bugButton.frame)+16, BWMWidth, 108/2)];
     viewJoin.backgroundColor = [UIColor whiteColor];
     [self.scrollview addSubview:viewJoin];
+    
     UIImageView *imgV = [[UIImageView alloc]initWithFrame:CGRectMake(16, 20, 26/2, 32/2)];
     imgV.image = [UIImage imageNamed:@"icongroup"];
     imgV.contentMode=UIViewContentModeScaleAspectFit;
     [viewJoin addSubview:imgV];
+    
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imgV.frame)+16, 20, 200, 15)];
     // label.backgroundColor = [UIColor yellowColor];
     label.text = @"加入官方测试群一起吐槽赢大奖";
@@ -120,24 +122,32 @@
     [viewJoin addSubview:label];
     
     
-    
     UIButton *morerightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    
     morerightBtn.frame = CGRectMake(BWMWidth-32, 20, 16, 16);
+    
     [morerightBtn setImage:[UIImage imageNamed:@"moreright"] forState:UIControlStateNormal];
+    
     [morerightBtn addTarget:self action:@selector(buttonMore) forControlEvents:UIControlEventTouchUpInside];
+    
     [viewJoin addSubview:morerightBtn];
+    
     UITapGestureRecognizer* faceTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(alertFace:)];
+    
     faceTapGesture.numberOfTapsRequired = 1;
+    
     [viewJoin addGestureRecognizer:faceTapGesture];
     
-    
-    
-    
-    
+
 }
+
+
 - (void)alertFace:(UITapGestureRecognizer *)gesture {
+    
     TestViewController *suggestVC = [[TestViewController alloc]init];
+    
     [self.navigationController pushViewController:suggestVC animated:YES];
+    
 }
 
 //意见反馈
@@ -149,16 +159,20 @@
     
     [self.navigationController pushViewController:suggestVC animated:YES];
 }
+
 -(void)buttonAction2:(UIButton *)btn
 {
     SuggessViewController *suggestVC = [[SuggessViewController alloc]init];
     
     suggestVC.typeId = [NSString stringWithFormat:@"%d",2];
+    
     [self.navigationController pushViewController:suggestVC animated:YES];
 }
+
 -(void)buttonMore
 {
     TestViewController *suggestVC = [[TestViewController alloc]init];
+    
     [self.navigationController pushViewController:suggestVC animated:YES];
     
     

@@ -138,7 +138,7 @@
     
     [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.jsonDict = responseObject;
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
             [MBProgressHUD showSuccess:@"发送成功"];
             self.getBtn.enabled = NO;
@@ -157,7 +157,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         //[MBProgressHUD showError:@"未知错误"];
         
     }];
@@ -204,7 +204,7 @@
     NSString *userUuid =[myDelegate.userInfo objectForKey:@"uuid"];
     NSString *url1 = [NSString stringWithFormat:@"v1/user/%@/bindAccount",userUuid];
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);    // 封装请求参数
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);    // 封装请求参数
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     md[@"mobile"] =self.phoneTF.text;
     md[@"authCode"] =self.authCodeTF.text;;
@@ -215,8 +215,8 @@
     NSString *urlString = [NSString stringWithFormat:@"%@v1/user/%@/bindAccount",url,userUuid];
     [manager PUT:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
                      self.jsonDict = responseObject;
-                NSLog(@"手机绑定 %ld",(long)[operation.response statusCode]);
-        NSLog(@"手机绑定%@",responseObject);
+                YTHLog(@"手机绑定 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"手机绑定%@",responseObject);
         if ([operation.response statusCode]/100==2) {
                                             //登录账号
             //            myDelegate.account = self.accountTF.text;
@@ -228,7 +228,7 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"手机绑定error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"手机绑定error code %ld",(long)[operation.response statusCode]);
         
                 self.jsonDict = operation.responseObject;
         
@@ -238,8 +238,8 @@
 //    [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //        // self.jsonDict = [[NSDictionary alloc]init];
 //        self.jsonDict = responseObject;
-//        NSLog(@"手机绑定 %ld",(long)[operation.response statusCode]);
-//        NSLog(@"手机绑定%@",self.jsonDict);
+//        YTHLog(@"手机绑定 %ld",(long)[operation.response statusCode]);
+//        YTHLog(@"手机绑定%@",self.jsonDict);
 //        if ([operation.response statusCode]/100==2) {
 //                                //登录账号
 ////            myDelegate.account = self.accountTF.text;
@@ -248,7 +248,7 @@
 //        }
 //    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //        
-//        NSLog(@"手机绑定error code %ld",(long)[operation.response statusCode]);
+//        YTHLog(@"手机绑定error code %ld",(long)[operation.response statusCode]);
 //        
 //        self.jsonDict = operation.responseObject;
 //       

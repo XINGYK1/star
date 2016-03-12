@@ -19,7 +19,7 @@
     UITextView *editView;
     
     NSMutableArray *_kTitleArrays;
-    UIScrollView *_kTitleView;
+    UIScrollView *_kTitleView;//标签View
     UILabel *labelText;//秀逼格文字内容
     
     CGRect _kMarkRect;
@@ -141,10 +141,7 @@
     [addLabelBtn addTarget:self action:@selector(addLabelButton:) forControlEvents:UIControlEventTouchUpInside];
     [viewLabel addSubview:addLabelBtn];
     
-   
-    
 
-   
 }
 
 // 初始化是否匿名发布 viewLimit
@@ -172,10 +169,10 @@
     BOOL remainedSWT = sender.isOn;
     if (remainedSWT) {//选中
         swit = 1;
-        NSLog(@"选中%d",swit);
+        YTHLog(@"选中%d",swit);
     }else{
         swit = 0;
-        NSLog(@"未选中%d",swit);
+        YTHLog(@"未选中%d",swit);
     }
 }
 // 点击返回
@@ -195,13 +192,13 @@
     }
     NSString *strId = [kIdArray componentsJoinedByString:@","];
     md[@"labelIds"] = strId;//标签列表
-    NSLog(@"标签id%@",strId);
+    YTHLog(@"标签id%@",strId);
     //md[@"userUuid"] = [myDelegate.userInfo objectForKey:@"uuid"];
     md[@"title"] = self.textFiled.text;
     md[@"anonymous"]=[NSString stringWithFormat:@"%d",swit];
     NSString *urlShow = @"v1/topic/";
     NSString *text = [NSData AES256EncryptWithPlainText:urlShow passtext:myDelegate.accessToken];
-    NSLog(@"微信密码=%@",myDelegate.accessToken);
+    YTHLog(@"微信密码=%@",myDelegate.accessToken);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -210,21 +207,21 @@
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",uS,urlShow];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"新建话题error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"新建话题error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             
-            NSLog(@"新建话题%@",responseObject);
+            YTHLog(@"新建话题%@",responseObject);
         }
         
         
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"新建话题错误error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"新建话题错误error code %ld",(long)[operation.response statusCode]);
         
     }];
 
@@ -293,7 +290,9 @@
         _kMarkRect.size.width = 0;
     }
     UIView *kMarkView = [[UIView alloc]initWithFrame:CGRectMake(_kMarkRect.origin.x + _kMarkRect.size.width + 10, _kMarkRect.origin.y, length+20, 27)];
+    
     [_kTitleView addSubview:kMarkView];
+    
     _kMarkRect = kMarkView.frame;
     UILabel *kTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, length+20, 27)];
     kTitleLabel.backgroundColor = YTHColor(169, 214, 255);
@@ -319,7 +318,7 @@
     _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
     // self.viewLabel.height =kMarkView.height;
     float h;
-    NSLog(@"frame标签%f",kMarkView.frame.origin.y);
+    YTHLog(@"frame标签%f",kMarkView.frame.origin.y);
     if (kMarkView.frame.origin.y>10) {
         h = kMarkView.frame.origin.y + 44;
         self.viewLabel.frame = CGRectMake(0, CGRectGetMaxY(self.viewBgDesc.frame)+10, YTHScreenWidth, h);

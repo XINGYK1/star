@@ -47,13 +47,13 @@
     //
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/user_created/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         
-        NSLog(@"我的秀 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我的秀 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"我的秀%@",responseObject);
+            YTHLog(@"我的秀%@",responseObject);
             NSArray *showArray = [responseObject objectForKey:@"shows"];
             for (NSDictionary *dic in showArray) {
                 ShowDetailModel *showModel = [[ShowDetailModel alloc]initContentWithDic:dic];
@@ -66,7 +66,7 @@
         [self.myCollection reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"我的秀error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"我的秀error code %ld",(long)[operation.response statusCode]);
         
     }];
 

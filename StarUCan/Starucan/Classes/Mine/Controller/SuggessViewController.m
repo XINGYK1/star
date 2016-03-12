@@ -178,14 +178,14 @@
     [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.dict = responseObject;
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"获取七牛Token%@",self.dict);
+            YTHLog(@"获取七牛Token%@",self.dict);
             self.tokenKey = [self.dict objectForKey:@"qntoken"];
             self.domain = [NSString stringWithFormat:@"http://%@",[self.dict objectForKey:@"domain"]];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //        [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         
     }];
     
@@ -258,11 +258,11 @@
     
     UIDevice *device = [[UIDevice alloc] init];
     NSString *phoneVersion = device.systemVersion;//获取当前系统的版本
-    NSLog(@"获取当前系统的版本%@",phoneVersion);
+    YTHLog(@"获取当前系统的版本%@",phoneVersion);
     struct utsname systemInfo;
     uname(&systemInfo);
     NSString *phoneModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
-    NSLog(@"设备%@",phoneModel);
+    YTHLog(@"设备%@",phoneModel);
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
     //    if (![self checkUser]) return;
     if (textView.text.length < 5 || [textView.text isEqualToString:@"写下您的宝贵意见与建议"]) {
@@ -279,11 +279,11 @@
         [upManager putData:data key:nil token:self.tokenKey complete:^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
             _qiniuText = [resp objectForKey:@"key"];
             self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-            NSLog(@"----图片%@",self.urlString);
+            YTHLog(@"----图片%@",self.urlString);
             [self.photoArry addObject:self.urlString];
             
             self.photoString= [self.photoArry componentsJoinedByString:@","] ;
-            NSLog(@"图片拼接%@",self.photoString);
+            YTHLog(@"图片拼接%@",self.photoString);
             num++;
             if (num==self.photoNameList.count) {
                 NSMutableDictionary *postParems = [NSMutableDictionary dictionary];
@@ -293,24 +293,24 @@
                 postParems[@"phoneModel"] = phoneModel;
                 postParems[@"phoneVersion"] = phoneVersion;
                 postParems[@"type"] = self.typeId;
-                NSLog(@"-----%lu",(unsigned long)self.photoNameList.count);
-                NSLog(@"%@",self.photoNameList);
+                YTHLog(@"-----%lu",(unsigned long)self.photoNameList.count);
+                YTHLog(@"%@",self.photoNameList);
                 postParems[@"photoUrl"]=self.photoString;
                 
                 NSString *uS = Url;
                 
                 NSString *ueltext =@"v1/feedback/save";
                 NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-                NSLog(@"登录密码=%@",myDelegate.accessToken);
+                YTHLog(@"登录密码=%@",myDelegate.accessToken);
                 AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
                 [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
                 [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
                 
                 NSString *urlStr = [NSString stringWithFormat:@"%@v1/feedback/save",uS];
-                NSLog(@"建议保存之后%@",urlStr);
+                YTHLog(@"建议保存之后%@",urlStr);
                 [manager POST:urlStr parameters:postParems success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSLog(@"建议保存之后 %ld",(long)[operation.response statusCode]);
-                    NSLog(@"建议保存之后%@",responseObject);
+                    YTHLog(@"建议保存之后 %ld",(long)[operation.response statusCode]);
+                    YTHLog(@"建议保存之后%@",responseObject);
                     
                     
                     
@@ -319,7 +319,7 @@
                     
                     [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    NSLog(@"建议保存错误 %ld",(long)[operation.response statusCode]);
+                    YTHLog(@"建议保存错误 %ld",(long)[operation.response statusCode]);
                     
                 }];
                 
@@ -538,7 +538,7 @@
 
 -(void)deleBtnAction:(UIButton *)btn
 {
-    NSLog(@"删除图片");
+    YTHLog(@"删除图片");
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

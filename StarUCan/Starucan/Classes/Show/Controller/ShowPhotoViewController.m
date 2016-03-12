@@ -123,7 +123,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //        [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         
     }];
     
@@ -164,7 +164,7 @@
      }
      NSString *strId = [kIdArray componentsJoinedByString:@","];
      // md[@"labelIds"] = strId;//标签列表
-     NSLog(@"标签id%@",strId);
+     YTHLog(@"标签id%@",strId);
      BOOL test = false;
      if(test){}
      */
@@ -182,22 +182,22 @@
         [upManager putData:data key:nil token:self.tokenKey
                   complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
                      
-                      NSLog(@"---%@", info);
+                      YTHLog(@"---%@", info);
                       
-                      NSLog(@"++%@", resp);
+                      YTHLog(@"++%@", resp);
                       _qiniuText = [resp objectForKey:@"key"];
                       
                       self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-                      NSLog(@"----图片%@",self.urlString);
+                      YTHLog(@"----图片%@",self.urlString);
                       [self.photoArry addObject:self.urlString];
                       //把数组转变成字符串并用逗号隔开
                       self.photoString= [self.photoArry componentsJoinedByString:@","] ;
-                      NSLog(@"图片拼接%@",self.photoString);
+                      YTHLog(@"图片拼接%@",self.photoString);
                       num++;
                       
                       //如果是最后一张图片，
                       if (num==self.photoNameList.count) {
-                          NSLog(@"****图片字段%@",self.photoString);
+                          YTHLog(@"****图片字段%@",self.photoString);
                           NSMutableDictionary *md = [NSMutableDictionary dictionary];
                           //内容
                           md[@"content"]=labelText.text;//内容
@@ -210,9 +210,9 @@
                           //标签ID
                           NSString *strId = [kIdArray componentsJoinedByString:@","];
                           md[@"labelIds"] = strId;//标签列表
-                          NSLog(@"标签id%@",strId);
+                          YTHLog(@"标签id%@",strId);
                           md[@"userUuid"] = [myDelegate.userInfo objectForKey:@"uuid"];
-                          NSLog(@"用户%@",[myDelegate.userInfo objectForKey:@"uuid"]);
+                          YTHLog(@"用户%@",[myDelegate.userInfo objectForKey:@"uuid"]);
                           
                           NSString *visibleId = nil;
                           if ([lookLabel.text isEqualToString:@"所有人可见"]) {
@@ -232,7 +232,7 @@
                           }
                           md[@"visibleId"]= visibleId;
                           md[@"photoUrl"] = self.photoString;
-                          NSLog(@"****图片字段%@",self.photoString);
+                          YTHLog(@"****图片字段%@",self.photoString);
                           NSString *urlShow = @"v1/show";
                           
                           NSString *text = [NSData AES256EncryptWithPlainText:urlShow passtext:myDelegate.accessToken];
@@ -244,14 +244,14 @@
                           [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
                           NSString *uS = Url;
                           NSString *urlStr = [NSString stringWithFormat:@"%@v1/show",uS];
-                          NSLog(@"拼接之后%@",urlStr);
+                          YTHLog(@"拼接之后%@",urlStr);
                           [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
                               self.jsonDict = responseObject;
-                              NSLog(@"新建秀error code %ld",(long)[operation.response statusCode]);
+                              YTHLog(@"新建秀error code %ld",(long)[operation.response statusCode]);
                               if ([operation.response statusCode]/100==2)
                               {
                                   
-                                  NSLog(@"新建秀%@",responseObject);
+                                  YTHLog(@"新建秀%@",responseObject);
                                   [MBProgressHUD hideHUD];
                                   [MBProgressHUD showSuccess:@"发送成功"];
                                   
@@ -262,14 +262,14 @@
                               }
                               
                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                              NSLog(@"新建秀错误error code %ld",(long)[operation.response statusCode]);
+                              YTHLog(@"新建秀错误error code %ld",(long)[operation.response statusCode]);
                                [MBProgressHUD hideHUD];
                               self.jsonDict = operation.responseObject;
                               [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
                           }];
                       }//如果是最后一张图片，走以上方法
                   } option:nil];
-        NSLog(@"结束");
+        YTHLog(@"结束");
     }
 }
 
@@ -892,7 +892,7 @@
     _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
     // self.viewLabel.height =kMarkView.height;
     float h;
-    NSLog(@"frame标签%f",kMarkView.frame.origin.y);
+    YTHLog(@"frame标签%f",kMarkView.frame.origin.y);
     if (kMarkView.frame.origin.y>10) {
         h = kMarkView.frame.origin.y + 44;
         self.viewLabel.frame = CGRectMake(0, CGRectGetMaxY(self.viewBgDesc.frame)+10, YTHScreenWidth, h);

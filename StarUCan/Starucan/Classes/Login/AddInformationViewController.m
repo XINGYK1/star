@@ -101,7 +101,7 @@
     //[labelArray removeAllObjects];
     [manager GET:url parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.jason =responseObject;
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         if (!_kIdMutabDict) {
             _kIdMutabDict = [[NSMutableDictionary alloc]init];
         }
@@ -125,7 +125,7 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
     }];
 }
 -(void)reloadDataArray{
@@ -232,7 +232,7 @@
 -(void)finishButtonAction
 {
     
-    NSLog(@"--xcfsa--%@",self.univerLabel.text);
+    YTHLog(@"--xcfsa--%@",self.univerLabel.text);
     if ([self.univerLabel.text isEqualToString:@"选择你的真实学校，(一旦选择将不可更改)"]) {
         [MBProgressHUD showError:@"选择所在的学校"];
     }
@@ -251,20 +251,20 @@
     NSString *strId = [kIdArray componentsJoinedByString:@","];
     md[@"labelIds"] = strId;//标签列表
     
-    NSLog(@"标签列表id%@",strId);
-    NSLog(@"昵称%@",self.nameText);
+    YTHLog(@"标签列表id%@",strId);
+    YTHLog(@"昵称%@",self.nameText);
     NSString *urlUpdate = @"v1/user/";
     NSString *url1 = [NSString stringWithFormat:@"%@%@",urlUpdate,[myDelegate.userInfo objectForKey:@"uuid"]];
     
-    NSLog(@"URL11=%@",url1);
-    NSLog(@"密码md5:%@",myDelegate.accessToken);
+    YTHLog(@"URL11=%@",url1);
+    YTHLog(@"密码md5:%@",myDelegate.accessToken);
     SUCUser *u = [SUCUser initWithUserInfo];
     YTHLog(@"\n=====uid====\n%@", u.account);
     
     
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"微信密码=%@",myDelegate.accessToken);
-    NSLog(@"加密后密码%@",text);
+    YTHLog(@"微信密码=%@",myDelegate.accessToken);
+    YTHLog(@"加密后密码%@",text);
     //
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -273,10 +273,10 @@
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager PUT:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"完成%@",responseObject);
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"完成%@",responseObject);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             
@@ -286,7 +286,7 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"完成error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"完成error code %ld",(long)[operation.response statusCode]);
         [MBProgressHUD showError:[operation.responseObject objectForKey:@"info"]];
     }];
     

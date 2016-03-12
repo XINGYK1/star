@@ -143,7 +143,7 @@
     [self.view bringSubviewToFront:self.catScrollView];
     
     if (self.catScrollView.frame.size.height == 0) {
-        NSLog(@"点击");
+        YTHLog(@"点击");
         [lineIV removeFromSuperview];
         
         _kCatTableView.frame = CGRectMake(0, 0, YTHScreenWidth, 0);
@@ -198,9 +198,9 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //self.jason =responseObject;
         
-      //  NSLog(@"标签是--------%@",responseObject);
+      //  YTHLog(@"标签是--------%@",responseObject);
         
-   //     NSLog(@"error code %ld",(long)[operation.response statusCode]);
+   //     YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         if (!_kIdMutabDict) {
             _kIdMutabDict = [[NSMutableDictionary alloc]init];
@@ -227,7 +227,7 @@
         [_kCatTableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        NSLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
         
     }];
     _kCatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 300) style:UITableViewStylePlain];
@@ -322,7 +322,7 @@
   //  [self initTypeBtn:(NSString *)cell.textLabel.text];
     
     labelId = [_kIdMutabDict objectForKey:_kCatTableViewTitles[indexPath.row]];
-   // NSLog(@"标签id%@",labelId);
+   // YTHLog(@"标签id%@",labelId);
     [self kCatkCatTabelViewFooterBtnClick];
     [self _initDataArray];
     // [self catTableViewDidSelect:indexPath.row];
@@ -360,11 +360,11 @@
 #warning 话题接口 无数据
         [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *jasonDic = responseObject;
-            NSLog( @"------获取话题接口链接：%@",urlString);
+            YTHLog( @"------获取话题接口链接：%@",urlString);
             
-            NSLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
+            YTHLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
             if ([operation.response statusCode]/100==2) {
-                NSLog( @"------获取话题：%@",jasonDic);
+                YTHLog( @"------获取话题：%@",jasonDic);
 
                 
                 
@@ -425,7 +425,7 @@
         
         //NSDictionary *dataDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         self.bannerDict =responseObject;
         
@@ -434,7 +434,7 @@
         if ([operation.response statusCode]/100==2) {
             
             //打印的是一个字典
-            NSLog(@"轮播图%@",jasonDic);
+            YTHLog(@"轮播图%@",jasonDic);
             
             NSArray *cinemaList = [jasonDic objectForKey:@"banners"];
             
@@ -451,7 +451,7 @@
                 NSString *uuid  = [NSString stringWithFormat:@"%@",[dict objectForKey:@"uuid"]];
                 
                 //uuid是什么东西
-                NSLog(@"id轮播%@",uuid);
+                YTHLog(@"id轮播%@",uuid);
                 
                 [self.cycleArray addObject:uuid];
                 
@@ -464,7 +464,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         
     }];
@@ -519,7 +519,7 @@
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
 {
-    NSLog(@"---点击了第%ld张图片", (long)index);
+    YTHLog(@"---点击了第%ld张图片", (long)index);
     
     [self.navigationController pushViewController:[NSClassFromString(@"DemoVCWithXib") new] animated:YES];
 }

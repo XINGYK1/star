@@ -153,7 +153,7 @@
         [self.customPicker reloadAllComponents];
         
     }
-    NSLog(@"日期%@",[monthArray objectAtIndex:[self.customPicker selectedRowInComponent:1]]);
+    YTHLog(@"日期%@",[monthArray objectAtIndex:[self.customPicker selectedRowInComponent:1]]);
     
 }
 
@@ -287,7 +287,7 @@
 -(void)buttonActionSure:(UIButton *)btn
 {
     NSString *text = [NSString stringWithFormat:@"%@/%@/%@ ",[yearArray objectAtIndex:[self.customPicker selectedRowInComponent:0]],[monthArray objectAtIndex:[self.customPicker selectedRowInComponent:1]],[DaysArray objectAtIndex:[self.customPicker selectedRowInComponent:2]]];
-    NSLog(@"日期%@",[yearArray objectAtIndex:[self.customPicker selectedRowInComponent:0]]);
+    YTHLog(@"日期%@",[yearArray objectAtIndex:[self.customPicker selectedRowInComponent:0]]);
     if ([self.delagate respondsToSelector:@selector(SureBtn:didClickTitle:)]) {
         
         [self.delagate SureBtn:self didClickTitle:text];

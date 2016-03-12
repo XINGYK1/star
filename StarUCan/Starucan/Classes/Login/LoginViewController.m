@@ -75,11 +75,11 @@
     
     if ([ShareSDK hasAuthorized:SSDKPlatformTypeWechat]) {
         
-        NSLog(@"第三方登陆授权成功");
+        YTHLog(@"第三方登陆授权成功");
     
     }else{
         
-        NSLog(@"第三方登陆授权失败");
+        YTHLog(@"第三方登陆授权失败");
     
     }
     
@@ -332,15 +332,15 @@
 {
     switch (btn.tag) {
         case 0:
-        {  NSLog(@"新浪");
+        {  YTHLog(@"新浪");
             [ShareSDK getUserInfo:SSDKPlatformTypeSinaWeibo onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
                 if (state==SSDKResponseStateSuccess) {
-                    NSLog(@"新浪uid=%@",user.uid);
-                    NSLog(@"新浪%@",user.credential);
-                    NSLog(@"新浪token=%@",user.credential.token);
-                    NSLog(@"新浪nickname=%@",user.nickname);
+                    YTHLog(@"新浪uid=%@",user.uid);
+                    YTHLog(@"新浪%@",user.credential);
+                    YTHLog(@"新浪token=%@",user.credential.token);
+                    YTHLog(@"新浪nickname=%@",user.nickname);
                 }{
-                    NSLog(@"新浪%@",error);
+                    YTHLog(@"新浪%@",error);
                 }
                 
             }];
@@ -350,7 +350,7 @@
             
             break;
         case 1:
-            NSLog(@"微信");
+            YTHLog(@"微信");
         {
             if (![WXApi isWXAppInstalled]) {
                 UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"通知" message:@"您的设备没有安装微信" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -361,16 +361,16 @@
             
             [ShareSDK getUserInfo:SSDKPlatformTypeWechat onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
                 if (state==SSDKResponseStateSuccess) {
-                    NSLog(@"微信用户信息%@",user);
-                    NSLog(@"微信openid=%@",user.uid);
-                    NSLog(@"微信%@",user.credential);
-                    NSLog(@"秘钥%@",user.credential.secret);
-                    NSLog(@"微信nickname=%@",user.nickname);
-                    NSLog(@"性别=%lu",(unsigned long)user.gender);
-                    NSLog(@"头像=%@",user.icon);
-                    NSLog(@"原始=%@",user.rawData);
+                    YTHLog(@"微信用户信息%@",user);
+                    YTHLog(@"微信openid=%@",user.uid);
+                    YTHLog(@"微信%@",user.credential);
+                    YTHLog(@"秘钥%@",user.credential.secret);
+                    YTHLog(@"微信nickname=%@",user.nickname);
+                    YTHLog(@"性别=%lu",(unsigned long)user.gender);
+                    YTHLog(@"头像=%@",user.icon);
+                    YTHLog(@"原始=%@",user.rawData);
                     NSDictionary *dictwei =user.rawData;
-                        NSLog(@"原始--=%@",dictwei[@"unionid"]);
+                        YTHLog(@"原始--=%@",dictwei[@"unionid"]);
                     myDelegate.icon =user.icon;
                     myDelegate.uid =user.uid;
                     myDelegate.nickname =user.nickname;
@@ -379,7 +379,7 @@
                     
                     NSString *text =user.uid;
                     NSString *weiPass = [self md5:text];
-                    NSLog(@"随机数%@MD5 加密=%@",text,weiPass);
+                    YTHLog(@"随机数%@MD5 加密=%@",text,weiPass);
                     //保存
                     myDelegate.passText = weiPass;
                     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -393,14 +393,14 @@
                     NSString *url = Url;
                     NSString *urlString = [NSString stringWithFormat:@"%@v1/user/weixin/login",url];
                     [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        NSLog(@"登录信息：%@",responseObject);
-                         NSLog(@"微信状态 code %ld",(long)[operation.response statusCode]);
+                        YTHLog(@"登录信息：%@",responseObject);
+                         YTHLog(@"微信状态 code %ld",(long)[operation.response statusCode]);
                         
                         
                         
                         if ([operation.response statusCode]/100==2) {
 //                            [MBProgressHUD showSuccess:@"注册成功"];
-                            NSLog(@"微信登录成功");
+                            YTHLog(@"微信登录成功");
                             
                              myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
                             
@@ -411,7 +411,7 @@
                         
                         
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                         NSLog(@"微信状态错误 code %ld",(long)[operation.response statusCode]);
+                         YTHLog(@"微信状态错误 code %ld",(long)[operation.response statusCode]);
                     }];
                     
 
@@ -426,26 +426,26 @@
                     [self presentViewController:nav animated:NO completion:nil];
 
                 }{
-                    NSLog(@"微信%@",error);
+                    YTHLog(@"微信%@",error);
                 }
             }];
         }
             break;
         case 2:{
           
-            NSLog(@"QQ");
+            YTHLog(@"QQ");
             
             [ShareSDK getUserInfo:SSDKPlatformTypeQQ onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
                 if (state==SSDKResponseStateSuccess) {
-                    NSLog(@"qquid=%@",user.uid);
-                    NSLog(@"qq%@",user.credential);
-                    NSLog(@"qq_token=%@",user.credential.token);
-                    NSLog(@"nickname=%@",user.nickname);
+                    YTHLog(@"qquid=%@",user.uid);
+                    YTHLog(@"qq%@",user.credential);
+                    YTHLog(@"qq_token=%@",user.credential.token);
+                    YTHLog(@"nickname=%@",user.nickname);
                     
                     
                     
                 }{
-                    NSLog(@"qq%@",error);
+                    YTHLog(@"qq%@",error);
                 }
             }];
         }

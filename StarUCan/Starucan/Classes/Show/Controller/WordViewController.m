@@ -131,7 +131,7 @@
 {
     //取得键盘的frame，UIKeyboardFrameEndUserInfoKey是键盘尺寸变化之后的尺寸
     NSDictionary *userInfo = notification.userInfo;
-    //    NSLog(@"%@",userInfo);
+    //    YTHLog(@"%@",userInfo);
     NSValue *boundsValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect frame = [boundsValue CGRectValue];
     
