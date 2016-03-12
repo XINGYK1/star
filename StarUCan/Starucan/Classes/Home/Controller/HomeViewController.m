@@ -100,10 +100,13 @@
 - (NSMutableArray *)imageURLs
 {
     if (!_imageURLs) {
+        
 #warning 首页轮播图的请求地址    http://192.168.30.25:8082/ythbk/app/home/getHomeJosn
         NSMutableArray *imageURLs = [NSMutableArray array];
         _imageURLs = imageURLs;
+    
     }
+    
     return _imageURLs;
 }
 
@@ -141,6 +144,7 @@
     }
     
     return _imagePlayerView;
+    
 }
 
 - (void)viewDidLoad {
