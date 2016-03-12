@@ -29,11 +29,21 @@
     CGFloat _kPhotoCollectionViewJJ;
     UICollectionView *_kPhotoCollectionView;
     UICollectionViewFlowLayout *_kPhotoCollectionViewFlowLayout;
-    UIScrollView *_kTitleView;
-    CGRect _kMarkRect;
-    NSMutableArray *_kTitleArrays;
+    
+    
     AppDelegate *myDelegate;
     VIPhotoView *_kVIPhotoView;
+    
+    
+    //标签
+    UIView *kMarkView;
+    UIScrollView *_kTitleView;
+    UILabel *kTitleLabel;
+    NSMutableArray *_kTitleArrays;
+    CGRect _kMarkRect;
+    UIImageView *MarkIV;
+
+    
     
     UIImageView *arrowImg;
     UIImageView *praiseImg;
@@ -55,7 +65,7 @@
 }
 //
 @property (nonatomic,strong) UIImageView *headImgV;//头像
-@property (nonatomic,strong) UIView      *headView;//头试图
+@property (nonatomic,strong) UIView      *headView;//头视图
 @property (nonatomic,strong) NSString    *urlString;
 @property (nonatomic,strong) UILabel     *nameLabel;//姓名
 @property (nonatomic,strong) UIImageView *sexImV;//性别
@@ -220,6 +230,7 @@
             [self _initViewBgDesc];
             [self requestTable];
             
+            //描述内容
             self.labelDesc.text = [showdic objectForKey:@"content"];
             self.labelDesc.backgroundColor =[UIColor clearColor];
             
@@ -231,6 +242,8 @@
             f=size.height;
             
             self.labelDesc.numberOfLines = 0;
+            self.labelDesc.textColor = YTHColor(140, 140, 140);
+            self.labelDesc.font = [UIFont systemFontOfSize:14];
             self.labelDesc.frame = CGRectMake(10, 5, YTHScreenWidth-20, size.height);
             //self.labelDesc.backgroundColor = [UIColor orangeColor];
             //            [self.labelDesc sizeToFit];
@@ -269,10 +282,15 @@
             }
             
             [self.bigImage sd_setImageWithURL:[NSURL URLWithString:[self.photoNameList objectAtIndex:0]]];
+            
             _bigString =[self.photoNameList objectAtIndex:0];
+            
             self.bigImage.userInteractionEnabled = YES;
+            
             UITapGestureRecognizer  * faceTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(alertFace:)];
+            
             faceTapGesture.numberOfTapsRequired = 1;
+            
             [self.bigImage addGestureRecognizer:faceTapGesture];
             
             
@@ -282,7 +300,7 @@
                 [self _initCollectionView];
                 _headView.frame = CGRectMake(0, 0, YTHScreenWidth, 400);
                 _viewBgDesc.frame = CGRectMake(0, CGRectGetMaxY(_kPhotoCollectionView.frame), YTHScreenWidth, size.height+10);
-                _headView.frame = CGRectMake(0, 0, YTHScreenWidth, 400+f+10);
+                _headView.frame = CGRectMake(0, 0, YTHScreenWidth, 400+f);
                 
                 _tableView.tableHeaderView = _headView;
                 
@@ -298,7 +316,8 @@
             [self _initLabel];
             
             if (_kTitleArrays.count>0) {
-                _headView.frame = CGRectMake(0, 0, YTHScreenWidth, 400+f+50);
+                
+                _headView.frame = CGRectMake(0, 0, YTHScreenWidth, 400+f+16);
                 
                 _tableView.tableHeaderView = _headView;
             }
@@ -357,6 +376,145 @@
     
 }
 
+#pragma mark 添加标签
+
+-(void)_initLabel
+{
+    //    _kTitleView = [[UIScrollView alloc]init];
+    //    if (self.photoNameList.count<1) {
+    //        _kTitleView.frame =CGRectMake(10, CGRectGetMaxY(self.viewBgDesc.frame)+10, YTHScreenWidth-20, 44);
+    //        self.headView.frame = CGRectMake(0, 0, YTHScreenWidth, 380);
+    //        [self.tableView reloadData];
+    //    }else{
+    //        _kTitleView.frame =CGRectMake(10, CGRectGetMaxY(_kPhotoCollectionView.frame)+10, YTHScreenWidth-20, 44);
+    //        self.headView.frame = CGRectMake(0, 0, YTHScreenWidth, 350+99);
+    //        [self.tableView reloadData];
+    //    }
+    //    _kTitleView.backgroundColor = [UIColor redColor];
+    //_kTitleView.backgroundColor = [UIColor yellowColor];
+    
+    
+    
+    _kMarkRect = CGRectMake(0,0,0,0);
+    
+    [self.headView addSubview:_kTitleView];
+    
+    for (NSString *title in _kTitleArrays) {
+        
+        [self _addTitleBtn:title andAdd:NO];
+        
+    }
+    
+}
+
+-(void)_addTitleBtn:(NSString *)title andAdd:(BOOL)add{
+    
+    if (!_kTitleView) {//创建标签View
+        
+        [MarkIV removeFromSuperview];
+        
+        _kTitleView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,CGRectGetMaxY(self.viewBgDesc.frame) , YTHScreenWidth, 50)];
+//        _kTitleView.backgroundColor = [UIColor yellowColor];
+        //        _kTitleView.backgroundColor = YTHBaseVCBackgroudColor;
+        
+        _headView.frame = CGRectMake(0, 0, YTHScreenWidth, CGRectGetMaxY(self.viewBgDesc.frame));
+        
+        _tableView.tableHeaderView = _headView;
+        
+        [self.headView addSubview:_kTitleView];
+        
+        MarkIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 12, 16, 16)];
+        
+        MarkIV.image = [UIImage imageNamed:@"lable_blue"];
+        
+        [_kTitleView addSubview:MarkIV];
+        
+        if (_kTitleView.height <40) {//只有一行标签时 不可滚动
+            
+            _kTitleView.scrollEnabled = NO;
+            
+        }else{
+            
+            _kTitleView.scrollEnabled = YES;
+        }
+    }
+
+    
+    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
+    
+    CGFloat length = [title boundingRectWithSize:CGSizeMake(320, 2000) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size.width;
+    
+    CGFloat xxxx = _kMarkRect.origin.x + _kMarkRect.size.width + length + 30;
+    
+    if (_kMarkRect.origin.y == 0) {
+        
+        _kMarkRect.origin.y = 10;
+        
+    }
+    if (xxxx>_kTitleView.frame.size.width-10) {
+        
+        _kMarkRect.origin.y += 37;
+        
+        _kMarkRect.origin.x = 0;
+        
+        _kMarkRect.size.width = 0;
+    }
+    kMarkView = [[UIView alloc]initWithFrame:CGRectMake(_kMarkRect.origin.x + _kMarkRect.size.width + 10, _kMarkRect.origin.y, length+20, 27)];
+    
+    
+    [_kTitleView addSubview:kMarkView];
+    
+    _kMarkRect = kMarkView.frame;
+    
+    //标签 Label
+    kTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, length+14, 20)];
+    
+    kTitleLabel.backgroundColor = YTHColor(120,190, 253);
+    
+    kTitleLabel.layer.cornerRadius = 6;
+    
+    kTitleLabel.layer.masksToBounds = YES;
+    
+    kTitleLabel.textAlignment = NSTextAlignmentCenter;
+    
+    kTitleLabel.font = [UIFont systemFontOfSize:12];
+    
+    kTitleLabel.textColor = [UIColor whiteColor];
+    
+    kTitleLabel.text = title;
+    
+    [kMarkView addSubview:kTitleLabel];
+    
+    //删除按钮
+    UIButton *kDeleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    kDeleteButton.frame = CGRectMake(CGRectGetMaxX(kMarkView.frame)-10, kMarkView.frame.origin.y-10, 20, 20);
+    //    [kDeleteButton setTitle:@"X" forState:UIControlStateNormal];
+    
+    [kDeleteButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
+    //    [kDeleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    //    [kDeleteButton addTarget:self action:@selector(btnDeleteClick:)];
+    
+    [kDeleteButton addTarget:self action:@selector(btnDeleteClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_kTitleView addSubview:kDeleteButton];
+    
+    if (add) {
+        
+        [_kTitleArrays addObject:title];
+        
+    }
+    
+    kDeleteButton.tag = [_kTitleArrays indexOfObject:title] + 999;
+    
+    _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
+    // self.viewLabel.height =kMarkView.height;
+    float h;
+    NSLog(@"frame标签%f",kMarkView.frame.origin.y);
+    
+}
+
+
 #pragma mark--创建底部 赞、更多、评论
 -(void)_initComment
 {
@@ -414,6 +572,8 @@
     
     commentButton.backgroundColor = YTHColor(255, 70, 80);
     
+    
+    
     [commentButton setTitle:@"评论" forState:UIControlStateNormal];
     
     [commentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -426,7 +586,9 @@
     
     //更多操作View
     moreView = [[UIView alloc]initWithFrame:CGRectMake(YTHScreenWidth/4-10, YTHScreenHeight-YTHAdaptation(46), YTHScreenWidth/4+20, 0)];
-    
+
+//    moreView = [[UIView alloc]initWithFrame:CGRectMake(YTHScreenWidth/4-10+(YTHScreenWidth/8+10), YTHScreenHeight-YTHAdaptation(46)-YTHAdaptation(40), 0, 0)];
+
     moreView.backgroundColor = YTHColor(255, 255, 255);
     
     moreView.layer.cornerRadius = 5;
@@ -447,6 +609,10 @@
     
     [collectButton setTitleColor:[UIColor grayColor]];
     
+    [collectButton addTarget:self action:@selector(clickMore:) forControlEvents:UIControlEventTouchUpInside];
+    
+    collectButton.tag = 1;
+    
     [moreView addSubview:collectButton];
     
     
@@ -457,6 +623,9 @@
     
     [shareButton setTitleColor:[UIColor grayColor]];
 
+    [shareButton addTarget:self action:@selector(clickMore:) forControlEvents:UIControlEventTouchUpInside];
+    
+    shareButton.tag = 2;
     
     [moreView addSubview:shareButton];
     
@@ -472,6 +641,79 @@
     
 }
 
+#pragma mark 收藏、分享
+-(void)clickMore:(UIButton *)btn{
+    
+    btn.selected = !btn.selected;
+    
+    if (btn.tag ==1) {     //收藏
+        if (btn.selected==YES) {//点击收藏
+
+            NSString *uS = Url;
+            
+            NSString *ueltext = [NSString stringWithFormat:@"v1/show/%@/collection", self.praiseuuid];
+            
+            NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
+            
+            NSLog(@"登录密码=%@",myDelegate.accessToken);
+            
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            
+            [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
+            
+            [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
+            
+            NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/%@/praise",uS, self.praiseuuid];
+           
+            NSLog(@"赞拼接之后%@",urlStr);
+            
+            [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                NSLog(@"赞%@",responseObject);
+                self.praiseJason = responseObject;
+                NSLog(@"赞 %ld",(long)[operation.response statusCode]);
+                if ([operation.response statusCode]/100==2)//赞 成功
+                {
+                    [praiseButton setImage:[UIImage imageNamed:@"icon_zan_red"] forState:UIControlStateNormal];
+                    
+                    
+                }
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"赞 %ld",(long)[operation.response statusCode]);
+                self.praiseJason = operation.responseObject;
+                NSLog(@"赞%@", self.praiseJason);
+                [MBProgressHUD showError:[self.praiseJason objectForKey:@"info"]];
+                
+                
+            }];
+
+            
+            
+            
+        
+        
+        }else{
+            
+            
+            
+            
+            
+            
+        }
+        
+        
+        
+    }else{                 //分享
+        
+        
+        
+    
+    
+    }
+    
+    
+}
 
 #pragma mark -- 点击 赞、 更多、评论
 -(void)buttonCommentBtn:(UIButton *)btn
@@ -564,16 +806,17 @@
         btn.selected = !btn.selected;
         if (btn.selected==YES) {//点击更多
         
-        [UIView animateWithDuration:.5 animations:^{
+        [UIView animateWithDuration:.4 animations:^{
 
            moreView.frame = CGRectMake(YTHScreenWidth/4-10, YTHScreenHeight-YTHAdaptation(40)-100, YTHScreenWidth/4+20, YTHAdaptation(40)*2) ;
 
         }];
             
         }else{  //再次点击更多
-        [UIView animateWithDuration:.5 animations:^{
+        [UIView animateWithDuration:.4 animations:^{
             moreView.frame = CGRectMake(YTHScreenWidth/4-10, YTHScreenHeight-YTHAdaptation(46), YTHScreenWidth/4+20, 0);
-
+  
+//            moreView.frame = CGRectMake(YTHScreenWidth/4-10+(YTHScreenWidth/8+10), YTHScreenHeight-YTHAdaptation(46)-YTHAdaptation(40), 0, 0);
         
         }];
          
@@ -590,6 +833,8 @@
     }
     
 }
+
+//初始化头View
 -(void)_initHeadView
 {
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 400)];
@@ -609,7 +854,7 @@
     [self.headView addSubview:headImgV];
     //名字
     UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(YTHAdaptation(60), YTHAdaptation(10), YTHAdaptation(50),YTHAdaptation(20))];
-    nameLabel.text = @"顾梦慈";
+    nameLabel.text = @"gmc";
     nameLabel.font = [UIFont systemFontOfSize:14];
     nameLabel.textColor = YTHColor(91, 91, 91);
    // nameLabel.backgroundColor = [UIColor yellowColor];
@@ -630,6 +875,7 @@
 //    expertLabel.font = [UIFont systemFontOfSize:12];
 //    expertLabel.textColor = [UIColor blackColor];
 //    [expertImage addSubview:expertLabel];
+    
     //学校
     UILabel *uniserLabel = [[UILabel alloc]initWithFrame:CGRectMake(YTHAdaptation(60), YTHAdaptation(40), YTHAdaptation(200), YTHAdaptation(30))];
     uniserLabel.text = @"";
@@ -651,7 +897,12 @@
     [self.headView addSubview:addAttionBtn];
     //大图
     UIImageView *bigImage = [[UIImageView alloc]initWithFrame:CGRectMake(YTHAdaptation(10), CGRectGetMaxY(uniserLabel.frame)+YTHAdaptation(10), YTHScreenWidth-YTHAdaptation(20), YTHAdaptation(175))];
+    
+//    bigImage.contentMode = UIViewContentModeScaleAspectFit;
+//    bigImage.contentMode = UIViewContentModeScaleAspectFill;
+    
     self.bigImage = bigImage;
+
     [self.headView addSubview:bigImage];
     //    self.photoNameList = [[NSMutableArray alloc] initWithObjects:@"0.tiff",@"1.tiff",@"2.tiff",@"3.tiff",@"4.tiff",nil];
 }
@@ -702,28 +953,8 @@
     
 }
 
-#pragma mark-标签
--(void)_initLabel
-{
-    //    _kTitleView = [[UIScrollView alloc]init];
-    //    if (self.photoNameList.count<1) {
-    //        _kTitleView.frame =CGRectMake(10, CGRectGetMaxY(self.viewBgDesc.frame)+10, YTHScreenWidth-20, 44);
-    //        self.headView.frame = CGRectMake(0, 0, YTHScreenWidth, 380);
-    //        [self.tableView reloadData];
-    //    }else{
-    //        _kTitleView.frame =CGRectMake(10, CGRectGetMaxY(_kPhotoCollectionView.frame)+10, YTHScreenWidth-20, 44);
-    //        self.headView.frame = CGRectMake(0, 0, YTHScreenWidth, 350+99);
-    //        [self.tableView reloadData];
-    //    }
-    //    _kTitleView.backgroundColor = [UIColor redColor];
-    //_kTitleView.backgroundColor = [UIColor yellowColor];
-    _kMarkRect = CGRectMake(0,0,0,0);
-    [self.headView addSubview:_kTitleView];
-    for (NSString *title in _kTitleArrays) {
-        [self _addTitleBtn:title andAdd:NO];
-    }
-    
-}
+
+
 #pragma mark - UITableView
 -(void)_initTableView
 {
@@ -1033,58 +1264,6 @@
     }
 }
 
--(void)_addTitleBtn:(NSString *)title andAdd:(BOOL)add{
-    if (!_kTitleView) {
-        _kTitleView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,CGRectGetMaxY(self.viewBgDesc.frame) , YTHScreenWidth, 44)];
-        _kTitleView.backgroundColor = [UIColor yellowColor];
-        //_kTitleView.backgroundColor = YTHBaseVCBackgroudColor;
-        _headView.frame = CGRectMake(0, 0, YTHScreenWidth, CGRectGetMaxY(self.viewBgDesc.frame));
-        
-        _tableView.tableHeaderView = _headView;
-        [self.headView addSubview:_kTitleView];
-    }
-    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
-    CGFloat length = [title boundingRectWithSize:CGSizeMake(320, 2000) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size.width;
-    CGFloat xxxx = _kMarkRect.origin.x + _kMarkRect.size.width + length + 30;
-    if (_kMarkRect.origin.y == 0) {
-        _kMarkRect.origin.y = 10;
-    }
-    if (xxxx>_kTitleView.frame.size.width-10) {
-        _kMarkRect.origin.y += 37;
-        _kMarkRect.origin.x = 0;
-        _kMarkRect.size.width = 0;
-    }
-    UIView *kMarkView = [[UIView alloc]initWithFrame:CGRectMake(_kMarkRect.origin.x + _kMarkRect.size.width + 10, _kMarkRect.origin.y, length+20, 27)];
-    [_kTitleView addSubview:kMarkView];
-    _kMarkRect = kMarkView.frame;
-    UILabel *kTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, length+20, 27)];
-    kTitleLabel.backgroundColor = YTHColor(169, 214, 255);
-    kTitleLabel.layer.cornerRadius = 4;
-    kTitleLabel.layer.masksToBounds = YES;
-    kTitleLabel.textAlignment = NSTextAlignmentCenter;
-    kTitleLabel.font = [UIFont systemFontOfSize:12];
-    kTitleLabel.textColor = [UIColor blackColor];
-    kTitleLabel.text = title;
-    [kMarkView addSubview:kTitleLabel];
-    UIButton *kDeleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    kDeleteButton.frame = CGRectMake(CGRectGetMaxX(kMarkView.frame)-10, kMarkView.frame.origin.y-10, 20, 20);
-    //    [kDeleteButton setTitle:@"X" forState:UIControlStateNormal];
-    [kDeleteButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
-    //    [kDeleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    //    [kDeleteButton addTarget:self action:@selector(btnDeleteClick:)];
-    [kDeleteButton addTarget:self action:@selector(btnDeleteClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_kTitleView addSubview:kDeleteButton];
-    if (add) {
-        [_kTitleArrays addObject:title];
-    }
-    kDeleteButton.tag = [_kTitleArrays indexOfObject:title] + 999;
-    _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
-    // self.viewLabel.height =kMarkView.height;
-    float h;
-    NSLog(@"frame标签%f",kMarkView.frame.origin.y);
-    
-}
-
 #pragma mark -collection代理
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -1098,10 +1277,14 @@
 {
     return self.photoNameList.count;
 }
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     CGRect frame = self.view.bounds;
+   
     UIImageView *aimg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    
     [aimg sd_setImageWithURL:self.photoNameList[indexPath.row] placeholderImage:nil];
+    
     [self magnifyingPhoto:aimg.image];
     
 }
@@ -1109,22 +1292,39 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     kSuggessPhotoCollectionViewCell *kPhotoCollectionViewCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"kSuggessPhotoCollectionViewCellId"  forIndexPath:indexPath];
+    
     kPhotoCollectionViewCell.kSuggessPhotoCollectionViewCellDelegate = self;
+    
     if (indexPath.row==self.photoNameList.count) {
+        
         [kPhotoCollectionViewCell setPhotoImage:self.photoNameList[indexPath.row] andDeleteBtnHidden:NO];
+    
     }else{
+        
         [kPhotoCollectionViewCell setPhotoImage:self.photoNameList[indexPath.row] andDeleteBtnHidden:YES];
     }
     return kPhotoCollectionViewCell;
 }
+
+//小图 点击看大图
 -(void)magnifyingPhoto:(UIImage *)image{
-    _kVIPhotoView = [[VIPhotoView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) andImage:image];
+    
+    self.navigationController.navigationBarHidden = YES;
+
+    _kVIPhotoView = [[VIPhotoView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight) andImage:image];
+    
     _kVIPhotoView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    
     [_kVIPhotoView setContentMode:UIViewContentModeScaleAspectFit];
+    
     _kVIPhotoView.alpha = 0;
+    
     [self.view addSubview:_kVIPhotoView];
+    
     [UIView animateWithDuration:0.3 animations:^{
+    
         _kVIPhotoView.alpha = 1;
+        
     } completion:^(BOOL finished) {
         //创建一个点击手势
         UITapGestureRecognizer*kVIPhotoViewTap=[[UITapGestureRecognizer alloc]init];
@@ -1138,14 +1338,27 @@
         [_kVIPhotoView addGestureRecognizer:kVIPhotoViewTap];
     }];
 }
+//关闭图片放大
 -(void)closeVIPhotoView{
+    
+    self.navigationController.navigationBarHidden = NO;
+
+    
     [_kVIPhotoView removeFromSuperview];
+    
     _kVIPhotoView = nil;
 }
+//秀第一个图片 点击看大图
 - (void)alertFace:(UITapGestureRecognizer *)gesture {
-    CGRect frame = self.view.bounds;
-    UIImageView *aimg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    
+    self.navigationController.navigationBarHidden = YES;
+    
+  //  CGRect frame = self.view.bounds;
+    
+    UIImageView *aimg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight)];
+    
     [aimg sd_setImageWithURL:_bigString placeholderImage:nil];
+    
     [self magnifyingPhoto:aimg.image];
     
 }

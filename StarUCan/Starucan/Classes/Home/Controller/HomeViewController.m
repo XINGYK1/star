@@ -58,27 +58,29 @@
 //视频view
 @property (nonatomic, strong)UIView *viewVideo;
 @property (nonatomic, strong) ImagePlayerView *imagePlayerView;
+
 @property (nonatomic, strong) NSMutableArray *imageURLs;
+
 @property (nonatomic,strong)NSDictionary *cycleDict;
 
 
 //
 @property(nonatomic,strong)UIImageView *headImgV;//头像
-@property(nonatomic,strong)UIView *headView;//头试图
+@property(nonatomic,strong)UIView *headView;//头视图
 @property(nonatomic,strong)NSString *urlString;
 @property(nonatomic,strong)UILabel *nameLabel;//姓名
 @property(nonatomic,strong)UIImageView *sexImV;//性别
 @property(nonatomic,strong)UILabel *uniserLabel;//学校
-@property(nonatomic,strong)UIImageView *bigImage;
+@property(nonatomic,strong)UIImageView *bigImage;//大图
 @property(nonatomic,strong)UIView *viewBgDesc;//文字详情view
-@property(nonatomic,strong)UILabel *labelDesc;
+@property(nonatomic,strong)UILabel *labelDesc;//文字详情内容
 @property(nonatomic,strong)NSDictionary *attenDic;
-@property(nonatomic,assign)UITableView *tableview;
+@property(nonatomic,strong)UITableView *tableview;
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,strong)NSDictionary *commentJason;
-@property(nonatomic,strong)UIButton *buttonMeet;
-@property(nonatomic,strong)UIButton *buttonPoint;
-@property(nonatomic,strong)UIButton *buttonAtten;
+@property(nonatomic,strong)UIButton *buttonPoint;//焦点 按钮
+@property(nonatomic,strong)UIButton *buttonMeet;//遇见 按钮
+@property(nonatomic,strong)UIButton *buttonAtten;//关注 按钮
 
 
 @end
@@ -119,7 +121,7 @@
 - (ImagePlayerView *)imagePlayerView
 {
     
-    //imagePlayerView封装好的轮播试图。
+    //imagePlayerView封装好的轮播视图。
     if (!_imagePlayerView) {
         ImagePlayerView *imagePlayerView= [[ImagePlayerView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHAdaptation(175))];//175
         
@@ -178,6 +180,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
     
 }
 
@@ -436,9 +439,13 @@
 }
 
 -(void)tihuan:(YHTHomeImageModel *)model andSize:(CGSize)size{
+    
     YTHLog(@"执行");
+    
     model.width = size.width;
+    
     model.height = size.height;
+    
     [self performSelector:@selector(collectReload) withObject:self afterDelay:0.1];
     
 }
@@ -519,7 +526,7 @@
     YHTHomeImageModel *model = self.dataArrays[indexPath.row];
 
   //  NSLog(@"model宽：%f  model高：%f  屏宽：%f",model.width,model.height,YTHScreenWidth);
->>>>>>> Stashed changes
+
     return model.height * width / model.width;
 }
 - (HMWaterflowLayoutSetting)settingInWaterflowLayout:(HMWaterflowLayout *)layout

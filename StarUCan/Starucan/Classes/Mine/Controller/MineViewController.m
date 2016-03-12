@@ -432,7 +432,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section==0&&indexPath.row==0) {
+    if (indexPath.section==0&&indexPath.row==0) {//我的秀 跳转崩溃
                 MyShowViewController *myVC = [[MyShowViewController alloc]init];
                 [self.navigationController pushViewController:myVC animated:YES];
      //另外一种展示

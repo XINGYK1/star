@@ -27,8 +27,11 @@
 #define BWMDongTaiZhi(dongTaiZhi) (dongTaiZhi/320.0f)*[[UIScreen mainScreen]bounds].size.width
 - (void)viewWillAppear:(BOOL)animated {
     
+    //self.navigationController.navigationBarHidden = YES;
+    
     //调用父类的方法
     [super viewWillAppear:animated];
+    
     [self _initCreat];
     
     
@@ -37,14 +40,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];;
-    UIView *naView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, BWMWidth, 55)];
-    naView.backgroundColor = NaM;
-    [self.view addSubview:naView];
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 19, 44, 34);
-    [backBtn setImage:[UIImage imageNamed:@"left"] forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(backBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [naView addSubview:backBtn];
+    
+//    UIView *naView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, BWMWidth, 55)];
+//    naView.backgroundColor = NaM;
+//    [self.view addSubview:naView];
+//    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    backBtn.frame = CGRectMake(0, 19, 44, 34);
+//    [backBtn setImage:[UIImage imageNamed:@"left"] forState:UIControlStateNormal];
+//    [backBtn addTarget:self action:@selector(backBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    [naView addSubview:backBtn];
+   
     [self _initCreat];
 }
 

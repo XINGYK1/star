@@ -19,7 +19,7 @@
     UITextView *editView;
     
     NSMutableArray *_kTitleArrays;
-    UIScrollView *_kTitleView;
+    UIScrollView *_kTitleView;//标签View
     UILabel *labelText;//秀逼格文字内容
     
     CGRect _kMarkRect;
@@ -141,10 +141,7 @@
     [addLabelBtn addTarget:self action:@selector(addLabelButton:) forControlEvents:UIControlEventTouchUpInside];
     [viewLabel addSubview:addLabelBtn];
     
-   
-    
 
-   
 }
 
 // 初始化是否匿名发布 viewLimit
@@ -293,7 +290,9 @@
         _kMarkRect.size.width = 0;
     }
     UIView *kMarkView = [[UIView alloc]initWithFrame:CGRectMake(_kMarkRect.origin.x + _kMarkRect.size.width + 10, _kMarkRect.origin.y, length+20, 27)];
+    
     [_kTitleView addSubview:kMarkView];
+    
     _kMarkRect = kMarkView.frame;
     UILabel *kTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, length+20, 27)];
     kTitleLabel.backgroundColor = YTHColor(169, 214, 255);
