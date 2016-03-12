@@ -87,11 +87,11 @@
     // NSString *text = _textView.text;
     NSString *ueltext = [NSString stringWithFormat:@"v1/comment/%@/comment",self.pinglun];
     NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
-    NSLog(@"登录账号%@",myDelegate.account);
+    YTHLog(@"登录账号%@",myDelegate.account);
     
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     //内容
@@ -101,19 +101,19 @@
     md[@"type"]=@"1";
     md[@"replyUuid"]=self.uuid;
     
-    NSLog(@"replyUuid----%@",self.uuid);
-    NSLog(@"authUuid---%@",self.authorUuid);
+    YTHLog(@"replyUuid----%@",self.uuid);
+    YTHLog(@"authUuid---%@",self.authorUuid);
     
     
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comment",uS,self.pinglun];
     [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.answerDic = responseObject;
-        NSLog(@"回复评论 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"回复评论 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             
-            NSLog(@"回复返回：%@",self.answerDic);
+            YTHLog(@"回复返回：%@",self.answerDic);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"requestTable" object:nil userInfo:nil];
             [self.navigationController popViewControllerAnimated:YES];
             
@@ -121,9 +121,9 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"回复评论错误 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"回复评论错误 %ld",(long)[operation.response statusCode]);
         self.answerDic = operation.responseObject;
-        NSLog(@"回复发表评论%@", self.answerDic);
+        YTHLog(@"回复发表评论%@", self.answerDic);
         [MBProgressHUD showError:[self.answerDic objectForKey:@"info"]];
         
         

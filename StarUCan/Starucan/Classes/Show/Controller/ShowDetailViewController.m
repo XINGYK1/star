@@ -98,7 +98,7 @@
     // Do any additional setup after loading the view.
   
     self.title= @"详情";
-    NSLog(@"uuid详情%@",self.uuid);
+    YTHLog(@"uuid详情%@",self.uuid);
     if (!myDelegate) {
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
@@ -149,7 +149,7 @@
 {
     NSString *url1 = @"v1/comment";
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
     
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -158,13 +158,13 @@
     
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comments",uS,_pinglun];
-    NSLog(@"拼接之后%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //评论内容
-        NSLog(@"评论%@",responseObject);
+        YTHLog(@"评论%@",responseObject);
         self.commentJason =responseObject;
 //评论返回状态码
-        NSLog(@"评论 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"评论 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             self.data = [[NSMutableArray alloc]init];
@@ -182,11 +182,11 @@
         }
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"评论错误 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"评论错误 %ld",(long)[operation.response statusCode]);
         self.commentJason = operation.responseObject;
-        NSLog(@"登录%@", self.commentJason);
+        YTHLog(@"登录%@", self.commentJason);
         [MBProgressHUD showError:[self.commentJason objectForKey:@"info"]];
-        NSLog(@"详情获取错误------%@",[self.commentJason objectForKey:@"info"]);
+        YTHLog(@"详情获取错误------%@",[self.commentJason objectForKey:@"info"]);
         
     }];
     
@@ -198,7 +198,7 @@
     
     NSString *url1 = @"v1/show";
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -207,13 +207,13 @@
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/%@",uS,self.uuid];
-    NSLog(@"详情拼接之后%@",urlStr);
+    YTHLog(@"详情拼接之后%@",urlStr);
     
     
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"详情%@",responseObject);
+        YTHLog(@"详情%@",responseObject);
         self.jason = responseObject;
-        NSLog(@"详情 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"详情 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             
@@ -349,7 +349,7 @@
             
             //头像
             self.urlString = [[showdic objectForKey:@"user"]objectForKey:@"avatar"];
-            NSLog(@"头像%@",self.urlString);
+            YTHLog(@"头像%@",self.urlString);
             
             if (!IsNilOrNull([[showdic objectForKey:@"user"]objectForKey:@"avatar"])&&!self.urlString.length==0) {
                 [self.headImgV sd_setImageWithURL:[NSURL URLWithString:self.urlString]];
@@ -367,9 +367,9 @@
         [_kPhotoCollectionView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 #warning statusCode 500
-        NSLog(@"详情错误返回状态码 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"详情错误返回状态码 %ld",(long)[operation.response statusCode]);
         self.jason = operation.responseObject;
-        NSLog(@"登录%@", self.jason);
+        YTHLog(@"登录%@", self.jason);
         [MBProgressHUD showError:[self.jason objectForKey:@"info"]];
     }];
     
@@ -510,7 +510,7 @@
     _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
     // self.viewLabel.height =kMarkView.height;
     float h;
-    NSLog(@"frame标签%f",kMarkView.frame.origin.y);
+    YTHLog(@"frame标签%f",kMarkView.frame.origin.y);
     
 }
 
@@ -655,7 +655,7 @@
             
             NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
             
-            NSLog(@"登录密码=%@",myDelegate.accessToken);
+            YTHLog(@"登录密码=%@",myDelegate.accessToken);
             
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             
@@ -665,13 +665,13 @@
             
             NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/%@/praise",uS, self.praiseuuid];
            
-            NSLog(@"赞拼接之后%@",urlStr);
+            YTHLog(@"赞拼接之后%@",urlStr);
             
             [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
-                NSLog(@"赞%@",responseObject);
+                YTHLog(@"赞%@",responseObject);
                 self.praiseJason = responseObject;
-                NSLog(@"赞 %ld",(long)[operation.response statusCode]);
+                YTHLog(@"赞 %ld",(long)[operation.response statusCode]);
                 if ([operation.response statusCode]/100==2)//赞 成功
                 {
                     [praiseButton setImage:[UIImage imageNamed:@"icon_zan_red"] forState:UIControlStateNormal];
@@ -680,9 +680,9 @@
                 }
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"赞 %ld",(long)[operation.response statusCode]);
+                YTHLog(@"赞 %ld",(long)[operation.response statusCode]);
                 self.praiseJason = operation.responseObject;
-                NSLog(@"赞%@", self.praiseJason);
+                YTHLog(@"赞%@", self.praiseJason);
                 [MBProgressHUD showError:[self.praiseJason objectForKey:@"info"]];
                 
                 
@@ -719,11 +719,11 @@
 -(void)buttonCommentBtn:(UIButton *)btn
 {
     
-    NSLog(@"-----------------------点击了底部某个按钮----------------");
+    YTHLog(@"-----------------------点击了底部某个按钮----------------");
 
     if(btn.tag==10){
         
-        NSLog(@"-----------------------点击了赞----------------");
+        YTHLog(@"-----------------------点击了赞----------------");
 
 
         btn.selected = !btn.selected;
@@ -732,18 +732,18 @@
             
             NSString *ueltext = [NSString stringWithFormat:@"v1/show/%@/praise", self.praiseuuid];
             NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-            NSLog(@"登录密码=%@",myDelegate.accessToken);
+            YTHLog(@"登录密码=%@",myDelegate.accessToken);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
             [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
             
             NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/%@/praise",uS, self.praiseuuid];
-            NSLog(@"赞拼接之后%@",urlStr);
+            YTHLog(@"赞拼接之后%@",urlStr);
             [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
-                NSLog(@"赞%@",responseObject);
+                YTHLog(@"赞%@",responseObject);
                 self.praiseJason = responseObject;
-                NSLog(@"赞 %ld",(long)[operation.response statusCode]);
+                YTHLog(@"赞 %ld",(long)[operation.response statusCode]);
                 if ([operation.response statusCode]/100==2)//赞 成功
                 {
                     [praiseButton setImage:[UIImage imageNamed:@"icon_zan_red"] forState:UIControlStateNormal];
@@ -752,9 +752,9 @@
                 }
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"赞 %ld",(long)[operation.response statusCode]);
+                YTHLog(@"赞 %ld",(long)[operation.response statusCode]);
                 self.praiseJason = operation.responseObject;
-                NSLog(@"赞%@", self.praiseJason);
+                YTHLog(@"赞%@", self.praiseJason);
                 [MBProgressHUD showError:[self.praiseJason objectForKey:@"info"]];
                 
                 
@@ -767,18 +767,18 @@
             
             NSString *ueltext = [NSString stringWithFormat:@"v1/show/%@/praise", self.praiseuuid];
             NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-            NSLog(@"登录密码=%@",myDelegate.accessToken);
+            YTHLog(@"登录密码=%@",myDelegate.accessToken);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
             [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
             
             NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/%@/praise",uS, self.praiseuuid];
-            NSLog(@"赞拼接之后%@",urlStr);
+            YTHLog(@"赞拼接之后%@",urlStr);
             
             [manager DELETE:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"赞%@",responseObject);
+                YTHLog(@"赞%@",responseObject);
                 self.praiseJason = responseObject;
-                NSLog(@"赞 %ld",(long)[operation.response statusCode]);
+                YTHLog(@"赞 %ld",(long)[operation.response statusCode]);
                 if ([operation.response statusCode]/100==2)
                 {
                     
@@ -789,9 +789,9 @@
                 
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"赞 %ld",(long)[operation.response statusCode]);
+                YTHLog(@"赞 %ld",(long)[operation.response statusCode]);
                 self.praiseJason = operation.responseObject;
-                NSLog(@"赞%@", self.praiseJason);
+                YTHLog(@"赞%@", self.praiseJason);
                 [MBProgressHUD showError:[self.praiseJason objectForKey:@"info"]];
                 
                 
@@ -801,7 +801,7 @@
     }else if (btn.tag==15)//点击更多
         
     {
-        NSLog(@"-----------------------点击了更多----------------");
+        YTHLog(@"-----------------------点击了更多----------------");
 
         btn.selected = !btn.selected;
         if (btn.selected==YES) {//点击更多
@@ -823,7 +823,7 @@
         }
     }else if (btn.tag==20)//点击评论
     {
-        NSLog(@"-----------------------点击了评论----------------");
+        YTHLog(@"-----------------------点击了评论----------------");
 
         
         CommentViewController *commentVC = [[CommentViewController alloc]init];
@@ -982,18 +982,18 @@
         
         NSString *ueltext = [NSString stringWithFormat:@"v1/user/%@/follow",_attenuuid];
         NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-        NSLog(@"登录密码=%@",myDelegate.accessToken);
+        YTHLog(@"登录密码=%@",myDelegate.accessToken);
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
         [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
         
         NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@/follow",uS,_attenuuid];
-        NSLog(@"关注拼接之后%@",urlStr);
+        YTHLog(@"关注拼接之后%@",urlStr);
         //用户id 传过去
         [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"关注%@",responseObject);
+            YTHLog(@"关注%@",responseObject);
             self.attenJason = responseObject;
-            NSLog(@"关注 %ld",(long)[operation.response statusCode]);
+            YTHLog(@"关注 %ld",(long)[operation.response statusCode]);
             if ([operation.response statusCode]/100==2)
             {
                 [self.addAttionBtn setTitle:@"已关注" forState:UIControlStateNormal];
@@ -1001,9 +1001,9 @@
                 
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"关注 %ld",(long)[operation.response statusCode]);
+            YTHLog(@"关注 %ld",(long)[operation.response statusCode]);
             self.attenJason = operation.responseObject;
-            NSLog(@"关注%@", self.attenJason);
+            YTHLog(@"关注%@", self.attenJason);
             [MBProgressHUD showError:[self.attenJason objectForKey:@"info"]];
             
         }];
@@ -1013,7 +1013,7 @@
         NSString *uS = Url;
         NSString *ueltext = [NSString stringWithFormat:@"v1/user/%@/follow",_attenuuid];
         NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-        NSLog(@"登录密码=%@",myDelegate.accessToken);
+        YTHLog(@"登录密码=%@",myDelegate.accessToken);
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
         [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
@@ -1023,9 +1023,9 @@
         
         
         [manager DELETE:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"取消关注%@",responseObject);
+            YTHLog(@"取消关注%@",responseObject);
             self.attenJason = responseObject;
-            NSLog(@"取消关注 %ld",(long)[operation.response statusCode]);
+            YTHLog(@"取消关注 %ld",(long)[operation.response statusCode]);
             if ([operation.response statusCode]/100==2)
             {
                 [self.addAttionBtn setTitle:@"取消关注" forState:UIControlStateNormal];
@@ -1035,9 +1035,9 @@
             
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"取消关注 %ld",(long)[operation.response statusCode]);
+            YTHLog(@"取消关注 %ld",(long)[operation.response statusCode]);
             self.attenJason = operation.responseObject;
-            NSLog(@"取消关注%@", self.attenJason);
+            YTHLog(@"取消关注%@", self.attenJason);
             [MBProgressHUD showError:[self.attenJason objectForKey:@"info"]];
             
         }];
@@ -1175,26 +1175,26 @@
         
   
     //赞列表
-    NSLog(@"赞列表");
+    YTHLog(@"赞列表");
     NSString *userUuid =_pinglun;
     NSString *url1 = [NSString stringWithFormat:@"v1/show/%@/praises",userUuid];
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/%@/praises",uS,_pinglun];
-    NSLog(@"赞列表拼接之后%@",urlStr);
+    YTHLog(@"赞列表拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@" 赞列表%ld",(long)[operation.response statusCode]);
+        YTHLog(@" 赞列表%ld",(long)[operation.response statusCode]);
         _sourceArray = [[NSMutableArray alloc]init];
         
         
         if ([operation.response statusCode]/100==2)
         {
-            NSLog(@"赞列表%@",responseObject);
+            YTHLog(@"赞列表%@",responseObject);
             NSArray *usersArray = [responseObject objectForKey:@"users"];
             for (NSDictionary *dict in usersArray) {
                 ShowDetailModel *model = [[ShowDetailModel alloc]initContentWithDic:dict];
@@ -1204,7 +1204,7 @@
         [self.tableView reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"赞列表错误 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"赞列表错误 %ld",(long)[operation.response statusCode]);
         _praiseListJason = operation.responseObject;
         [MBProgressHUD showError:[_praiseListJason objectForKey:@"info"]];
         

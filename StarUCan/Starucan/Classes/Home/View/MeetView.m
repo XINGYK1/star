@@ -83,8 +83,8 @@
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     md[@"universityId"]=myDelegate.universityId;
     md[@"labelId"]=labelId;
-    NSLog(@"id学校%@",myDelegate.universityId);
-    NSLog(@"id标签%@",labelId);
+    YTHLog(@"id学校%@",myDelegate.universityId);
+    YTHLog(@"id标签%@",labelId);
     NSString *url = Url;
     NSString *urlString = [NSString stringWithFormat:@"%@v1/show/meets",url];
     
@@ -92,10 +92,10 @@
     [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *jasonDic = responseObject;
         
-        NSLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
         
         if ([operation.response statusCode]/100==2) {
-            NSLog(@"瀑布流%@",jasonDic);
+            YTHLog(@"瀑布流%@",jasonDic);
             
             self.dataArrays = [NSMutableArray array];
             NSArray *showArry = [jasonDic objectForKey:@"shows"];
@@ -116,7 +116,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        NSLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"瀑布流error code %ld",(long)[operation.response statusCode]);
         
         self.jason = operation.responseObject;
         
@@ -138,9 +138,9 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //self.jason =responseObject;
         
-        NSLog(@"标签是--------%@",responseObject);
+        YTHLog(@"标签是--------%@",responseObject);
         
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         if (!_kIdMutabDict) {
             _kIdMutabDict = [[NSMutableDictionary alloc]init];
@@ -167,7 +167,7 @@
         [_kCatTableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        NSLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
         
     }];
     _kCatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, YTHScreenWidth, 300) style:UITableViewStylePlain];
@@ -240,12 +240,12 @@
     if (btn.tag==1) {
         
         //下拉页面的收放。
-        NSLog(@"所有类别");
+        YTHLog(@"所有类别");
         
         [self bringSubviewToFront:self.catScrollView];
         
         if (self.catScrollView.frame.size.height == 0) {
-            NSLog(@"点击");
+            YTHLog(@"点击");
             [lineIV removeFromSuperview];
             
             _kCatTableView.frame = CGRectMake(0, 0, YTHScreenWidth, 0);
@@ -284,7 +284,7 @@
         
     }else if (btn.tag)
     {
-        NSLog(@"大学");
+        YTHLog(@"大学");
                if ([self.delagate respondsToSelector:@selector(universityBtn:)]) {
             [self.delagate universityBtn:self];
         }
@@ -307,10 +307,10 @@
     NSString *urlString = [NSString stringWithFormat:@"%@v1/banner",url];
     [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *jasonDic = responseObject;
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
             
-            NSLog(@"轮播图%@",jasonDic);
+            YTHLog(@"轮播图%@",jasonDic);
             NSArray *cinemaList = [jasonDic objectForKey:@"banners"];
             // [self.imageURLs removeAllObjects];
             for (NSDictionary *dict in cinemaList) {
@@ -321,7 +321,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
     }];
     
@@ -353,7 +353,7 @@
     return _digUpArray.count;
 }
 - (void)didScrollToPage:(NSInteger)pageNumber inFlowView:(PagedFlowView *)flowView {
-    NSLog(@"Scrolled to page # %ld", (long)pageNumber);
+    YTHLog(@"Scrolled to page # %ld", (long)pageNumber);
 }
 //返回给某列使用的View
 - (UIView *)flowView:(PagedFlowView *)flowView cellForPageAtIndex:(NSInteger)index{
@@ -400,7 +400,7 @@
 //    return size;
 //}
 -(void)tihuan:(YHTHomeImageModel *)model andSize:(CGSize)size{
-    NSLog(@"执行");
+    YTHLog(@"执行");
     model.width = size.width;
     model.height = size.height;
     [self performSelector:@selector(collectReload) withObject:self afterDelay:0.1];
@@ -414,7 +414,7 @@
 #pragma mark - <HMWaterflowLayoutDelegate>
 - (CGFloat)waterflowLayout:(HMWaterflowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath withItemWidth:(CGFloat)width {
     YHTHomeImageModel *model = self.dataArrays[indexPath.row];
-    NSLog(@"%f  %f  %f",model.width,model.height,YTHScreenWidth);
+    YTHLog(@"%f  %f  %f",model.width,model.height,YTHScreenWidth);
     return model.height * width / model.width;
 }
 - (HMWaterflowLayoutSetting)settingInWaterflowLayout:(HMWaterflowLayout *)layout
@@ -444,7 +444,7 @@
     static NSString *identify = @"cell";
     YHTHomeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identify forIndexPath:indexPath];
     if (!cell) {
-        NSLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
+        YTHLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
     cell.delegate = self;
     cell.model = self.dataArrays[indexPath.row];
@@ -454,7 +454,7 @@
 
 //头部显示的内容
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"头部显示");
+    YTHLog(@"头部显示");
     if (kind == UICollectionElementKindSectionHeader) {
         YHTHomeHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView" forIndexPath:indexPath];
         [headerView addSubview:self.collectionViewHeaderView];//头部广告栏
@@ -464,7 +464,7 @@
 }
 - (void)buttonUniser:(NSNotification*)notification
 {
-    NSLog(@"学校%@",myDelegate.university_name);
+    YTHLog(@"学校%@",myDelegate.university_name);
     
     [_unisverButton setTitle:myDelegate.university_name forState:UIControlStateNormal];
     [self _initDataArray];
@@ -511,7 +511,7 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [_allButton setTitle:cell.textLabel.text forState:UIControlStateNormal];
     labelId = [_kIdMutabDict objectForKey:_kCatTableViewTitles[indexPath.row]];
-    NSLog(@"标签id%@",labelId);
+    YTHLog(@"标签id%@",labelId);
     [self kCatkCatTabelViewFooterBtnClick];
     [self _initDataArray];
     // [self catTableViewDidSelect:indexPath.row];

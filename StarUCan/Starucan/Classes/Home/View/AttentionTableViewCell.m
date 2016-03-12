@@ -319,7 +319,7 @@
     _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
     // self.viewLabel.height =kMarkView.height;
    // float h;
-    NSLog(@"frame标签%f",kMarkView.frame.origin.y);
+    YTHLog(@"frame标签%f",kMarkView.frame.origin.y);
     
     
 }
@@ -455,7 +455,7 @@
 //    _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
 //    // self.viewLabel.height =kMarkView.height;
 //    float h;
-//    NSLog(@"frame标签%f",kMarkView.frame.origin.y);
+//    YTHLog(@"frame标签%f",kMarkView.frame.origin.y);
 //
 //    
 //}

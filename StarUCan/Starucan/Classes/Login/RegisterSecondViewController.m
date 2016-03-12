@@ -77,7 +77,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         
     }];
     

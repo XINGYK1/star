@@ -88,12 +88,14 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comment",uS,self.uuid];
     NSString *ueltext = [NSString stringWithFormat:@"v1/comment/%@/comment",self.uuid];
     NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-    NSLog(@"登录密码=%@",myDelegate.accessToken);
-    NSLog(@"加密后%@",text);
+    
+    YTHLog(@"登录密码=%@",myDelegate.accessToken);
+    
+    YTHLog(@"加密后%@",text);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
-    NSLog(@"登录账号%@",myDelegate.account);
+    YTHLog(@"登录账号%@",myDelegate.account);
     
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     //内容
@@ -101,12 +103,12 @@
     md[@"authorUuid"]=self.userUuid;
     md[@"type"]=@"0";
     md[@"mainType"]=@"0";
-    NSLog(@"用户id%@",self.userUuid);
-    NSLog(@"内容%@",_textView.text);
+    YTHLog(@"用户id%@",self.userUuid);
+    YTHLog(@"内容%@",_textView.text);
    // NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comment",uS,self.uuid];
     [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.jason = responseObject;
-        NSLog(@"发表评论 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"发表评论 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
             
@@ -118,9 +120,9 @@
 
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"发表评论错误 %ld",(long)[operation.response statusCode]);
+        YTHLog(@"发表评论错误 %ld",(long)[operation.response statusCode]);
         self.jason = operation.responseObject;
-        NSLog(@"发表评论%@", self.jason);
+        YTHLog(@"发表评论%@", self.jason);
         [MBProgressHUD showError:[self.jason objectForKey:@"info"]];
         
         

@@ -127,7 +127,7 @@
     UIView *headV = [[UIView alloc]initWithFrame:CGRectMake(0, 190, YTHScreenWidth, 20)];
     
     UILabel *historyLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, 5, 100, 15)];
-    NSLog(@"历史搜索位置的Y值 ----------------%f",CGRectGetMaxY(headerView.frame));
+    YTHLog(@"历史搜索位置的Y值 ----------------%f",CGRectGetMaxY(headerView.frame));
     historyLabel.text = @"历史搜索";
     historyLabel.textColor = [UIColor grayColor];
     historyLabel.font=[UIFont systemFontOfSize:12];
@@ -161,7 +161,7 @@
 -(void)changeClearView{
     
     if (_saveGoodsNameArray.count>0) {
-        NSLog(@"----------------------搜索历史数组中有数据啦---------------------");
+        YTHLog(@"----------------------搜索历史数组中有数据啦---------------------");
         
         [UIView animateWithDuration:.5 animations:^{
 
@@ -172,7 +172,7 @@
         }];
     }else{
         
-        NSLog(@"----------------------搜索历史数组中---没----有数据 =_= ---------------------");
+        YTHLog(@"----------------------搜索历史数组中---没----有数据 =_= ---------------------");
 
         
         [UIView animateWithDuration:.5 animations:^{
@@ -461,11 +461,15 @@
 {
     
     [self savaDataView:button.title];
+    
     [_tableViewSearchResult reloadData];
     
     SearchClassViewController *searchClassVC = [[SearchClassViewController alloc] init];
+    
     [self.navigationController pushViewController:searchClassVC animated:YES];
+    
     //[self saveData:button.title];
+    
     YTHLog(@"点击了%@", button.title);
 }
 - (void)hanzi2pinyin
@@ -481,9 +485,12 @@
 - (NSString *)phonetic:(NSString*)sourceString
 {
     NSMutableString *source = [sourceString mutableCopy];
+    
     CFStringTransform((__bridge CFMutableStringRef)source, NULL, kCFStringTransformMandarinLatin, NO);
+    
     CFStringTransform((__bridge CFMutableStringRef)source, NULL, kCFStringTransformStripDiacritics, NO);
     return source;
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

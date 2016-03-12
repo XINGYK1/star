@@ -98,8 +98,8 @@
 
 //- (void) locationBack:(CLLocationCoordinate2D ) loc{
 //    locationCorrrdinate = loc;
-//    NSLog(@"纬度--%f",locationCorrrdinate.latitude);
-//    NSLog(@"经度%f",locationCorrrdinate.longitude);
+//    YTHLog(@"纬度--%f",locationCorrrdinate.latitude);
+//    YTHLog(@"经度%f",locationCorrrdinate.longitude);
 //    
 //    //请求数据
 //    [self requestData];
@@ -123,13 +123,13 @@
     NSString *url = Url;
     NSString *urlString = [NSString stringWithFormat:@"%@v1/base/universities",url];
     
-    NSLog(@"地址为：%@",urlString);
+    YTHLog(@"地址为：%@",urlString);
     
     [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-   //     NSLog(@"学校%@",responseObject);
+   //     YTHLog(@"学校%@",responseObject);
         
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         if ([operation.response statusCode]/100==2) {
             
@@ -145,19 +145,19 @@
         //我的学校数据
         myUlabel.text = [NSString stringWithFormat:@"我的学校：%@",myDelegate.university_name];
         
-        NSLog(@"我的学校是 -------%@",myUlabel.text);
+        YTHLog(@"我的学校是 -------%@",myUlabel.text);
         myUlabel.font = [UIFont systemFontOfSize:17];
         myUlabel.textColor = [UIColor blackColor];
 
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         NSLog(@"error code %ld",(long)[operation.response statusCode]);
+         YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
     }];
     
     [MBProgressHUD showMessage:@"加载中"];
     [GXHttpTool POST:@"http://platform.vgool.cn/api/university/universityList" parameters:md success:^(id responseObject) {
-        NSLog(@"%@",responseObject);
+        YTHLog(@"%@",responseObject);
         NSDictionary *jsonDict = responseObject;
         if (jsonDict == nil) {
           [MBProgressHUD showError:@"服务器连接失败"];
@@ -179,7 +179,7 @@
         [MBProgressHUD showSuccess:@"加载成功"];
     } failure:^(NSError *error) {
         
-        NSLog(@"123");
+        YTHLog(@"123");
         
     }];
     
@@ -381,7 +381,7 @@
     myDelegate.university_name = cell.textLabel.text;
 
     myDelegate.universityId = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-     NSLog(@"学校id----------:%@",myDelegate.universityId);
+     YTHLog(@"学校id----------:%@",myDelegate.universityId);
    
     [self back];
     

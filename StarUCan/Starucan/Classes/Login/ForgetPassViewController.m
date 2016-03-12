@@ -200,7 +200,7 @@
     
     [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/authcode" parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.jsonDict = responseObject;
-        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
             [MBProgressHUD showSuccess:@"发送成功"];
             self.getBtn.enabled = NO;
@@ -221,7 +221,7 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         //[MBProgressHUD showError:@"未知错误"];
         
     }];
@@ -232,7 +232,7 @@
 //        
 //        self.jsonDict = responseObject;
 //        
-//        NSLog(@"error code %ld",(long)[operation.response statusCode]);
+//        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
 //        
 //        if ([operation.response statusCode]/100==2) {
 //            
@@ -400,9 +400,9 @@
     md[@"mobile"] =self.phoneTF.text;
     md[@"authCode"] = self.authCodeTF.text;
     md[@"password"] = text;
-    NSLog(@"找回md5密码=%@",text);
-    NSLog(@"手机号：%@",self.phoneTF.text);
-    NSLog(@"验证码：%@",self.authCodeTF.text);
+    YTHLog(@"找回md5密码=%@",text);
+    YTHLog(@"手机号：%@",self.phoneTF.text);
+    YTHLog(@"验证码：%@",self.authCodeTF.text);
     
     //保存
     myDelegate.passText = text;
@@ -417,9 +417,9 @@
     NSString *urlString = [NSString stringWithFormat:@"%@v1/user/findpwd",url];
     
     [manager PUT:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"忘记密码信息%@",responseObject);
+        YTHLog(@"忘记密码信息%@",responseObject);
         self.regisDict = responseObject;
-        NSLog(@"注册状态 code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"注册状态 code %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2) {
             [MBProgressHUD showSuccess:@"修改成功"];
 //            //第二种
@@ -433,9 +433,9 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"忘记密码错误返回%@",[ self.regisDict objectForKey:@"info"]);
+        YTHLog(@"忘记密码错误返回%@",[ self.regisDict objectForKey:@"info"]);
         [MBProgressHUD showError:[ self.regisDict objectForKey:@"info"]];
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         
     }];
     

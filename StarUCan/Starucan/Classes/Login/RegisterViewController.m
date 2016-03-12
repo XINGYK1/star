@@ -171,7 +171,7 @@
 //        if ([operation.response statusCode]/100==2) {
 //            //服务器返回status=200，表示连接成功。
 //            
-//            NSLog(@"返回%ld",[operation.response statusCode]);
+//            YTHLog(@"返回%ld",[operation.response statusCode]);
 //            
 //            [MBProgressHUD showSuccess:@"发送成功"];
 //            
@@ -198,7 +198,7 @@
 //        
 //        [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
 //        
-//        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+//        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
 //    
 //    }];
     
@@ -210,7 +210,7 @@
         if ([operation.response statusCode]/100==2) {
             //服务器返回status=200，表示连接成功。
             
-            NSLog(@"返回%ld",[operation.response statusCode]);
+            YTHLog(@"返回%ld",[operation.response statusCode]);
             
             [MBProgressHUD showSuccess:@"发送成功"];
             
@@ -237,7 +237,7 @@
         
         [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
         
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         
     }];
     
@@ -395,7 +395,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     
-        NSLog(@"-----error code %ld",(long)[operation.response statusCode]);
+        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         self.jsonDict = operation.responseObject;
         [MBProgressHUD showError:[ self.jsonDict objectForKey:@"info"]];
     
@@ -422,7 +422,7 @@
     [self.view addSubview:labelAgreement];
 }
 - (void)agreeWith:(UITapGestureRecognizer *)gesture {
-    NSLog(@"注册协议");
+    YTHLog(@"注册协议");
 }
 -(void)_initNation
 {

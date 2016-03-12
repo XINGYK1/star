@@ -131,7 +131,7 @@
 {
     if (buttonIndex == 1) {
         if (alertView.tag == 52) {
-            NSLog(@"确定");
+            YTHLog(@"确定");
            
         }
     }

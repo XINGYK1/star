@@ -214,18 +214,18 @@
         
         NSString *ueltext = [NSString stringWithFormat:@"v1/user/%@/follow",self.showModel.uuid];
         NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-        NSLog(@"登录密码=%@",myDelegate.accessToken);
+        YTHLog(@"登录密码=%@",myDelegate.accessToken);
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
         [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
         
         NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@/follow",uS,self.showModel.uuid];
-        NSLog(@"关注拼接之后%@",urlStr);
+        YTHLog(@"关注拼接之后%@",urlStr);
         //用户id 传过去
         [manager POST:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"关注%@",responseObject);
+            YTHLog(@"关注%@",responseObject);
 //            self.attenJason = responseObject;
-            NSLog(@"关注 %ld",(long)[operation.response statusCode]);
+            YTHLog(@"关注 %ld",(long)[operation.response statusCode]);
             if ([operation.response statusCode]/100==2)
             {
                 [self.addAttionBtn setTitle:@"已关注" forState:UIControlStateNormal];
@@ -233,9 +233,9 @@
                 
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"关注 %ld",(long)[operation.response statusCode]);
+            YTHLog(@"关注 %ld",(long)[operation.response statusCode]);
 //            self.attenJason = operation.responseObject;
-//            NSLog(@"关注%@", self.attenJason);
+//            YTHLog(@"关注%@", self.attenJason);
 //            [MBProgressHUD showError:[self.attenJason objectForKey:@"info"]];
             
         }];
@@ -245,7 +245,7 @@
         NSString *uS = Url;
         NSString *ueltext = [NSString stringWithFormat:@"v1/user/%@/follow",self.showModel.uuid];
         NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
-        NSLog(@"登录密码=%@",myDelegate.accessToken);
+        YTHLog(@"登录密码=%@",myDelegate.accessToken);
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
         [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
@@ -255,9 +255,9 @@
         
         
         [manager DELETE:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"取消关注%@",responseObject);
+            YTHLog(@"取消关注%@",responseObject);
            // self.attenJason = responseObject;
-            NSLog(@"取消关注 %ld",(long)[operation.response statusCode]);
+            YTHLog(@"取消关注 %ld",(long)[operation.response statusCode]);
             if ([operation.response statusCode]/100==2)
             {
                 [self.addAttionBtn setTitle:@"取消关注" forState:UIControlStateNormal];
@@ -267,9 +267,9 @@
             
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"取消关注 %ld",(long)[operation.response statusCode]);
+            YTHLog(@"取消关注 %ld",(long)[operation.response statusCode]);
             //self.attenJason = operation.responseObject;
-           // NSLog(@"取消关注%@", self.attenJason);
+           // YTHLog(@"取消关注%@", self.attenJason);
 //            [MBProgressHUD showError:[self.attenJason objectForKey:@"info"]];
             
         }];

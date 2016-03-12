@@ -10,7 +10,7 @@
 #define common_h
 // 调试状态, 打开Log功能
 #ifdef DEBUG
-#define YTHLog(...) NSLog(__VA_ARGS__)
+#define YTHLog(...)    NSLog(__VA_ARGS__)
 #else // 发布状态, 关闭Log功能
 #define YTHLog(...)
 #endif
