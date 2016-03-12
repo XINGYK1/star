@@ -49,13 +49,9 @@
     
     _imageView = [[UIImageView alloc]init];
     
-    _imageView.backgroundColor = [UIColor redColor];
-    
     [self.contentView addSubview:_imageView];
     
     _titleLabel = [[UILabel alloc]init];
-    
-    _titleLabel.backgroundColor = [UIColor redColor];
     
     [self.contentView addSubview:_titleLabel];
     
@@ -67,10 +63,10 @@
     
     [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
       
-        make.top.equalTo(ws.mas_top).with.offset(12);
-        make.left.equalTo(ws.mas_left).with.offset(200);
-        make.right.equalTo(_titleLabel.mas_left).with.offset(100);
-        make.bottom.equalTo(ws.mas_bottom).with.offset(12);
+        make.top.equalTo(ws.mas_top).with.offset(8);
+        make.left.equalTo(ws.mas_left).with.offset(24);
+        make.right.equalTo(_titleLabel.mas_left).with.offset(-24);
+        make.bottom.equalTo(ws.mas_bottom).with.offset(-8);
         
         
     }];
@@ -79,7 +75,7 @@
         
         make.centerY.equalTo(ws.mas_centerY);
         
-        make.left.equalTo(_imageView.mas_right).with.offset(-100);
+        make.left.equalTo(_imageView.mas_right).with.offset(24);
         
         make.height.equalTo(@14);
         
@@ -100,10 +96,6 @@
     _imageView.image = [UIImage imageNamed:imageName];
     
     _titleLabel.text=title;
-    
-    _imageView.backgroundColor = [UIColor redColor];
-    
-    //_imageView.image = [UIImage imageNamed:]
     
 }
 

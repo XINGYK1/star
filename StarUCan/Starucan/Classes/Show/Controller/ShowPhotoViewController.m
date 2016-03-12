@@ -101,8 +101,7 @@
     [self _initLabel];
     //谁都可以看
     [self _initLook];
-    
-    
+
 }
 
 //获取数据,这个方法为了获取7牛的qntoken和domain
@@ -177,6 +176,7 @@
     for (UIImage *image in self.photoNameList) {
         
         NSData *data = UIImagePNGRepresentation(image);
+        
         QNUploadManager *upManager = [[QNUploadManager alloc] init];
         
         [upManager putData:data key:nil token:self.tokenKey

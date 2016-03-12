@@ -11,6 +11,7 @@
 #import "UINavigationItem+CustomItem.h"
 #include "MessageViewCell.h"
 
+
 @interface NewsViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     
@@ -42,6 +43,8 @@
     // Do any additional setup after loading the view.
     self.title = @"消息";
     
+    
+    
     [self navigationBarSetting];
     
     [self createData];
@@ -53,7 +56,7 @@
     self.navigationController.navigationBar.translucent = NO;
     
     //设置标题视图
-    UIView *viewbg = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth-280, 44)];
+    UIView *viewbg = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth-240, 44)];
     [self.navigationItem setItemWithCustomView:viewbg itemType:center];
     
     NSArray *titleArray = @[@"聊天",@"信息"];
@@ -83,11 +86,11 @@
     
 }
 
-
-
 #pragma mark - 聊天按钮点击方法
 -(void)chatButton:(UIButton *)btn
 {
+    
+     WS(ws);
     [UIView animateWithDuration:0.3
                      animations:^{
                          
@@ -97,17 +100,30 @@
                          [self.messageButton setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
                          [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                          
+                         
+                         ws.messageButton.userInteractionEnabled = YES;
+                         
+                         ws.chatButton.userInteractionEnabled = NO;
+                         
+                         
                      }completion:^(BOOL finished) {
                          //隐藏状态栏，iOS7要改info里面的属性
                          
                          
                      }];
     
+    [self.messageTableView removeFromSuperview];
+    
+    [self.messageView removeFromSuperview];
+    
+    [self.view addSubview:self.chatView];
     
 }
 #pragma mark - 信息按钮点击方法
 -(void)messageButton:(UIButton *)btn
 {
+    
+     WS(ws);
     [UIView animateWithDuration:0.3
                      animations:^{
                          btn.transform = CGAffineTransformMakeScale(1.1,1.1);
@@ -115,6 +131,11 @@
                 
                          [self.chatButton setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
                          [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                         
+                         ws.messageButton.userInteractionEnabled = NO;
+                         
+                         ws.chatButton.userInteractionEnabled = YES;
+                         
                      }
                      completion:^(BOOL finished) {
             
@@ -134,41 +155,45 @@
     
     [self.view addSubview:self.messageView];
     
-    self.messageTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight-110)];
+    self.messageTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 256)];
     
     self.messageTableView.delegate = self;
     
     self.messageTableView.dataSource = self;
     
-    [self.messageView addSubview:self.messageTableView];
+    //self.messageTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    self.messageTableView.allowsSelection = NO;
     
+    self.messageTableView.scrollEnabled = NO;
+    
+    [self.messageView addSubview:self.messageTableView];
 }
 
 -(void)createData{
 
     _titleArray = @[@"评论/回复",@"赞",@"通知",@"小秘书"];
     
-    _imageNameArray = @[@"pic_comment@3x",@"pic_zan@3x",@"pic_inform@3x",@"pic_secretary@3x"];
-    
+    _imageNameArray = @[@"pic_comment",@"pic_zan",@"pic_inform",@"pic_secretary"];
 
-    
 }
 
 #pragma mark -UITableViewDelegate;
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     MessageViewCell *cell =[tableView dequeueReusableCellWithIdentifier:@"messageCell"];
     
     if (cell == nil)
     {
-    
         cell = [[MessageViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"messageCell"];
     }
     
     [cell relodDataWithtitle:_titleArray[indexPath.row] andImage:_imageNameArray[indexPath.row]];
     
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
     return cell;
+
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -182,7 +207,35 @@
 
 }
 
-
+//cell的点击代理方法
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    switch (indexPath.row) {
+        case 0:
+        {
+            //评论/回复
+        }
+            break;
+        case 1:
+        {
+            //赞
+        }
+            break;
+        case 2:
+        {
+            //通知
+        }
+            break;
+        case 3:
+        {
+            //小秘书
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
 
 - (CustomBarItem *)setItemWithCustomView:(UIView *)customView itemType:(ItemType)type
 {

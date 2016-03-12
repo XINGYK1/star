@@ -248,10 +248,12 @@ static CGFloat XZMSpringDelay = 0.1;
     
     //[self reloadPhotos];
 }
+
 //取消使用相机的代理方法
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     
     [self dismissViewControllerAnimated:YES completion:^{}];
+
 }
 
 //本地上传按钮的点击方法
