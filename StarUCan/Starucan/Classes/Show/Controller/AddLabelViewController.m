@@ -66,6 +66,7 @@
 -(void)requestData
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+   
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     md[@"start"] = [NSString stringWithFormat:@"%d",start];
     md[@"count"] =[NSString stringWithFormat:@"%d",count];
@@ -98,12 +99,12 @@
         [self.resultTableView reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    
         YTHLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
+    
     }];
     
 }
-
-
 
 #pragma mark - 创建搜索栏
 -(void)_initSearchBar
@@ -145,10 +146,12 @@
     }
     
 }
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return 44;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"cell";
     if (tableView==self.tableView) {
@@ -208,6 +211,7 @@
             [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 YTHLog(@"新增标签信息%@",responseObject);
                 YTHLog(@"新增标签返回error code %ld",(long)[operation.response statusCode]);
+         
                 if ([operation.response statusCode]/100==2)
                 {
                     NSDictionary *dic = [responseObject objectForKey:@"label"];
@@ -223,6 +227,7 @@
                 
                 label.text = @"";
                 [self.resultTableView reloadData];
+           
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                
                 YTHLog(@"新增标签错误返回error code %ld",(long)[operation.response statusCode]);
@@ -231,11 +236,16 @@
             
         }else
         {
+           
             if ([self.delegate respondsToSelector:@selector(AddLabelView:didClickTag:didClickTitle:)]) {
+                
                 NSString *key = self.dataArr[indexPath.row-1];
+                
                 [self.delegate AddLabelView:self didClickTag:[myDelegate.labelIDict objectForKey:key] didClickTitle:cell.textLabel.text];
+                
             }
         }
+       
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -243,7 +253,9 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     YTHLog(@"任务编辑文本");
+    
     grayView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    
     grayView.alpha = 0.5;
     grayView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:grayView];

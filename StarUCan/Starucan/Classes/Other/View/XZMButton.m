@@ -31,6 +31,7 @@
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    
 }
 
 - (void)layoutSubviews

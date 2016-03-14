@@ -43,7 +43,7 @@
     //学校
     UILabel *uniserLabel = [[UILabel alloc]init];
     uniserLabel.font = GXNameFont;
-    uniserLabel.textColor = YTHColor(197, 197, 197);
+  //  uniserLabel.textColor = YTHFontColor;
     uniserLabel.numberOfLines = 0;
     [uniserLabel sizeToFit];
     //uniserLabel.backgroundColor = [UIColor yellowColor];
@@ -74,7 +74,7 @@
     self.commentImg = commentImg;
     UILabel *commentLabel = [[UILabel alloc]init];
     [commentButton addSubview:commentLabel];
-    commentLabel.textColor = YTHColor(197, 197, 197);
+    commentLabel.textColor = YTHFontColor;
     commentLabel.font = [UIFont systemFontOfSize:12];
     self.commentLabel=commentLabel;
     
@@ -89,7 +89,7 @@
     self.praiseImg = praiseImg;
     UILabel *praiseLabel = [[UILabel alloc]init];
     [praiseButton addSubview:praiseLabel];
-    praiseLabel.textColor = YTHColor(197, 197, 197);
+    praiseLabel.textColor = YTHFontColor;
     praiseLabel.font = [UIFont systemFontOfSize:12];
     self.praiseLabel=praiseLabel;
     
@@ -105,7 +105,7 @@
     self.shareImg = shareImg;
     UILabel *shareLabel = [[UILabel alloc]init];
     [shareButton addSubview:shareLabel];
-    shareLabel.textColor = YTHColor(197, 197, 197);
+    shareLabel.textColor = YTHFontColor;
     shareLabel.font = [UIFont systemFontOfSize:12];
     self.shareLabel=shareLabel;
 
@@ -159,21 +159,30 @@
     
     //设置标题
     self.nameLabel.text = [model.user objectForKey:@"name"];
+    
     // 设置内容
     self.introLabel.text = model.content;
+    
     // 设置配图
     if (model.photoUrl) {
+    
         //图片
         NSArray *photosUrlArr = [model.photoUrl componentsSeparatedByString:@","];
+       
         self.photoNameList = [[NSMutableArray alloc]init];
         
         for (NSString *photoUrl in photosUrlArr) {
+        
             [self.photoNameList addObject:photoUrl];
+        
         }
+    
         [self.pictureView sd_setImageWithURL:[NSURL URLWithString:[self.photoNameList objectAtIndex:0]]];
         
         self.pictureView.hidden = NO;
+    
     } else {
+        
         self.pictureView.hidden = YES;
     }
     
@@ -182,14 +191,18 @@
     
     //性别
     NSString *sexurl = [model.user objectForKey:@"sex"];
+    
     if ([sexurl isEqualToString:@"1"]) {
+    
         self.sexImV.image = [UIImage imageNamed:@"sex_male"];
+    
     }else if ([sexurl isEqualToString:@"2"])
+    
     {
-          self.sexImV.image = [UIImage imageNamed:@"sex_female"];
+        
+        self.sexImV.image = [UIImage imageNamed:@"sex_female"];
+        
     }
-    
-    
     
     //头像
     NSString *urlString = [model.user objectForKey:@"avatar"];
@@ -242,13 +255,13 @@
     
 
     //线
-    self.lineView.backgroundColor = YTHColor(197, 197, 197);
-     self.lineViewSec.backgroundColor = YTHColor(197, 197, 197);
-     self.lineViewThri.backgroundColor = YTHColor(197, 197, 197);
+    self.lineView.backgroundColor       = YTHFontColor;
+    self.lineViewSec.backgroundColor    = YTHFontColor;
+    self.lineViewThri.backgroundColor   = YTHFontColor;
     //
-    self.commentImg.image = [UIImage imageNamed:@"talk"];
-    self.praiseImg.image = [UIImage imageNamed:@"s_praise"];
-    self.shareImg.image = [UIImage imageNamed:@"s_share"];
+    self.commentImg.image              = [UIImage imageNamed:@"talk"];
+    self.praiseImg.image               = [UIImage imageNamed:@"s_praise"];
+    self.shareImg.image                = [UIImage imageNamed:@"s_share"];
     self.shareLabel.text = @"分享";
     
 }
@@ -258,29 +271,27 @@
  */
 - (void)settingFrame
 {
-    self.iconView.frame = self.myLayoutFrame.iconF;
-    self.nameLabel.frame = self.myLayoutFrame.nameF;
-    self.introLabel.frame = self.myLayoutFrame.introF;
-    self.sexImV.frame = self.myLayoutFrame.sex;
-    self.pictureView.frame = self.myLayoutFrame.pictrueF;
-    self.uniserLabel.frame = self.myLayoutFrame.uniserF;
+    self.iconView.frame       = self.myLayoutFrame.iconF;
+    self.nameLabel.frame     = self.myLayoutFrame.nameF;
+    self.introLabel.frame    = self.myLayoutFrame.introF;
+    self.sexImV.frame        = self.myLayoutFrame.sex;
+    self.pictureView.frame   = self.myLayoutFrame.pictrueF;
+    self.uniserLabel.frame   = self.myLayoutFrame.uniserF;
     self.commentButton.frame = self.myLayoutFrame.commentF;
-    self.praiseLabel.frame = self.myLayoutFrame.praiseF;
-    self.labelImg.frame = self.myLayoutFrame.labelF;
-    _kTitleView.frame = self.myLayoutFrame.labelCommentF;
-    self.lineView.frame = self.myLayoutFrame.lineF;
-    self.commentImg.frame = self.myLayoutFrame.commentImgF;
-    self.commentLabel.frame = self.myLayoutFrame.commentLabelF;
-    self.lineViewSec.frame = self.myLayoutFrame.lineSecF;
-    self.praiseImg.frame = self.myLayoutFrame.praiseImgF;
-    self.praiseButton.frame = self.myLayoutFrame.praiseF;
-    self.praiseLabel.frame = self.myLayoutFrame.praiseLabelF;
-    self.lineViewThri.frame = self.myLayoutFrame.lineThriF;
-    
-    
-    self.shareImg.frame = self.myLayoutFrame.shareImgF;
-    self.shareButton.frame = self.myLayoutFrame.shareF;
-    self.shareLabel.frame = self.myLayoutFrame.shareLabelF;
+    self.praiseLabel.frame   = self.myLayoutFrame.praiseF;
+    self.labelImg.frame      = self.myLayoutFrame.labelF;
+    _kTitleView.frame        = self.myLayoutFrame.labelCommentF;
+    self.lineView.frame      = self.myLayoutFrame.lineF;
+    self.commentImg.frame    = self.myLayoutFrame.commentImgF;
+    self.commentLabel.frame  = self.myLayoutFrame.commentLabelF;
+    self.lineViewSec.frame   = self.myLayoutFrame.lineSecF;
+    self.praiseImg.frame     = self.myLayoutFrame.praiseImgF;
+    self.praiseButton.frame  = self.myLayoutFrame.praiseF;
+    self.praiseLabel.frame   = self.myLayoutFrame.praiseLabelF;
+    self.lineViewThri.frame  = self.myLayoutFrame.lineThriF;
+    self.shareImg.frame      = self.myLayoutFrame.shareImgF;
+    self.shareButton.frame   = self.myLayoutFrame.shareF;
+    self.shareLabel.frame    = self.myLayoutFrame.shareLabelF;
     
 }
 -(void)_addTitleBtn:(NSString *)title andAdd:(BOOL)add{

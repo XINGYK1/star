@@ -128,6 +128,7 @@
     [self.view addSubview:nameTF];
     //男或女
     _manButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(82), CGRectGetMaxY(nameTF.frame)+YTHAdaptation(70),YTHAdaptation(68),YTHAdaptation(68))];
+ 
     NSString *sextitle = [myDelegate.userInfo objectForKey:@"sex"];
 //    logoImv.image =[UIImage imageNamed:@"120-1"];
    // manImv.backgroundColor = [UIColor yellowColor];

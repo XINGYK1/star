@@ -22,12 +22,12 @@
 
 
 }
-@property (weak, nonatomic) UIScrollView *scrollView;
-@property (weak, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) UISearchBar *searchBar;
-@property (strong, nonatomic) NSArray *hotWords;
-@property (weak, nonatomic) UITableView *resultTableView;
-@property (nonatomic,strong)NSMutableArray *saveGoodsNameArray; //存取搜索的关键字
+@property (weak, nonatomic  ) UIScrollView   *scrollView;
+@property (weak, nonatomic  ) UITableView    *tableView;
+@property (strong, nonatomic) UISearchBar    *searchBar;
+@property (strong, nonatomic) NSArray        *hotWords;
+@property (weak, nonatomic  ) UITableView    *resultTableView;
+@property (nonatomic,strong ) NSMutableArray *saveGoodsNameArray;//存取搜索的关键字
 
 @end
 
@@ -67,7 +67,7 @@
 - (NSArray *)hotWords
 {
     if (!_hotWords) {
-        _hotWords = [[NSArray alloc] initWithObjects:@"微微一笑很倾城",@"三国志",@"完美世界 ",@"ios开发指南",@"西门吹雪",@"新三国",@"快看看",@"大数据",@"非诚勿扰",@"国破山河在",@"暴走大事件",@"一杆禽兽狙",@"最美的时光", nil];
+        _hotWords = [[NSArray alloc] initWithObjects:@"微微一笑很倾城",@"猴赛雷",@"完美世界 ",@"iOS开发指南",@"西门吹雪",@"新三国",@"快看看",@"大数据",@"非诚勿扰",@"国破山河在",@"暴走大事件",@"一杆禽兽狙",@"最美的时光", nil];
     }
     return _hotWords;
 }
@@ -119,7 +119,6 @@
     
     [self initClearView];
     
-    
 }
 
 -(void)initHistorySearch {
@@ -127,33 +126,46 @@
     UIView *headV = [[UIView alloc]initWithFrame:CGRectMake(0, 190, YTHScreenWidth, 20)];
     
     UILabel *historyLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, 5, 100, 15)];
+    
     YTHLog(@"历史搜索位置的Y值 ----------------%f",CGRectGetMaxY(headerView.frame));
+    
     historyLabel.text = @"历史搜索";
+    
     historyLabel.textColor = [UIColor grayColor];
+    
     historyLabel.font=[UIFont systemFontOfSize:12];
+    
     [headV addSubview:historyLabel];
+    
     [self.scrollView addSubview:headV];
     
 }
+
 #pragma mark 清除历史记录
 -(void)initClearView{
     
     clearView  =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_tableViewSearchResult.frame), YTHScreenWidth, 36)];
     
     UILabel *clearLabel = [[UILabel alloc]initWithFrame:CGRectMake(YTHScreenWidth/2-30, 10, 120, 16)];
+    
     clearLabel.text = @"清除历史记录";
+   
     clearLabel.font = [UIFont systemFontOfSize:12];
     
     UIImageView *deleteIV = [[UIImageView alloc]initWithFrame:CGRectMake(YTHScreenWidth/2-50, 12, 12, 12)];
+   
     deleteIV.image = [UIImage imageNamed:@"clean_history"];
     
     [clearView addSubview:deleteIV];
+   
     [clearView addSubview:clearLabel];
     
     [self.scrollView addSubview:clearView];
     
     UIButton *clearbtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 36)];
+    
     [clearbtn addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+    
     [clearView addSubview:clearbtn];
 
     
@@ -161,6 +173,7 @@
 -(void)changeClearView{
     
     if (_saveGoodsNameArray.count>0) {
+      
         YTHLog(@"----------------------搜索历史数组中有数据啦---------------------");
         
         [UIView animateWithDuration:.5 animations:^{
@@ -237,12 +250,9 @@
     // 搜索框
     [self.navigationItem setItemWithCustomView:self.searchBar itemType:left];
     [NSThread detachNewThreadSelector:@selector(hanzi2pinyin) toTarget:self withObject:nil];
-    data = [NSMutableArray arrayWithObjects:@"微微一笑很倾城",@"三国志",@"完美世界 ",@"ios开发指南",@"西门吹雪",@"新三国",@"快看看",@"大数据",@"非诚勿扰",@"国破山河在",@"暴走大事件",@"一杆禽兽狙",@"最美的时光", nil];
+    data = [NSMutableArray arrayWithObjects:@"微微一笑很倾城",@"猴赛雷",@"完美世界 ",@"iOS开发指南",@"西门吹雪",@"新三国",@"快看看",@"大数据",@"非诚勿扰",@"国破山河在",@"暴走大事件",@"一杆禽兽狙",@"最美的时光", nil];
     filterData = [NSMutableArray array];
 
-    
-    
-    
 }
 - (void)clickBack
 {
@@ -334,9 +344,8 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+   //重新布局搜索历史列表
     [self changeClearView];
-    
     
     if (tableView==_tableViewSearchResult) {
         static NSString *reusableIndentifier = @"cell";
@@ -351,7 +360,8 @@
             cell.textLabel.textAlignment = NSTextAlignmentLeft;
             cell.textLabel.text = [_saveGoodsNameArray objectAtIndex:indexPath.row];
             cell.contentView.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:0.1];
-          //cell右侧删除按钮
+        
+        //cell右侧删除按钮
             UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [deleteButton setBackgroundImage:[UIImage imageNamed:@"delete_history"] forState:UIControlStateNormal];
             [deleteButton setFrame:CGRectMake(YTHScreenWidth-40, 17, 10, 10)];
@@ -359,7 +369,6 @@
             [cell.contentView addSubview:deleteButton];
         
             deleteButton.tag = indexPath.row;
-        
 
         return cell;
         
@@ -374,8 +383,6 @@
         
         return cell;
     }
-
-    
 }
 
 #pragma mark cell delete button
@@ -395,6 +402,7 @@
         
            [[NSUserDefaults standardUserDefaults] synchronize];
             break;
+        
     }
 }
 

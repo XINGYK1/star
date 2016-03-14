@@ -2129,6 +2129,11 @@
 					5A988EAF1C34C7EB0073A89F = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = V2TFR328MT;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 					5A988EC81C34C7EC0073A89F = {
 						CreatedOnToolsVersion = 7.2;

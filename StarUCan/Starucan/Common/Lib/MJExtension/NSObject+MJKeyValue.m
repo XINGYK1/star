@@ -20,7 +20,7 @@
  */
 + (instancetype)objectWithJSONData:(NSData *)data
 {
-    MJAssertParamNotNil2(data, nil);
+   // MJAssertParamNotNil2(data, nil);
     
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
     return [self objectWithKeyValues:dict];
@@ -33,8 +33,8 @@
  */
 + (instancetype)objectWithKeyValues:(NSDictionary *)keyValues
 {
-    NSString *desc = [NSString stringWithFormat:@"keyValues is not a NSDictionary - keyValues参数不是一个字典, keyValues is a %@ - keyValues参数是一个%@", keyValues.class, keyValues.class];
-    MJAssert2([keyValues isKindOfClass:[NSDictionary class]], desc, nil);
+  //  NSString *desc = [NSString stringWithFormat:@"keyValues is not a NSDictionary - keyValues参数不是一个字典, keyValues is a %@ - keyValues参数是一个%@", keyValues.class, keyValues.class];
+  //  MJAssert2([keyValues isKindOfClass:[NSDictionary class]], desc, nil);
     
     id model = [[self alloc] init];
     [model setKeyValues:keyValues];
@@ -48,7 +48,7 @@
  */
 + (instancetype)objectWithFilename:(NSString *)filename
 {
-    MJAssertParamNotNil2(filename, nil);
+  //  MJAssertParamNotNil2(filename, nil);
     NSString *file = [[NSBundle mainBundle] pathForResource:filename ofType:nil];
     return [self objectWithFile:file];
 }
@@ -60,7 +60,7 @@
  */
 + (instancetype)objectWithFile:(NSString *)file
 {
-    MJAssertParamNotNil2(file, nil);
+ //   MJAssertParamNotNil2(file, nil);
     NSDictionary *keyValues = [NSDictionary dictionaryWithContentsOfFile:file];
     return [self objectWithKeyValues:keyValues];
 }
@@ -71,8 +71,8 @@
  */
 - (void)setKeyValues:(NSDictionary *)keyValues
 {
-    NSString *desc = [NSString stringWithFormat:@"keyValues is not a NSDictionary - keyValues参数不是一个字典, keyValues is a %@ - keyValues参数是一个%@", keyValues.class, keyValues.class];
-    MJAssert2([keyValues isKindOfClass:[NSDictionary class]], desc, );
+  //  NSString *desc = [NSString stringWithFormat:@"keyValues is not a NSDictionary - keyValues参数不是一个字典, keyValues is a %@ - keyValues参数是一个%@", keyValues.class, keyValues.class];
+    //MJAssert2([keyValues isKindOfClass:[NSDictionary class]], desc, );
     
     [self enumerateIvarsWithBlock:^(MJIvar *ivar, BOOL *stop) {
         // 来自Foundation框架的成员变量，直接返回
@@ -164,7 +164,7 @@
  */
 + (NSArray *)objectArrayWithJSONData:(NSData *)data
 {
-    MJAssertParamNotNil2(data, nil);
+  //  MJAssertParamNotNil2(data, nil);
     
     NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
     return [self objectArrayWithKeyValuesArray:array];
@@ -178,8 +178,8 @@
 + (NSArray *)keyValuesArrayWithObjectArray:(NSArray *)objectArray
 {
     // 0.判断真实性
-    NSString *desc = [NSString stringWithFormat:@"objectArray is not a NSArray - objectArray不是一个数组, objectArray is a %@ - objectArray参数是一个%@", objectArray.class, objectArray.class];
-    MJAssert2([objectArray isKindOfClass:[NSArray class]], desc, nil);
+//    NSString *desc = [NSString stringWithFormat:@"objectArray is not a NSArray - objectArray不是一个数组, objectArray is a %@ - objectArray参数是一个%@", objectArray.class, objectArray.class];
+//    MJAssert2([objectArray isKindOfClass:[NSArray class]], desc, nil);
     
     // 1.过滤
     if (![objectArray isKindOfClass:[NSArray class]]) return objectArray;
@@ -202,8 +202,8 @@
 + (NSArray *)objectArrayWithKeyValuesArray:(NSArray *)keyValuesArray
 {
     // 1.判断真实性
-    NSString *desc = [NSString stringWithFormat:@"keyValuesArray is not a keyValuesArray - keyValuesArray不是一个数组, keyValuesArray is a %@ - keyValuesArray参数是一个%@", keyValuesArray.class, keyValuesArray.class];
-    MJAssert2([keyValuesArray isKindOfClass:[NSArray class]], desc, nil);
+//    NSString *desc = [NSString stringWithFormat:@"keyValuesArray is not a keyValuesArray - keyValuesArray不是一个数组, keyValuesArray is a %@ - keyValuesArray参数是一个%@", keyValuesArray.class, keyValuesArray.class];
+//    MJAssert2([keyValuesArray isKindOfClass:[NSArray class]], desc, nil);
     
     // 2.创建数组
     NSMutableArray *modelArray = [NSMutableArray array];
@@ -226,7 +226,7 @@
  */
 + (NSArray *)objectArrayWithFilename:(NSString *)filename
 {
-    MJAssertParamNotNil2(filename, nil);
+//    MJAssertParamNotNil2(filename, nil);
     NSString *file = [[NSBundle mainBundle] pathForResource:filename ofType:nil];
     return [self objectArrayWithFile:file];
 }
@@ -238,7 +238,7 @@
  */
 + (NSArray *)objectArrayWithFile:(NSString *)file
 {
-    MJAssertParamNotNil2(file, nil);
+//    MJAssertParamNotNil2(file, nil);
     NSArray *keyValuesArray = [NSArray arrayWithContentsOfFile:file];
     return [self objectArrayWithKeyValuesArray:keyValuesArray];
 }
@@ -253,7 +253,7 @@
  */
 - (NSString *)keyWithPropertyName:(NSString *)propertyName
 {
-    MJAssertParamNotNil2(propertyName, nil);
+//    MJAssertParamNotNil2(propertyName, nil);
     NSString *key = nil;
     // 1.查看有没有需要替换的key
     if ([self respondsToSelector:@selector(replacedKeyFromPropertyName)]) {

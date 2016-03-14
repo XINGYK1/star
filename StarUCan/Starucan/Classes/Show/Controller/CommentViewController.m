@@ -33,6 +33,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"发表评论";
+    
     if (!myDelegate) {
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
@@ -45,7 +46,6 @@
     
     labelText = [[UILabel alloc]initWithFrame:CGRectMake(0, 7,YTHScreenWidth-23, 20)];
     labelText.text = @" 写评论";
-    
     labelText.font = [UIFont systemFontOfSize:14];
     labelText.numberOfLines = 0;
     labelText.textColor =[UIColor grayColor];
@@ -86,33 +86,40 @@
    // NSString *text = _textView.text;
    // NSString *url1 = @"v1/comment";
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comment",uS,self.uuid];
+    
     NSString *ueltext = [NSString stringWithFormat:@"v1/comment/%@/comment",self.uuid];
+    
     NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
     
     YTHLog(@"登录密码=%@",myDelegate.accessToken);
     
     YTHLog(@"加密后%@",text);
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
+    
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
+    
     YTHLog(@"登录账号%@",myDelegate.account);
     
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
+    
     //内容
     md[@"content"]=_textView.text;//
     md[@"authorUuid"]=self.userUuid;
     md[@"type"]=@"0";
     md[@"mainType"]=@"0";
     YTHLog(@"用户id%@",self.userUuid);
+    
     YTHLog(@"内容%@",_textView.text);
-   // NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comment",uS,self.uuid];
+   
+    // NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comment",uS,self.uuid];
     [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.jason = responseObject;
         YTHLog(@"发表评论 %ld",(long)[operation.response statusCode]);
         if ([operation.response statusCode]/100==2)
         {
-            
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:@"requestTable" object:nil userInfo:nil];
             [self.navigationController popViewControllerAnimated:YES];
             
@@ -120,14 +127,16 @@
 
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         YTHLog(@"发表评论错误 %ld",(long)[operation.response statusCode]);
+        
         self.jason = operation.responseObject;
+        
         YTHLog(@"发表评论%@", self.jason);
+        
         [MBProgressHUD showError:[self.jason objectForKey:@"info"]];
         
-        
     }];
-    
     
 }
 -(void)textViewDidChange:(UITextView *)textView

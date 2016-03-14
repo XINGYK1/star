@@ -9,6 +9,7 @@
 #import "BaseModel.h"
 
 @interface ShowDetailModel : BaseModel
+
 @property(nonatomic,copy)NSString *content;//内容
 @property(nonatomic,copy)NSString *commitCount;
 @property(nonatomic,copy)NSString *photoUrl;

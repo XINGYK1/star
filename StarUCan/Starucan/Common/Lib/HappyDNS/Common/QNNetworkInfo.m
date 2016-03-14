@@ -36,10 +36,13 @@ static int localIp(char *buf){
 	// Create the UDP socket itself.
 
 	err = 0;
+    
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock < 0) {
+        
 		err = errno;
-		return err;
+		
+        return err;
 	}
 
 
@@ -53,7 +56,9 @@ static int localIp(char *buf){
 	err = connect(sock, (const struct sockaddr *) &addr, sizeof(addr));
 
 	if (err < 0) {
+        
 		err = errno;
+        
 	}
 
 	struct sockaddr_in localAddress;

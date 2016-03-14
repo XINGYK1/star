@@ -71,11 +71,13 @@
     tapGestureRecognizer.cancelsTouchesInView = NO;
     
     [self.view addGestureRecognizer:tapGestureRecognizer];
+    
 }
 -(void)dismissKeyboard
 {
     [textView resignFirstResponder];
 }
+
 -(void)textViewDidChange:(UITextView *)textView
 {
     // self.examineText =  textView.text;

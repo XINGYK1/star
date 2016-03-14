@@ -164,5 +164,6 @@ static const int HMDefaultColumsCount = 3;
     setting.columnsCount = HMDefaultColumsCount;
     setting.insets = HMDefaultInsets;
     return setting;
+    
 }
 @end

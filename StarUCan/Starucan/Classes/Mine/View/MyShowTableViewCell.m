@@ -19,127 +19,124 @@
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (!(self=[super initWithStyle:style reuseIdentifier:reuseIdentifier]))
         return nil;
-    _kTitleArrays = [[NSMutableArray alloc]init];
+    _kTitleArrays               = [[NSMutableArray alloc]init];
     // 1.创建头像
-    UIImageView *iconView = [[UIImageView alloc] init];
+    UIImageView *iconView      = [[UIImageView alloc] init];
     [iconView.layer setMasksToBounds:YES];
     [iconView.layer setCornerRadius:24];
     iconView.layer.borderColor = [UIColor grayColor].CGColor;
     iconView.layer.borderWidth = 1;
     [self.contentView addSubview:iconView];
-    self.iconView = iconView;
-    
+    self.iconView              = iconView;
+
     // 2.创建昵称
-    UILabel *nameLabel = [[UILabel alloc] init];
-    nameLabel.font = GXNameFont;
-    nameLabel.textColor = [UIColor blackColor];
-    nameLabel.numberOfLines = 0;
+    UILabel *nameLabel         = [[UILabel alloc] init];
+    nameLabel.font             = GXNameFont;
+    nameLabel.textColor        = [UIColor blackColor];
+    nameLabel.numberOfLines    = 0;
     [self.contentView addSubview:nameLabel];
-    self.nameLabel = nameLabel;
-    
-    
+    self.nameLabel             = nameLabel;
+
+
     // 3.创建vip
-    UIImageView *sexImV = [[UIImageView alloc] init];
+    UIImageView *sexImV        = [[UIImageView alloc] init];
     [self.contentView addSubview:sexImV];
-    self.sexImV = sexImV;
+    self.sexImV                = sexImV;
     //学校
-    UILabel *uniserLabel = [[UILabel alloc]init];
-    uniserLabel.font = GXNameFont;
-    uniserLabel.textColor = YTHColor(197, 197, 197);
-    uniserLabel.numberOfLines = 0;
+    UILabel *uniserLabel       = [[UILabel alloc]init];
+    uniserLabel.font           = GXNameFont;
+    uniserLabel.textColor      = YTHColor(197, 197, 197);
+    uniserLabel.numberOfLines  = 0;
     [uniserLabel sizeToFit];
     //uniserLabel.backgroundColor = [UIColor yellowColor];
     [self.contentView addSubview:uniserLabel];
-    self.uniserLabel = uniserLabel;
-    
+    self.uniserLabel           = uniserLabel;
+
     // 4.创建正文
-    UILabel *introLabel = [[UILabel alloc] init];
-    introLabel.numberOfLines = 0;
-    introLabel.font = GXTextFont;
+    UILabel *introLabel        = [[UILabel alloc] init];
+    introLabel.numberOfLines   = 0;
+    introLabel.font            = GXTextFont;
     [self.contentView addSubview:introLabel];
-    self.introLabel = introLabel;
-    
+    self.introLabel            = introLabel;
+
     // 5.创建配图
-    UIImageView *pictureView = [[UIImageView alloc] init];
+    UIImageView *pictureView   = [[UIImageView alloc] init];
     [self.contentView addSubview:pictureView];
-    self.pictureView = pictureView;
-    
-    
-    
+    self.pictureView           = pictureView;
+
+
+
     //评论
-    UIButton *commentButton = [[UIButton alloc]init];
+    UIButton *commentButton    = [[UIButton alloc]init];
     [self.contentView addSubview:commentButton];
-    self.commentButton = commentButton;
+    self.commentButton         = commentButton;
     //
-    UIImageView *commentImg = [[UIImageView alloc] init];
+    UIImageView *commentImg    = [[UIImageView alloc] init];
     [commentButton addSubview:commentImg];
-    self.commentImg = commentImg;
-    UILabel *commentLabel = [[UILabel alloc]init];
+    self.commentImg            = commentImg;
+    UILabel *commentLabel       = [[UILabel alloc]init];
     [commentButton addSubview:commentLabel];
-    commentLabel.textColor = YTHColor(197, 197, 197);
-    commentLabel.font = [UIFont systemFontOfSize:12];
-    self.commentLabel=commentLabel;
-    
-    
+    commentLabel.textColor     = YTHColor(197, 197, 197);
+    commentLabel.font          = [UIFont systemFontOfSize:12];
+    self.commentLabel          = commentLabel;
+
+
     //评论
-    UIButton *praiseButton = [[UIButton alloc]init];
+    UIButton *praiseButton     = [[UIButton alloc]init];
     [self.contentView addSubview:praiseButton];
-    self.praiseButton = praiseButton;
+    self.praiseButton          = praiseButton;
     //
-    UIImageView *praiseImg = [[UIImageView alloc] init];
+    UIImageView *praiseImg     = [[UIImageView alloc] init];
     [praiseButton addSubview:praiseImg];
-    self.praiseImg = praiseImg;
-    UILabel *praiseLabel = [[UILabel alloc]init];
+    self.praiseImg             = praiseImg;
+    UILabel *praiseLabel       = [[UILabel alloc]init];
     [praiseButton addSubview:praiseLabel];
-    praiseLabel.textColor = YTHColor(197, 197, 197);
-    praiseLabel.font = [UIFont systemFontOfSize:12];
-    self.praiseLabel=praiseLabel;
-    
-    
-    
+    praiseLabel.textColor      = YTHColor(197, 197, 197);
+    praiseLabel.font           = [UIFont systemFontOfSize:12];
+    self.praiseLabel           = praiseLabel;
+
+
+
     //评论
-    UIButton *shareButton = [[UIButton alloc]init];
+    UIButton *shareButton      = [[UIButton alloc]init];
     [self.contentView addSubview:shareButton];
-    self.shareButton = shareButton;
+    self.shareButton           = shareButton;
     //
-    UIImageView *shareImg = [[UIImageView alloc] init];
+    UIImageView *shareImg      = [[UIImageView alloc] init];
     [shareButton addSubview:shareImg];
-    self.shareImg = shareImg;
-    UILabel *shareLabel = [[UILabel alloc]init];
+    self.shareImg              = shareImg;
+    UILabel *shareLabel        = [[UILabel alloc]init];
     [shareButton addSubview:shareLabel];
-    shareLabel.textColor = YTHColor(197, 197, 197);
-    shareLabel.font = [UIFont systemFontOfSize:12];
-    self.shareLabel=shareLabel;
-    
+    shareLabel.textColor       = YTHColor(197, 197, 197);
+    shareLabel.font            = [UIFont systemFontOfSize:12];
+    self.shareLabel            = shareLabel;
+
     //标签
-    UIImageView *labelImg = [[UIImageView alloc] init];
+    UIImageView *labelImg      = [[UIImageView alloc] init];
     [self.contentView addSubview:labelImg];
-    self.labelImg = labelImg;
+    self.labelImg              = labelImg;
     //
-    _kTitleView = [[UIScrollView alloc]init];
+    _kTitleView                = [[UIScrollView alloc]init];
     [self.contentView addSubview:_kTitleView];
     //_kTitleView.backgroundColor = [UIColor yellowColor];
-    
-    
-    
+
+
+
     //线
-    UIView *lineView = [[UIView alloc]init];
-    self.lineView = lineView;
+    UIView *lineView           = [[UIView alloc]init];
+    self.lineView              = lineView;
     [self.contentView addSubview:lineView];
-    
+
     //线
-    UIView *lineViewSec = [[UIView alloc]init];
-    self.lineViewSec = lineViewSec;
+    UIView *lineViewSec        = [[UIView alloc]init];
+    self.lineViewSec           = lineViewSec;
     [praiseButton addSubview:lineViewSec];
-    
+
     //线
-    UIView *lineViewThir = [[UIView alloc]init];
-    self.lineViewThri = lineViewThir;
+    UIView *lineViewThir       = [[UIView alloc]init];
+    self.lineViewThri          = lineViewThir;
     [self.contentView addSubview:lineViewThir];
-    
-    
-    
-    
+
     return self;
 }
 -(void)setMyLayoutFrame:(MyShowLayoutFrame *)myLayoutFrame
@@ -157,17 +154,17 @@
 {
     ShowDetailModel *model = self.myLayoutFrame.showModel;
     // 设置头像
-    self.iconView.image = [UIImage imageNamed:model.avatar];
+    self.iconView.image     = [UIImage imageNamed:model.avatar];
     
     //设置标题
-    self.nameLabel.text = [model.user objectForKey:@"name"];
+    self.nameLabel.text     = [model.user objectForKey:@"name"];
     // 设置内容
-    self.introLabel.text = model.content;
+    self.introLabel.text    = model.content;
     // 设置配图
     if (model.photoUrl) {
         //图片
         NSArray *photosUrlArr = [model.photoUrl componentsSeparatedByString:@","];
-        self.photoNameList = [[NSMutableArray alloc]init];
+        self.photoNameList     = [[NSMutableArray alloc]init];
         
         for (NSString *photoUrl in photosUrlArr) {
             [self.photoNameList addObject:photoUrl];
@@ -188,11 +185,10 @@
         self.sexImV.image = [UIImage imageNamed:@"sex_male"];
     }else if ([sexurl isEqualToString:@"2"])
     {
-          self.sexImV.image = [UIImage imageNamed:@"sex_female"];
+    
+        self.sexImV.image = [UIImage imageNamed:@"sex_female"];
     }
-    
-    
-    
+  
     //头像
     NSString *urlString = [model.user objectForKey:@"avatar"];
     
@@ -208,19 +204,17 @@
             self.iconView.image =  [UIImage imageNamed:@"male"];
         }
     }
-    
-    
-    
+
     //学校
-    self.uniserLabel.text = [model.user objectForKey:@"universityName"];
-    
-    
-    
+    self.uniserLabel.text  = [model.user objectForKey:@"universityName"];
+
+
+
     //评论
-    self.commentLabel.text =  [NSString stringWithFormat:@"%@",model.commitCount];
-    
+    self.commentLabel.text = [NSString stringWithFormat:@"%@",model.commitCount];
+
     //赞
-    self.praiseLabel.text =  [NSString stringWithFormat:@"%@",model.praiseCount];
+    self.praiseLabel.text  = [NSString stringWithFormat:@"%@",model.praiseCount];
     
     
     
@@ -244,14 +238,14 @@
     
     
     //线
-    self.lineView.backgroundColor = YTHColor(197, 197, 197);
-    self.lineViewSec.backgroundColor = YTHColor(197, 197, 197);
+    self.lineView.backgroundColor       = YTHColor(197, 197, 197);
+    self.lineViewSec.backgroundColor  = YTHColor(197, 197, 197);
     self.lineViewThri.backgroundColor = YTHColor(197, 197, 197);
     //
-    self.commentImg.image = [UIImage imageNamed:@"talk"];
-    self.praiseImg.image = [UIImage imageNamed:@"s_praise"];
-    self.shareImg.image = [UIImage imageNamed:@"s_share"];
-    self.shareLabel.text = @"分享";
+    self.commentImg.image             = [UIImage imageNamed:@"talk"];
+    self.praiseImg.image              = [UIImage imageNamed:@"s_praise"];
+    self.shareImg.image               = [UIImage imageNamed:@"s_share"];
+    self.shareLabel.text              = @"分享";
     
 }
 
@@ -260,59 +254,69 @@
  */
 - (void)settingFrame
 {
-    self.iconView.frame = self.myLayoutFrame.iconF;
-    self.nameLabel.frame = self.myLayoutFrame.nameF;
-    self.introLabel.frame = self.myLayoutFrame.introF;
-    self.sexImV.frame = self.myLayoutFrame.sex;
-    self.pictureView.frame = self.myLayoutFrame.pictrueF;
-    self.uniserLabel.frame = self.myLayoutFrame.uniserF;
+
+    self.iconView.frame      = self.myLayoutFrame.iconF;
+    self.nameLabel.frame     = self.myLayoutFrame.nameF;
+    self.introLabel.frame    = self.myLayoutFrame.introF;
+    self.sexImV.frame        = self.myLayoutFrame.sex;
+    self.pictureView.frame   = self.myLayoutFrame.pictrueF;
+    self.uniserLabel.frame   = self.myLayoutFrame.uniserF;
     self.commentButton.frame = self.myLayoutFrame.commentF;
-    self.praiseLabel.frame = self.myLayoutFrame.praiseF;
-    self.labelImg.frame = self.myLayoutFrame.labelF;
-    _kTitleView.frame = self.myLayoutFrame.labelCommentF;
-    self.lineView.frame = self.myLayoutFrame.lineF;
-    self.commentImg.frame = self.myLayoutFrame.commentImgF;
-    self.commentLabel.frame = self.myLayoutFrame.commentLabelF;
-    self.lineViewSec.frame = self.myLayoutFrame.lineSecF;
-    self.praiseImg.frame = self.myLayoutFrame.praiseImgF;
-    self.praiseButton.frame = self.myLayoutFrame.praiseF;
-    self.praiseLabel.frame = self.myLayoutFrame.praiseLabelF;
-    self.lineViewThri.frame = self.myLayoutFrame.lineThriF;
-    
-    
-    self.shareImg.frame = self.myLayoutFrame.shareImgF;
-    self.shareButton.frame = self.myLayoutFrame.shareF;
-    self.shareLabel.frame = self.myLayoutFrame.shareLabelF;
+    self.praiseLabel.frame   = self.myLayoutFrame.praiseF;
+    self.labelImg.frame      = self.myLayoutFrame.labelF;
+    _kTitleView.frame        = self.myLayoutFrame.labelCommentF;
+    self.lineView.frame      = self.myLayoutFrame.lineF;
+    self.commentImg.frame    = self.myLayoutFrame.commentImgF;
+    self.commentLabel.frame  = self.myLayoutFrame.commentLabelF;
+    self.lineViewSec.frame   = self.myLayoutFrame.lineSecF;
+    self.praiseImg.frame     = self.myLayoutFrame.praiseImgF;
+    self.praiseButton.frame  = self.myLayoutFrame.praiseF;
+    self.praiseLabel.frame   = self.myLayoutFrame.praiseLabelF;
+    self.lineViewThri.frame  = self.myLayoutFrame.lineThriF;
+    self.shareImg.frame      = self.myLayoutFrame.shareImgF;
+    self.shareButton.frame   = self.myLayoutFrame.shareF;
+    self.shareLabel.frame    = self.myLayoutFrame.shareLabelF;
     
 }
+
 -(void)_addTitleBtn:(NSString *)title andAdd:(BOOL)add{
     
     NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
+    
+#warning 崩溃
     CGFloat length = [title boundingRectWithSize:CGSizeMake(320, 2000) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size.width;
+    
     CGFloat xxxx = _kMarkRect.origin.x + _kMarkRect.size.width + length + 30;
+    
     if (_kMarkRect.origin.y == 0) {
         _kMarkRect.origin.y = 10;
     }
+    
     if (xxxx>_kTitleView.frame.size.width-10) {
+    
         _kMarkRect.origin.y += 37;
         _kMarkRect.origin.x = 0;
         _kMarkRect.size.width = 0;
     }
-    UIView *kMarkView = [[UIView alloc]initWithFrame:CGRectMake(_kMarkRect.origin.x + _kMarkRect.size.width + 10, _kMarkRect.origin.y, length+20, 16)];
-    [_kTitleView addSubview:kMarkView];
-    _kMarkRect = kMarkView.frame;
-    UILabel *kTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, length+20, 16)];
-    kTitleLabel.backgroundColor = YTHColor(169, 214, 255);
-    kTitleLabel.layer.cornerRadius = 4;
-    kTitleLabel.layer.masksToBounds = YES;
-    kTitleLabel.textAlignment = NSTextAlignmentCenter;
-    kTitleLabel.font = [UIFont systemFontOfSize:12];
-    kTitleLabel.textColor = [UIColor whiteColor];
-    kTitleLabel.text = title;
-    [kMarkView addSubview:kTitleLabel];
-    UIButton *kDeleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    kDeleteButton.frame = CGRectMake(CGRectGetMaxX(kMarkView.frame)-10, kMarkView.frame.origin.y-10, 20, 16);
     
+    UIView *kMarkView                = [[UIView alloc]initWithFrame:CGRectMake(_kMarkRect.origin.x + _kMarkRect.size.width + 10, _kMarkRect.origin.y, length+20, 16)];
+    
+    [_kTitleView addSubview:kMarkView];
+    
+    _kMarkRect                      = kMarkView.frame;
+    UILabel *kTitleLabel            = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, length+20, 16)];
+    kTitleLabel.backgroundColor     = YTHColor(169, 214, 255);
+    kTitleLabel.layer.cornerRadius  = 4;
+    kTitleLabel.layer.masksToBounds = YES;
+    kTitleLabel.textAlignment       = NSTextAlignmentCenter;
+    kTitleLabel.font                = [UIFont systemFontOfSize:12];
+    kTitleLabel.textColor           = [UIColor whiteColor];
+    kTitleLabel.text                = title;
+  //删除按钮
+    UIButton *kDeleteButton         = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    kDeleteButton.frame             = CGRectMake(CGRectGetMaxX(kMarkView.frame)-10, kMarkView.frame.origin.y-10, 20, 16);
+ 
+    [kMarkView addSubview:kTitleLabel];
     [_kTitleView addSubview:kDeleteButton];
     if (add) {
         [_kTitleArrays addObject:title];
@@ -320,9 +324,8 @@
     kDeleteButton.tag = [_kTitleArrays indexOfObject:title] + 999;
     _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
     // self.viewLabel.height =kMarkView.height;
-    float h;
+    //float h;
     YTHLog(@"frame标签%f",kMarkView.frame.origin.y);
-    
     
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

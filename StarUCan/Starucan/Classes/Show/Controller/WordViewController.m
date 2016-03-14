@@ -169,9 +169,9 @@
         
         remainTextNum = 0;
         
-        //        [self showSimpleAlert:@"请输入小于100个字！"];
-        //
-        //        self.emailFT.userInteractionEnabled = NO;
+//        [self showSimpleAlert:@"请输入小于100个字！"];
+//
+//        self.emailFT.userInteractionEnabled = NO;
         
         return YES;
         
@@ -186,10 +186,7 @@
         remainTextNum =200-existTextNum;
         
         label.text = [NSString stringWithFormat:@"%ld/200",(long)remainTextNum];
-        
-        
-        
-        
+          
         return YES;
     }
 }

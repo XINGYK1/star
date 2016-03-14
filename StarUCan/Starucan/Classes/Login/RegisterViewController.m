@@ -374,7 +374,9 @@
             // 注册成功, 就在用户偏好中设置为登录成功状态
             //            NSUserDefaults *user=[NSUserDefaults standardUserDefaults];
              if ([archive online]) {
-                 SUCUser *user = [SUCUser shareUser];
+                 
+#warning 内存泄露
+            SUCUser *user = [SUCUser shareUser];
             user = [SUCUser objectWithKeyValues:responseObject[@"userInfo"]];
             NSMutableDictionary *md = [NSMutableDictionary dictionary];
             md[@"uuid"] = user.uuid;
