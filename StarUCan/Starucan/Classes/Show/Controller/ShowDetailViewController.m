@@ -99,13 +99,19 @@
   
     self.title= @"详情";
     YTHLog(@"uuid详情%@",self.uuid);
+    
     if (!myDelegate) {
+    
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     }
+    
     _kTitleArrays = [[NSMutableArray alloc]init];
+    
     self.photoNameList = [[NSMutableArray alloc]init];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(requestDatatable:) name:@"requestTable" object:nil];
+    
     self.flag = YES;
   
     //请求数据
@@ -126,9 +132,13 @@
     
     // 左边的取消按钮
     UIButton *cancelBtn = [[UIButton alloc] init];
+    
     cancelBtn.frame = CGRectMake(0, 0, 30, 30);
+    
     [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    
     [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -471,7 +481,7 @@
     
     kTitleLabel.backgroundColor = YTHColor(120,190, 253);
     
-    kTitleLabel.layer.cornerRadius = 6;
+    kTitleLabel.layer.cornerRadius = 8;
     
     kTitleLabel.layer.masksToBounds = YES;
     
@@ -489,10 +499,13 @@
     UIButton *kDeleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
     kDeleteButton.frame = CGRectMake(CGRectGetMaxX(kMarkView.frame)-10, kMarkView.frame.origin.y-10, 20, 20);
+    
     //    [kDeleteButton setTitle:@"X" forState:UIControlStateNormal];
     
     [kDeleteButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
+    
     //    [kDeleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
     //    [kDeleteButton addTarget:self action:@selector(btnDeleteClick:)];
     
     [kDeleteButton addTarget:self action:@selector(btnDeleteClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -540,11 +553,8 @@
     praiseButton.tag = 10;
     
     [praiseButton addTarget:self action:@selector(buttonCommentBtn:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+  
     [commentView addSubview:praiseButton];
-    
-    
     
     //更多按钮
     moreButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(35)+YTHScreenWidth/4, YTHAdaptation(14), YTHAdaptation(18),YTHAdaptation(16) )];
@@ -571,8 +581,6 @@
     commentButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHScreenWidth/2, 0, YTHScreenWidth/2, commentView.height)];
     
     commentButton.backgroundColor = YTHColor(255, 70, 80);
-    
-    
     
     [commentButton setTitle:@"评论" forState:UIControlStateNormal];
     
@@ -663,7 +671,7 @@
             
             [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
             
-            NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/%@/praise",uS, self.praiseuuid];
+            NSString *urlStr = [NSString stringWithFormat:@"%@v1/show/%@/collection",uS, self.praiseuuid];
            
             YTHLog(@"赞拼接之后%@",urlStr);
             
@@ -672,7 +680,7 @@
                 YTHLog(@"赞%@",responseObject);
                 self.praiseJason = responseObject;
                 YTHLog(@"赞 %ld",(long)[operation.response statusCode]);
-                if ([operation.response statusCode]/100==2)//赞 成功
+                if ([operation.response statusCode]/100==2)//收藏 成功
                 {
                     [praiseButton setImage:[UIImage imageNamed:@"icon_zan_red"] forState:UIControlStateNormal];
                     

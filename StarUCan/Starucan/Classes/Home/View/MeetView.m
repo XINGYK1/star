@@ -204,6 +204,14 @@
     self.viewButton=viewButton;
     viewButton.backgroundColor = [UIColor whiteColor];
     [self addSubview:viewButton];
+    
+    //类别、大学中间的线
+    UIImageView *verticalLineIV = [[UIImageView alloc]initWithFrame:CGRectMake(YTHScreenWidth/2, 10, 1, 20)];
+    
+    verticalLineIV.backgroundColor = [UIColor lightGrayColor];
+    
+    [viewButton addSubview:verticalLineIV];
+    
     UIButton *allButton = [UIButton buttonWithType:UIButtonTypeCustom];
     allButton.frame = CGRectMake(0, 0, YTHScreenWidth/2, 40);
     [allButton setTitle:@"所有类别" forState:UIControlStateNormal];
@@ -229,6 +237,7 @@
     [unisverButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     self.unisverButton = unisverButton;
     [viewButton addSubview:unisverButton];
+    
     
    
 
@@ -268,17 +277,29 @@
         
         }else{
             [lineIV removeFromSuperview];
-            self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, YTHScreenHeight- self.viewButton.frame.origin.y + self.viewButton.frame.size.height);
+            
+            self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height,
+                                                  YTHScreenWidth, YTHScreenHeight- self.viewButton.frame.origin.y + self.viewButton.frame.size.height);
             
             [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
-                self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, 0);
+                
+                self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.
+                                                      height, YTHScreenWidth, 0);
                 
             } completion:^(BOOL finished){}];
+           
+           
+            
             //类别、大学下面的线
             lineIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 5)];
+           
             lineIV.image = [UIImage imageNamed:@"shadow"];
+            
             [self.catScrollView addSubview:lineIV];
-
+            
+           
+            
+            
         }
         
         
@@ -300,22 +321,33 @@
     
     
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
+   
     md[@"type"] =@"1";
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
     NSString *url = Url;
+    
     NSString *urlString = [NSString stringWithFormat:@"%@v1/banner",url];
+    
     [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *jasonDic = responseObject;
+    
         YTHLog(@"error code %ld",(long)[operation.response statusCode]);
+        
         if ([operation.response statusCode]/100==2) {
             
             YTHLog(@"轮播图%@",jasonDic);
+           
             NSArray *cinemaList = [jasonDic objectForKey:@"banners"];
             // [self.imageURLs removeAllObjects];
+            
             for (NSDictionary *dict in cinemaList) {
+            
                 NSString *urlString = [NSString stringWithFormat:@"%@",dict[@"photourl"]];
+                
                 [_digUpArray addObject:urlString];
+        
             }
         }
         
@@ -329,11 +361,17 @@
     
     
     _pageFlowView = [[PagedFlowView alloc]initWithFrame:CGRectMake(0, 40, YTHScreenWidth, 144)];
+    
     _pageFlowView.delegate = self;
+    
     _pageFlowView.dataSource = self;
+    
     _pageFlowView.minimumPageAlpha = 0.3;
+    
     _pageFlowView.minimumPageScale = 0.8;
+    
     _pageFlowView.orientation = PagedFlowViewOrientationHorizontal;
+    
     _pageFlowView.scrollView.contentSize = CGSizeMake(INFINITY, _pageFlowView.scrollView.contentSize.height);
     
     
@@ -374,7 +412,10 @@
 }
 -(void)kCatkCatTabelViewFooterBtnClick{
     [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
-        self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, 0);
+    
+        self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height,
+                                              YTHScreenWidth, 0);
+
     } completion:^(BOOL finished){}];
     
 }
@@ -383,16 +424,24 @@
     HMWaterflowLayout *layout = [[HMWaterflowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     //    layout.headerReferenceSize = CGSizeMake(YTHScreenWidth, YTHAdaptation(20));
+    
     layout.delegate = self;
+    
     self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 104, YTHScreenWidth, YTHScreenHeight) collectionViewLayout:layout];
     //注册代理
     self.collectionView.delegate = self;
+    
     self.collectionView.dataSource = self;
+    
     [self addSubview:self.collectionView];
+    
     [self.collectionView addSubview:self.collectionViewHeaderView];
+    
     //注册cell和ReusableView（相当于头部）
     [self.collectionView registerClass:[YHTHomeCollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    
     [self.collectionView registerClass:[YHTHomeHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView"];
+    
     self.collectionView.backgroundColor = [UIColor clearColor];
 }
 //-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
@@ -401,8 +450,11 @@
 //}
 -(void)tihuan:(YHTHomeImageModel *)model andSize:(CGSize)size{
     YTHLog(@"执行");
+    
     model.width = size.width;
+    
     model.height = size.height;
+    
     [self performSelector:@selector(collectReload) withObject:self afterDelay:0.1];
     
 }
@@ -413,16 +465,23 @@
 
 #pragma mark - <HMWaterflowLayoutDelegate>
 - (CGFloat)waterflowLayout:(HMWaterflowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath withItemWidth:(CGFloat)width {
+    
     YHTHomeImageModel *model = self.dataArrays[indexPath.row];
+    
     YTHLog(@"%f  %f  %f",model.width,model.height,YTHScreenWidth);
+    
     return model.height * width / model.width;
 }
 - (HMWaterflowLayoutSetting)settingInWaterflowLayout:(HMWaterflowLayout *)layout
 {
     HMWaterflowLayoutSetting setting;
+    
     setting.rowMargin = YTHAdaptation(10);
+    
     setting.columnMargin = YTHAdaptation(10);
+    
     setting.insets = UIEdgeInsetsMake(YTHAdaptation(0), YTHAdaptation(10), YTHAdaptation(10), YTHAdaptation(10));
+    
     setting.columnsCount = 2;
     
     return setting;
