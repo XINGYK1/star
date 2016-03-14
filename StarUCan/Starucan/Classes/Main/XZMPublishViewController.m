@@ -162,11 +162,15 @@ static CGFloat XZMSpringDelay = 0.1;
                             //调取相机方法
                             UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init] ;
                             
+                            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                            
+                            NSArray *temp_MediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePickerController.sourceType];
+                            
+                            imagePickerController.mediaTypes = temp_MediaTypes;
+                            
                             imagePickerController.delegate = self;
                             
-                            imagePickerController.allowsEditing = NO;
-                            
-                            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                            imagePickerController.allowsEditing = YES;
                             
                             //拍照上传
                             [self presentViewController:imagePickerController animated:YES completion:nil];
@@ -230,9 +234,44 @@ static CGFloat XZMSpringDelay = 0.1;
 }
 
 #pragma mark -imagePickerControllerDelegate
+
 //拍照后使用拍摄的照片调用的代理方法，在这里对照片进行相关的操作
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:@"public.image"]) {
+        
+        //如果媒体类型为图片
+        
+        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        
+        //在这里对拍摄的照片进行相关操作，把照片传到showPhotoViewController
+        [self.photoNameList insertObject:image atIndex:0];
+        
+        ShowPhotoViewController *showVC = [[ShowPhotoViewController alloc]init];
+        
+        [showVC setPhotoNameList:self.photoNameList];
+        
+        WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
+        
+        [picker presentViewController:nav animated:YES completion:nil];
+        
+        
+    }else if ([mediaType isEqualToString:@"public.movie"]){
+        
+        //如果媒体类型为视频，在这里对拍摄的视频做相关的处理
+        
+        
+        
+    }
+    
+}
+
+
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    /**以前
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     //在这里对拍摄的照片进行相关操作，把照片传到showPhotoViewController
@@ -247,7 +286,8 @@ static CGFloat XZMSpringDelay = 0.1;
     [picker presentViewController:nav animated:YES completion:nil];
     
     //[self reloadPhotos];
-}
+     */
+//}
 
 //取消使用相机的代理方法
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
