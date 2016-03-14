@@ -18,11 +18,14 @@
 
 #import "DoImagePickerController.h"
 #import "AssetHelper.h"
+#import "ShowVedioViewController.h"
 
 @interface XZMPublishViewController ()<DoImagePickerControllerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
     AppDelegate *myDelegate;
     BOOL flag;
+    UIImagePickerController *_picker;
+    
 }
 @property (nonatomic, weak)UIImageView *imageView;
 @property (strong, nonatomic) NSMutableArray *photoNameList;//存储照片的数组
@@ -164,6 +167,7 @@ static CGFloat XZMSpringDelay = 0.1;
                             
                             imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
                             
+                            //获取
                             NSArray *temp_MediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePickerController.sourceType];
                             
                             imagePickerController.mediaTypes = temp_MediaTypes;
@@ -171,6 +175,8 @@ static CGFloat XZMSpringDelay = 0.1;
                             imagePickerController.delegate = self;
                             
                             imagePickerController.allowsEditing = YES;
+                            
+                            //[imagePickerController setVideoMaximumDuration:100];
                             
                             //拍照上传
                             [self presentViewController:imagePickerController animated:YES completion:nil];
@@ -260,11 +266,33 @@ static CGFloat XZMSpringDelay = 0.1;
         
     }else if ([mediaType isEqualToString:@"public.movie"]){
         
-        //如果媒体类型为视频，在这里对拍摄的视频做相关的处理
+        NSLog(@"使用视频");
         
+        // 保存视频
+        NSString *path = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL]path];
         
+        UISaveVideoAtPathToSavedPhotosAlbum(path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+        
+        ShowVedioViewController *showVedio = [[ShowVedioViewController alloc]init];
+        
+        showVedio.vedioURL =[NSURL fileURLWithPath:path];
+        
+        WXNavigationController *showVedioNav = [[WXNavigationController alloc]initWithRootViewController:showVedio];
+        
+        [picker presentViewController:showVedioNav animated:YES completion:nil];
         
     }
+    
+}
+
+// 视频保存回调
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
+    
+    NSLog(@"123==%@",videoPath);
+    
+    NSLog(@"%@",error);
+    
+    
     
 }
 

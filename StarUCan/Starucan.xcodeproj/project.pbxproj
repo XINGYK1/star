@@ -166,6 +166,8 @@
 		5AB34A631C3A837C00721D84 /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A561C3A837C00721D84 /* NSObject+MJCoding.m */; };
 		5AB34A641C3A837C00721D84 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A581C3A837C00721D84 /* NSObject+MJKeyValue.m */; };
 		5AB34A651C3A837C00721D84 /* NSObject+MJMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */; };
+		5AC206921C96863B004B0899 /* ShowVedioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC206911C96863B004B0899 /* ShowVedioViewController.m */; };
+		5AC206941C96884E004B0899 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC206931C96884E004B0899 /* MediaPlayer.framework */; };
 		5AD72E0D1C3F877E005E4236 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E011C3F877E005E4236 /* HomeViewController.m */; };
 		5AD72E0E1C3F877E005E4236 /* SearchClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E031C3F877E005E4236 /* SearchClassViewController.m */; };
 		5AD72E0F1C3F877E005E4236 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E051C3F877E005E4236 /* SearchViewController.m */; };
@@ -639,6 +641,9 @@
 		5AB34A581C3A837C00721D84 /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
 		5AB34A591C3A837C00721D84 /* NSObject+MJMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJMember.h"; sourceTree = "<group>"; };
 		5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJMember.m"; sourceTree = "<group>"; };
+		5AC206901C96863B004B0899 /* ShowVedioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowVedioViewController.h; sourceTree = "<group>"; };
+		5AC206911C96863B004B0899 /* ShowVedioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowVedioViewController.m; sourceTree = "<group>"; };
+		5AC206931C96884E004B0899 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5AD72E001C3F877E005E4236 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		5AD72E011C3F877E005E4236 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		5AD72E021C3F877E005E4236 /* SearchClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchClassViewController.h; sourceTree = "<group>"; };
@@ -868,6 +873,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AC206941C96884E004B0899 /* MediaPlayer.framework in Frameworks */,
 				5AF7C6541C38C7C700E0E97F /* libz.tbd in Frameworks */,
 				5A1CBD811C44F520006372FF /* libresolv.tbd in Frameworks */,
 				5AE749C01C3E421500631DAA /* Foundation.framework in Frameworks */,
@@ -1197,6 +1203,7 @@
 		5A988EA71C34C7EB0073A89F = {
 			isa = PBXGroup;
 			children = (
+				5AC206931C96884E004B0899 /* MediaPlayer.framework */,
 				5A1CBD801C44F520006372FF /* libresolv.tbd */,
 				ECD35BF01C9411B3000D32FA /* Assets.xcassets */,
 				5AE749BF1C3E421500631DAA /* Foundation.framework */,
@@ -1490,6 +1497,8 @@
 				5A86F70D1C3F97120073C14F /* creatActivitybg4.png */,
 				5AD72E131C3F91D7005E4236 /* ShowPhotoViewController.h */,
 				5AD72E141C3F91D7005E4236 /* ShowPhotoViewController.m */,
+				5AC206901C96863B004B0899 /* ShowVedioViewController.h */,
+				5AC206911C96863B004B0899 /* ShowVedioViewController.m */,
 				5AF69F091C4A2A0C00B22C1A /* WordViewController.h */,
 				5AF69F0A1C4A2A0C00B22C1A /* WordViewController.m */,
 				5AF69F0F1C4A3C8500B22C1A /* AddLabelViewController.h */,
@@ -2418,6 +2427,7 @@
 				5A988F6B1C35306B0073A89F /* UIImageView+HighlightedWebCache.m in Sources */,
 				5A649A911C69BDFD0067EB58 /* View+MASAdditions.m in Sources */,
 				5A65D0661C478FD9005C24AE /* LabelModel.m in Sources */,
+				5AC206921C96863B004B0899 /* ShowVedioViewController.m in Sources */,
 				5AB0289F1C6EB0070042FC04 /* SettingViewController.m in Sources */,
 				5A1CBDE41C44F74E006372FF /* GTM_Base64.m in Sources */,
 				5A988F611C35306B0073A89F /* SDImageCache.m in Sources */,
