@@ -266,57 +266,25 @@ static CGFloat XZMSpringDelay = 0.1;
         
     }else if ([mediaType isEqualToString:@"public.movie"]){
         
-        NSLog(@"使用视频");
-        
-        // 保存视频
+        // 保存
         NSString *path = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL]path];
         
         UISaveVideoAtPathToSavedPhotosAlbum(path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
         
         ShowVedioViewController *showVedio = [[ShowVedioViewController alloc]init];
         
-        showVedio.vedioURL =[NSURL fileURLWithPath:path];
+        showVedio.vedioURL = path;
         
         WXNavigationController *showVedioNav = [[WXNavigationController alloc]initWithRootViewController:showVedio];
         
         [picker presentViewController:showVedioNav animated:YES completion:nil];
-        
     }
-    
 }
 
-// 视频保存回调
+//回调方法
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
     
-    NSLog(@"123==%@",videoPath);
-    
-    NSLog(@"%@",error);
-    
-    
-    
 }
-
-
-//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    /**以前
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    
-    //在这里对拍摄的照片进行相关操作，把照片传到showPhotoViewController
-    [self.photoNameList insertObject:image atIndex:0];
-    
-    ShowPhotoViewController *showVC = [[ShowPhotoViewController alloc]init];
-    
-    [showVC setPhotoNameList:self.photoNameList];
-    
-    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:showVC];
-    
-    [picker presentViewController:nav animated:YES completion:nil];
-    
-    //[self reloadPhotos];
-     */
-//}
-
 //取消使用相机的代理方法
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     

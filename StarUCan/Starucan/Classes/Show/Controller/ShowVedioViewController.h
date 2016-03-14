@@ -10,6 +10,6 @@
 
 @interface ShowVedioViewController : UIViewController
 
-@property(nonatomic,copy)NSURL *vedioURL;
+@property(nonatomic,copy)NSString *vedioURL;
 
 @end

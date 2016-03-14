@@ -168,6 +168,8 @@
 		5AB34A651C3A837C00721D84 /* NSObject+MJMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */; };
 		5AC206921C96863B004B0899 /* ShowVedioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC206911C96863B004B0899 /* ShowVedioViewController.m */; };
 		5AC206941C96884E004B0899 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC206931C96884E004B0899 /* MediaPlayer.framework */; };
+		5AC206BA1C96C0DE004B0899 /* WMPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5AC206AE1C96C0DE004B0899 /* WMPlayer.bundle */; };
+		5AC206BB1C96C0DE004B0899 /* WMPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC206B01C96C0DE004B0899 /* WMPlayer.m */; };
 		5AD72E0D1C3F877E005E4236 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E011C3F877E005E4236 /* HomeViewController.m */; };
 		5AD72E0E1C3F877E005E4236 /* SearchClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E031C3F877E005E4236 /* SearchClassViewController.m */; };
 		5AD72E0F1C3F877E005E4236 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD72E051C3F877E005E4236 /* SearchViewController.m */; };
@@ -644,6 +646,9 @@
 		5AC206901C96863B004B0899 /* ShowVedioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowVedioViewController.h; sourceTree = "<group>"; };
 		5AC206911C96863B004B0899 /* ShowVedioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowVedioViewController.m; sourceTree = "<group>"; };
 		5AC206931C96884E004B0899 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		5AC206AE1C96C0DE004B0899 /* WMPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WMPlayer.bundle; sourceTree = "<group>"; };
+		5AC206AF1C96C0DE004B0899 /* WMPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPlayer.h; sourceTree = "<group>"; };
+		5AC206B01C96C0DE004B0899 /* WMPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPlayer.m; sourceTree = "<group>"; };
 		5AD72E001C3F877E005E4236 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		5AD72E011C3F877E005E4236 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		5AD72E021C3F877E005E4236 /* SearchClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchClassViewController.h; sourceTree = "<group>"; };
@@ -1580,6 +1585,7 @@
 		5A988F151C34C8350073A89F /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				5AC206951C96C0DE004B0899 /* WMPlayer */,
 				EC7D0D3E1C9002550061BAA9 /* SDCycleScrollView */,
 				5A649A6F1C69BDFD0067EB58 /* Masonry */,
 				5AEAA8A31C45EF7C00B39068 /* DoImagePicker */,
@@ -1719,6 +1725,16 @@
 				5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */,
 			);
 			path = MJExtension;
+			sourceTree = "<group>";
+		};
+		5AC206951C96C0DE004B0899 /* WMPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				5AC206AE1C96C0DE004B0899 /* WMPlayer.bundle */,
+				5AC206AF1C96C0DE004B0899 /* WMPlayer.h */,
+				5AC206B01C96C0DE004B0899 /* WMPlayer.m */,
+			);
+			path = WMPlayer;
 			sourceTree = "<group>";
 		};
 		5AD72DFD1C3F877E005E4236 /* Controller */ = {
@@ -2179,6 +2195,7 @@
 				5AB028C81C70CA3C0042FC04 /* area.plist in Resources */,
 				5A988F5E1C35306B0073A89F /* MBProgressHUD.bundle in Resources */,
 				5AEAA8B31C45EF7C00B39068 /* DoImagePickerController.xib in Resources */,
+				5AC206BA1C96C0DE004B0899 /* WMPlayer.bundle in Resources */,
 				5AB34A2D1C3A1D8500721D84 /* movie163_detail.json in Resources */,
 				5AF7C6441C38C78900E0E97F /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				5AB34A381C3A5C4500721D84 /* citydict.plist in Resources */,
@@ -2349,6 +2366,7 @@
 				5AB34A411C3A820A00721D84 /* SUCUser.m in Sources */,
 				5AE74A0D1C3E43AF00631DAA /* BATableViewIndex.m in Sources */,
 				5A988EB51C34C7EB0073A89F /* main.m in Sources */,
+				5AC206BB1C96C0DE004B0899 /* WMPlayer.m in Sources */,
 				5A988F191C34C8350073A89F /* CustomBarItem.m in Sources */,
 				5A988F1E1C34C8350073A89F /* NewsViewController.m in Sources */,
 				5AB028B11C6EB0A60042FC04 /* MobileBandViewController.m in Sources */,

@@ -8,7 +8,8 @@
 
 #import "ShowVedioViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import <AVKit/AVKit.h>
+#import "WMPlayer.h"
+
 
 @interface ShowVedioViewController ()
 
@@ -22,22 +23,9 @@
     
     MPMoviePlayerController *_MoviePlayer;
     
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    //NSLog(@"%@",self.vedioURL);
-    
-    [self.view addSubview:self.mediaButton];
-    
-    _MoviePlayer = [[MPMoviePlayerController alloc]initWithContentURL:self.vedioURL];
-    
-    
+    WMPlayer *_wmPlayer;
     
 }
-
 
 -(UIButton *)mediaButton{
     
@@ -57,12 +45,44 @@
     return _mediaButton;
 }
 
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    //NSLog(@"%@",self.vedioURL);
+    
+    [self.view addSubview:self.mediaButton];
+    
+    
+    _MoviePlayer = [[MPMoviePlayerController alloc]initWithContentURL:[NSURL fileURLWithPath:self.vedioURL]];
+    
+    [_MoviePlayer prepareToPlay];
+    
+    _MoviePlayer.shouldAutoplay=YES;
+    
+    //[_MoviePlayer setControlStyle:MPMovieControlStyleDefault];
+    
+    [_MoviePlayer setFullscreen:YES];
+    
+    [_MoviePlayer.view setFrame:self.view.bounds];
+    
+    //_wmPlayer = [[WMPlayer alloc]initWithFrame:self.view.bounds videoURLStr:self.vedioURL];
+    
+    
+}
+
+
+
 -(void)buttonClicked{
     
-    //播放按钮的点击方法
-    
+//    [_wmPlayer.player play];
+//    
+//    [self.view addSubview:_wmPlayer];
+
     [_MoviePlayer play];
     
+    [self.view addSubview:_MoviePlayer.view];//设置写在添加之后   // 这里是addSubView
     
 }
 
