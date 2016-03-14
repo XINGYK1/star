@@ -121,10 +121,12 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 
 + (instancetype)managerForDomain:(NSString *)domain {
     SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, [domain UTF8String]);
-
+#warning 变量申请了内存并初始化了，但没有使用此变量，接着将此变量又重新赋值
     AFNetworkReachabilityManager *manager = [[self alloc] initWithReachability:reachability];
+    
     manager.networkReachabilityAssociation = AFNetworkReachabilityForName;
 
+    
     return manager;
 }
 
@@ -132,6 +134,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
     SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)address);
 
     AFNetworkReachabilityManager *manager = [[self alloc] initWithReachability:reachability];
+    
     manager.networkReachabilityAssociation = AFNetworkReachabilityForAddress;
 
     return manager;

@@ -13,7 +13,9 @@
 
 @interface HZAreaPickerView ()
 {
-    NSArray *provinces, *cities, *areas;
+    NSArray *provinces,
+    *cities,
+    *areas;
 }
 
 @end
@@ -42,7 +44,9 @@
         
         //加载数据
         if (self.pickerStyle == HZAreaPickerWithStateAndCityAndDistrict) {
+            
             provinces = [[NSArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"area.plist" ofType:nil]];
+            
             cities = [[provinces objectAtIndex:0] objectForKey:@"cities"];
             
             self.locate.state = [[provinces objectAtIndex:0] objectForKey:@"state"];
@@ -57,6 +61,7 @@
             
         } else{
             provinces = [[NSArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"city.plist" ofType:nil]];
+            
             cities = [[provinces objectAtIndex:0] objectForKey:@"cities"];
             self.locate.state = [[provinces objectAtIndex:0] objectForKey:@"state"];
             self.locate.city = [cities objectAtIndex:0];

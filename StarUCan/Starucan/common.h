@@ -43,6 +43,8 @@
 #define sixPlus ([UIScreen mainScreen].bounds.size.height == 736.0)
 
 #define YTHColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+//字体颜色
+#define YTHFontColor [UIColor colorWithRed:(197)/255.0 green:(197)/255.0 blue:(197)/255.0 alpha:1.0]
 
 // 是否登录
 #define YTHIsLogin [[SUCArchive shareArchiveManager] online]

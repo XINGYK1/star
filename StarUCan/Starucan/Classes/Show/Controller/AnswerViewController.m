@@ -23,19 +23,22 @@
 @implementation AnswerViewController
 - (void)viewDidAppear:(BOOL)animated
 {
+    
     [super viewDidAppear:animated];
     
     [_textView becomeFirstResponder];
+
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     self.title = [NSString stringWithFormat:@"回复%@",self.nameTitle];
     if (!myDelegate) {
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     [self _loadNavigationViews];
+    
     //创建输入框视图
     _textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 200)];
     _textView.delegate = self;
@@ -51,6 +54,7 @@
     labelText.enabled = NO;//lable必须设置为不可用
     labelText.backgroundColor = [UIColor clearColor];
     [_textView addSubview:labelText];
+    
     //弹出键盘
     [_textView becomeFirstResponder];
     [self.view addSubview:_textView];
@@ -66,9 +70,10 @@
     [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
+
     //发送按钮
     UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    // sendButton.imgName = @"button_icon_ok.png";
+    //sendButton.imgName = @"button_icon_ok.png";
     [sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [sendButton addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
@@ -86,14 +91,21 @@
     
     // NSString *text = _textView.text;
     NSString *ueltext = [NSString stringWithFormat:@"v1/comment/%@/comment",self.pinglun];
+   
     NSString *text = [NSData AES256EncryptWithPlainText:ueltext passtext:myDelegate.accessToken];
+    
     YTHLog(@"登录密码=%@",myDelegate.accessToken);
+   
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
+    
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
+    
     YTHLog(@"登录账号%@",myDelegate.account);
     
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
+    
     //内容
     //md[@"content"]=_textView.text;//
     md[@"content"] = [NSString stringWithFormat:@"回复%@:%@",self.nameTitle,_textView.text];
@@ -106,14 +118,19 @@
     
     
     NSString *uS = Url;
+    
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comment",uS,self.pinglun];
+   
     [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
         self.answerDic = responseObject;
+        
         YTHLog(@"回复评论 %ld",(long)[operation.response statusCode]);
+        
         if ([operation.response statusCode]/100==2)
         {
-            
             YTHLog(@"回复返回：%@",self.answerDic);
+        
             [[NSNotificationCenter defaultCenter] postNotificationName:@"requestTable" object:nil userInfo:nil];
             [self.navigationController popViewControllerAnimated:YES];
             
@@ -121,24 +138,31 @@
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      
         YTHLog(@"回复评论错误 %ld",(long)[operation.response statusCode]);
+        
         self.answerDic = operation.responseObject;
+        
         YTHLog(@"回复发表评论%@", self.answerDic);
+        
         [MBProgressHUD showError:[self.answerDic objectForKey:@"info"]];
         
-        
     }];
-    
     
 }
 -(void)textViewDidChange:(UITextView *)textView
 {
     // self.examineText =  textView.text;
     if (textView.text.length == 0) {
+       
         labelText.text = @" 写评论";
+   
     }
+    
     else{
+    
         labelText.text = @"";
+    
     }
     
 }

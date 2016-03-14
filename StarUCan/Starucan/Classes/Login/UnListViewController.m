@@ -166,7 +166,7 @@
         
         if([[jsonDict objectForKey:@"code"] intValue] == 0){
             
-             NSMutableArray *list = [jsonDict objectForKey:@"nearUniversityList"];
+    //         NSMutableArray *list = [jsonDict objectForKey:@"nearUniversityList"];
             
             //保存
             [self saveDictionary:[jsonDict objectForKey:@"list"] forKey:@"universitys" toFile:@"universitys"];
@@ -435,11 +435,12 @@
 
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    
-    [myUView removeFromSuperview];
-
-}
+//-(void)viewWillDisappear:(BOOL)animated{
+//    
+//    [myUView removeFromSuperview];
+//
+//
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

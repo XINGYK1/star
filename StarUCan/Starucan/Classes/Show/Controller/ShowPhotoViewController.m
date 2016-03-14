@@ -108,6 +108,7 @@
 -(void)createData{
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
     [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         self.dict = responseObject;
@@ -137,6 +138,7 @@
     [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
+   
     //发送按钮
     UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     // sendButton.imgName = @"button_icon_ok.png";
@@ -185,6 +187,7 @@
                       YTHLog(@"---%@", info);
                       
                       YTHLog(@"++%@", resp);
+                      
                       _qiniuText = [resp objectForKey:@"key"];
                       
                       self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
@@ -333,6 +336,7 @@
     
     
 }
+
 #pragma mark -  删除图片
 -(void)deleAction:(UIButton *)btn
 {
@@ -441,6 +445,7 @@
     wordVC.delegate = self;
     [self.navigationController pushViewController:wordVC animated:NO];
 }
+
 #pragma mark - 点击添加标签
 -(void)addLabelButton:(UIButton *)btn
 {
@@ -454,6 +459,7 @@
     [self.photoNameList removeObject:image];
     [_kPhotoCollectionView reloadData];
 }
+
 #pragma mark -collection代理
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     if (collectionView==_kPhotoCollectionView) {
@@ -463,9 +469,11 @@
         return CGSizeMake(YTHScreenWidth, 318);
     }
 }
+
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     if (collectionView==_kPhotoCollectionView) {
@@ -476,6 +484,7 @@
     }
     
 }
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (collectionView==_kPhotoCollectionView) {
@@ -520,6 +529,7 @@
     }
     
 }
+
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     if (scrollView == _indexCollectionView) {
         NSInteger currentItem = _indexCollectionView.contentOffset.x/YTHScreenWidth;
@@ -529,6 +539,7 @@
         [_kPhotoCollectionView reloadData];
     }
 }
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if (collectionView == _kPhotoCollectionView) {
         if (indexPath.row == self.photoNameList.count-1) {
@@ -897,7 +908,7 @@
         h = kMarkView.frame.origin.y + 44;
         self.viewLabel.frame = CGRectMake(0, CGRectGetMaxY(self.viewBgDesc.frame)+10, YTHScreenWidth, h);
         _kTitleView.frame = CGRectMake(30, 0, YTHScreenWidth-54, h);
-        h+= _kTitleView.frame.size.height+12;
+     //   h+= _kTitleView.frame.size.height+12;
         self.viewLook.frame = CGRectMake(0, CGRectGetMaxY(self.viewLabel.frame)+1, YTHScreenWidth, 44);
     }
     
@@ -907,7 +918,7 @@
 -(void)btnDeleteClick:(UIButton *)btn{
     [_kTitleView removeFromSuperview];
     _kTitleView = nil;
-    NSString *string = _kTitleArrays[btn.tag - 999];
+//    NSString *string = _kTitleArrays[btn.tag - 999];
     //  [_kHandsomeView removeBtnSelected:string];
     [_kTitleArrays removeObjectAtIndex:btn.tag - 999];
     _kMarkRect = CGRectMake(0, 0, 0, 0);

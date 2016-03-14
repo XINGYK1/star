@@ -46,41 +46,40 @@
     MeetView *meetV;
     
 }
-@property (nonatomic,strong) CycleScrollView *cycleScorllView;
-@property (nonatomic,strong)UIPageControl *pageControl;
-@property (assign, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic)NSMutableArray *cycleArray;
+@property (nonatomic,strong ) CycleScrollView  *cycleScorllView;
+@property (nonatomic,strong ) UIPageControl    *pageControl;
+@property (assign, nonatomic) UIScrollView     *scrollView;
+@property (strong, nonatomic) NSMutableArray   *cycleArray;
 
-@property (nonatomic, strong)UICollectionView *collectionView;
-@property (nonatomic, strong)NSMutableArray *dataArrays;
-@property (nonatomic, strong)UIView *collectionViewHeaderView;
-@property (nonatomic, strong)UILabel *videoTitleLabel;
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) NSMutableArray   *dataArrays;
+@property (nonatomic, strong) UIView           *collectionViewHeaderView;
+@property (nonatomic, strong) UILabel          *videoTitleLabel;
 //视频view
-@property (nonatomic, strong)UIView *viewVideo;
-@property (nonatomic, strong) ImagePlayerView *imagePlayerView;
+@property (nonatomic, strong) UIView           *viewVideo;
+@property (nonatomic, strong) ImagePlayerView  *imagePlayerView;
 
-@property (nonatomic, strong) NSMutableArray *imageURLs;
+@property (nonatomic, strong) NSMutableArray   *imageURLs;
 
-@property (nonatomic,strong)NSDictionary *cycleDict;
-
+@property (nonatomic,strong ) NSDictionary     *cycleDict;
 
 //
-@property(nonatomic,strong)UIImageView *headImgV;//头像
-@property(nonatomic,strong)UIView *headView;//头视图
-@property(nonatomic,strong)NSString *urlString;
-@property(nonatomic,strong)UILabel *nameLabel;//姓名
-@property(nonatomic,strong)UIImageView *sexImV;//性别
-@property(nonatomic,strong)UILabel *uniserLabel;//学校
-@property(nonatomic,strong)UIImageView *bigImage;//大图
-@property(nonatomic,strong)UIView *viewBgDesc;//文字详情view
-@property(nonatomic,strong)UILabel *labelDesc;//文字详情内容
-@property(nonatomic,strong)NSDictionary *attenDic;
-@property(nonatomic,strong)UITableView *tableview;
-@property(nonatomic,strong)NSMutableArray *data;
-@property(nonatomic,strong)NSDictionary *commentJason;
-@property(nonatomic,strong)UIButton *buttonPoint;//焦点 按钮
-@property(nonatomic,strong)UIButton *buttonMeet;//遇见 按钮
-@property(nonatomic,strong)UIButton *buttonAtten;//关注 按钮
+@property (nonatomic,strong ) UIImageView      *headImgV;//头像
+@property (nonatomic,strong ) UIView           *headView;//头视图
+@property (nonatomic,strong ) NSString         *urlString;
+@property (nonatomic,strong ) UILabel          *nameLabel;//姓名
+@property (nonatomic,strong ) UIImageView      *sexImV;//性别
+@property (nonatomic,strong ) UILabel          *uniserLabel;//学校
+@property (nonatomic,strong ) UIImageView      *bigImage;//大图
+@property (nonatomic,strong ) UIView           *viewBgDesc;//文字详情view
+@property (nonatomic,strong ) UILabel          *labelDesc;//文字详情内容
+@property (nonatomic,strong ) NSDictionary     *attenDic;
+@property (nonatomic,strong ) UITableView      *tableview;
+@property (nonatomic,strong ) NSMutableArray   *data;
+@property (nonatomic,strong ) NSDictionary     *commentJason;
+@property (nonatomic,strong ) UIButton         *buttonPoint;//焦点 按钮
+@property (nonatomic,strong ) UIButton         *buttonMeet;//遇见 按钮
+@property (nonatomic,strong ) UIButton         *buttonAtten;//关注 按钮
 
 
 @end
@@ -181,7 +180,7 @@
     [self _initCollectionView];
     
 }
-
+//视图加载出来
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
@@ -195,7 +194,6 @@
     UIView *viewbg = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth-200, 44)];
     
     [self.navigationItem setItemWithCustomView:viewbg itemType:center];
-    
     
     NSArray *titleArray = @[@"焦点",@"遇见",@"关注"];
     
@@ -325,6 +323,7 @@
     [self.headView removeFromSuperview];
     
     [self.collectionView removeFromSuperview];
+    
     
     meetV = [[MeetView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight)];
     
@@ -580,7 +579,6 @@
 
           }];
     
-    
 }
 
 -(void)_initCollectionView{
@@ -593,6 +591,7 @@
     layout.delegate = self;
     
     self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight-64-49) collectionViewLayout:layout];
+    
     //注册代理
     self.collectionView.delegate = self;
    
@@ -611,6 +610,7 @@
     
     self.collectionView.backgroundColor = [UIColor clearColor];
 }
+
 //-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
 //    CGSize size={(YTHScreenWidth-YTHAdaptation(30))/2.0f,YTHAdaptation(130)};
 //    return size;
