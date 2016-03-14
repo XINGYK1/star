@@ -130,33 +130,33 @@ NSString * const kPOPWindowBackgroundColor = @"window.backgroundColor";
 #if SCENEKIT_SDK_AVAILABLE
 
 // SceneKit
-NSString * const kPOPSCNNodePosition = @"scnode.position";
-NSString * const kPOPSCNNodePositionX = @"scnnode.position.x";
-NSString * const kPOPSCNNodePositionY = @"scnnode.position.y";
-NSString * const kPOPSCNNodePositionZ = @"scnnode.position.z";
-NSString * const kPOPSCNNodeTranslation = @"scnnode.translation";
+NSString * const kPOPSCNNodePosition     = @"scnode.position";
+NSString * const kPOPSCNNodePositionX    = @"scnnode.position.x";
+NSString * const kPOPSCNNodePositionY    = @"scnnode.position.y";
+NSString * const kPOPSCNNodePositionZ    = @"scnnode.position.z";
+NSString * const kPOPSCNNodeTranslation  = @"scnnode.translation";
 NSString * const kPOPSCNNodeTranslationX = @"scnnode.translation.x";
 NSString * const kPOPSCNNodeTranslationY = @"scnnode.translation.y";
 NSString * const kPOPSCNNodeTranslationZ = @"scnnode.translation.z";
-NSString * const kPOPSCNNodeRotation = @"scnnode.rotation";
-NSString * const kPOPSCNNodeRotationX = @"scnnode.rotation.x";
-NSString * const kPOPSCNNodeRotationY = @"scnnode.rotation.y";
-NSString * const kPOPSCNNodeRotationZ = @"scnnode.rotation.z";
-NSString * const kPOPSCNNodeRotationW = @"scnnode.rotation.w";
-NSString * const kPOPSCNNodeEulerAngles = @"scnnode.eulerAngles";
+NSString * const kPOPSCNNodeRotation     = @"scnnode.rotation";
+NSString * const kPOPSCNNodeRotationX    = @"scnnode.rotation.x";
+NSString * const kPOPSCNNodeRotationY    = @"scnnode.rotation.y";
+NSString * const kPOPSCNNodeRotationZ    = @"scnnode.rotation.z";
+NSString * const kPOPSCNNodeRotationW    = @"scnnode.rotation.w";
+NSString * const kPOPSCNNodeEulerAngles  = @"scnnode.eulerAngles";
 NSString * const kPOPSCNNodeEulerAnglesX = @"scnnode.eulerAngles.x";
 NSString * const kPOPSCNNodeEulerAnglesY = @"scnnode.eulerAngles.y";
 NSString * const kPOPSCNNodeEulerAnglesZ = @"scnnode.eulerAngles.z";
-NSString * const kPOPSCNNodeOrientation = @"scnnode.orientation";
+NSString * const kPOPSCNNodeOrientation  = @"scnnode.orientation";
 NSString * const kPOPSCNNodeOrientationX = @"scnnode.orientation.x";
 NSString * const kPOPSCNNodeOrientationY = @"scnnode.orientation.y";
 NSString * const kPOPSCNNodeOrientationZ = @"scnnode.orientation.z";
 NSString * const kPOPSCNNodeOrientationW = @"scnnode.orientation.w";
-NSString * const kPOPSCNNodeScale = @"scnnode.scale";
-NSString * const kPOPSCNNodeScaleX = @"scnnode.scale.x";
-NSString * const kPOPSCNNodeScaleY = @"scnnode.scale.y";
-NSString * const kPOPSCNNodeScaleZ = @"scnnode.scale.z";
-NSString * const kPOPSCNNodeScaleXY = @"scnnode.scale.xy";
+NSString * const kPOPSCNNodeScale        = @"scnnode.scale";
+NSString * const kPOPSCNNodeScaleX       = @"scnnode.scale.x";
+NSString * const kPOPSCNNodeScaleY       = @"scnnode.scale.y";
+NSString * const kPOPSCNNodeScaleZ       = @"scnnode.scale.z";
+NSString * const kPOPSCNNodeScaleXY      = @"scnnode.scale.xy";
 
 #endif
 
@@ -223,9 +223,9 @@ static POPStaticAnimatablePropertyState _staticStates[] =
       POPCGColorGetRGBAComponents(obj.borderColor, values);
     },
     ^(CALayer *obj, const CGFloat values[]) {
-      CGColorRef color = POPCGColorRGBACreate(values);
-      [obj setBorderColor:color];
-      CGColorRelease(color);
+        CGColorRef color = POPCGColorRGBACreate(values);
+        [obj setBorderColor:color];
+        CGColorRelease(color);
     },
     kPOPThresholdColor
   },

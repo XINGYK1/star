@@ -64,6 +64,7 @@ public:
 
   ~POPAnimatorItem()
   {
+      
   }
 
   bool operator==(const POPAnimatorItem& o) const {
@@ -122,7 +123,9 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeSt
       });
     }
   } else {
+      
     [(__bridge POPAnimator*)context render];
+      
   }
   return kCVReturnSuccess;
 }
