@@ -16,6 +16,6 @@
 
 
 @interface MeetView : UIView
-@property (nonatomic, strong)NSMutableArray *dataArrays;
+@property (nonatomic, strong)NSMutableArray *meetDataArrays;
 @property(nonatomic,strong)id<MeetViewDelegate>delagate;
 @end

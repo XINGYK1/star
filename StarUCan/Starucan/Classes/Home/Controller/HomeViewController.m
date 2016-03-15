@@ -52,7 +52,7 @@
 @property (strong, nonatomic) NSMutableArray   *cycleArray;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) NSMutableArray   *dataArrays;
+@property (nonatomic, strong) NSMutableArray   *focusDataArrays;
 @property (nonatomic, strong) UIView           *collectionViewHeaderView;
 @property (nonatomic, strong) UILabel          *videoTitleLabel;
 //视频view
@@ -175,7 +175,7 @@
     //创建轮播图
     [self _initCycle];
     
-    [self _initDataArray];
+    [self _initFocusDataArray];
     
     [self _initCollectionView];
     
@@ -294,7 +294,7 @@
     
     [self _initCycle];
     
-    [self _initDataArray];
+    [self _initFocusDataArray];
     
     [self _initCollectionView];
 }
@@ -324,7 +324,7 @@
     
     [self.collectionView removeFromSuperview];
     
-    
+    //创建遇见View
     meetV = [[MeetView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight)];
     
     meetV.delagate = self;
@@ -347,8 +347,7 @@
                          
                      }
                      completion:^(BOOL finished) {
-                        
-                        
+        
                      }];
     
     [self.collectionView removeFromSuperview];
@@ -430,7 +429,7 @@
         if ([operation.response statusCode]/100==2) {
             
             //打印的是一个字典
-            YTHLog(@"轮播图%@",jasonDic);
+            YTHLog(@"---轮播图---%@",jasonDic);
             
             NSArray *cinemaList = [jasonDic objectForKey:@"banners"];
             
@@ -519,7 +518,7 @@
     
 }
 
--(void)_initDataArray{
+-(void)_initFocusDataArray{    //秀 焦点--数据源
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -541,9 +540,9 @@
         
         if ([operation.response statusCode]/100==2) {
             
-            YTHLog(@"------获取瀑布流%@",jasonDic);
+           // YTHLog(@"------获取瀑布流%@",jasonDic);
             
-            self.dataArrays = [NSMutableArray array];
+            self.focusDataArrays = [NSMutableArray array];
             
             NSArray *showArry = [jasonDic objectForKey:@"shows"];
             
@@ -557,7 +556,7 @@
                 
                 model.height = imageWidth;
                 
-                [self.dataArrays addObject:model];
+                [self.focusDataArrays addObject:model];
             
             }
         }
@@ -616,10 +615,10 @@
 //    return size;
 //}
 
-#pragma mark - <HMWaterflowLayoutDelegate>
+#pragma mark - <HMWaterflowLayoutDelegate> 高度
 - (CGFloat)waterflowLayout:(HMWaterflowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath withItemWidth:(CGFloat)width {
     
-    YHTHomeImageModel *model = self.dataArrays[indexPath.row];
+    YHTHomeImageModel *model = self.focusDataArrays[indexPath.row];
 
   //  YTHLog(@"model宽：%f  model高：%f  屏宽：%f",model.width,model.height,YTHScreenWidth);
 
@@ -647,7 +646,7 @@
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.dataArrays.count;
+    return self.focusDataArrays.count;
     
 }
 
@@ -666,18 +665,31 @@
         YTHLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
     cell.delegate = self;
-    cell.model = self.dataArrays[indexPath.row];
+    cell.model = self.focusDataArrays[indexPath.row];
 
     return cell;
 }
 
-//collectionView的点击方法
+
+#pragma mark  秀焦点、 遇见 CollectionView 点击事件
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
     if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
         
-        YHTHomeImageModel *imagLoveModel =self.dataArrays[indexPath.row];
+        if (meetV) {     //秀 遇见
+            YHTHomeImageModel *imagLoveModel =meetV.meetDataArrays[indexPath.row];
+            ShowDetailViewController *showVC = [[ShowDetailViewController alloc] init];
+            
+            showVC.uuid =imagLoveModel.uuid;
+            //
+            WXNavigationController *showN = [[WXNavigationController alloc]initWithRootViewController:showVC];
+            
+            [self presentViewController:showN animated:NO completion:nil];
+
+        }else {         //秀 焦点
+            
+        YHTHomeImageModel *imagLoveModel =self.focusDataArrays[indexPath.row];
         
         ShowDetailViewController *showVC = [[ShowDetailViewController alloc] init];
         
@@ -686,7 +698,8 @@
         WXNavigationController *showN = [[WXNavigationController alloc]initWithRootViewController:showVC];
         
         [self presentViewController:showN animated:NO completion:nil];
-        
+    }
+    
       //  [self.navigationController pushViewController:showVC animated:YES];
         return;
         
@@ -715,8 +728,9 @@
     
     return nil;
 }
+#pragma mark ----轮播图----
 
-#pragma mark - ImagePlayerViewDelegate
+//#pragma mark - ImagePlayerViewDelegate
 - (void)imagePlayerView:(ImagePlayerView *)imagePlayerView loadImageForImageView:(UIImageView *)imageView index:
 (NSInteger)index
 {
@@ -724,20 +738,20 @@
     [imageView sd_setImageWithURL:[self.imageURLs objectAtIndex:index] placeholderImage:nil];
 
 }
-
+//pragma  mark 点击Banner
 - (void)imagePlayerView:(ImagePlayerView *)imagePlayerView didTapAtIndex:(NSInteger)index
 {
-    YTHLog(@"点击了%ld", (long)index);
+    YTHLog(@"---------------------点击了第%ld个banner", (long)index);
     
     switch (index) {
         case 0:
         {
             //还有再加一个账号判断
-            if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
+            if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) { //已登录
                
                 NSString *uuid  = [self.cycleArray objectAtIndex:index];
                 
-                YTHLog(@"id轮播%@",uuid);
+                YTHLog(@"轮播id-----%@",uuid);
                 
                 ShowDetailViewController *showVC = [[ShowDetailViewController alloc] init];
                 
@@ -750,7 +764,7 @@
                 
                 return;
                 
-            }else{
+            }else{                  //未登录
                 LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
                 
                 WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:loginVC];
@@ -800,7 +814,7 @@
     
     YTHLog(@"我关注的话题接口链接 -----%@",urlStr);
     
-    [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager GET:urlStr parameters:urlStr success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         self.attenDic = responseObject;
         

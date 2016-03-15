@@ -19,29 +19,30 @@
 #import "AppDelegate.h"
 #import "MBProgressHUD+NJ.h"
 #import "YHTHomeHeaderView.h"
+
+
 @interface MeetView()<PagedFlowViewDelegate,PagedFlowViewDataSource,UITableViewDataSource,UITableViewDelegate,HMWaterflowLayoutDelegate,UICollectionViewDataSource,UICollectionViewDelegate>
 {
-    NSMutableArray *_digUpArray;
-    UITableView *_kCatTableView;
-    UIImageView *lineIV;
-    NSArray *_kCatTableViewTitles;
+    NSMutableArray      *_digUpArray;
+    UITableView         *_kCatTableView;
+    UIImageView         *lineIV;
+    NSArray             *_kCatTableViewTitles;
     NSMutableDictionary *_kIdMutabDict;
     
     int start;
     int count;
-    AppDelegate *myDelegate;
-    NSString *labelId;
+    AppDelegate         *myDelegate;
+    NSString            *labelId;
 }
-@property (strong, nonatomic)PagedFlowView *pageFlowView;
-@property (strong, nonatomic)UIImageView *pageFlowBgImage;
-@property (strong, nonatomic)UIView *viewButton;
-@property (strong, nonatomic)UIScrollView *catScrollView;
-@property (nonatomic, strong)UICollectionView *collectionView;
-@property (nonatomic, strong)UIView *collectionViewHeaderView;
-
-@property (nonatomic, strong)UIButton *unisverButton;
-@property (nonatomic, strong) UIButton *allButton;
-@property(nonatomic,strong)NSDictionary *jason;
+@property (strong, nonatomic) PagedFlowView    *pageFlowView;
+@property (strong, nonatomic) UIImageView      *pageFlowBgImage;
+@property (strong, nonatomic) UIView           *viewButton;
+@property (strong, nonatomic) UIScrollView     *catScrollView;
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UIView           *collectionViewHeaderView;
+@property (nonatomic, strong) UIButton         *unisverButton;
+@property (nonatomic, strong) UIButton         *allButton;
+@property (nonatomic,strong ) NSDictionary     *jason;
 @end
 @implementation MeetView
 
@@ -77,7 +78,7 @@
     return self;
 }
 
--(void)_initDataArray{
+-(void)_initDataArray{//秀遇见--数据源
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
@@ -97,7 +98,7 @@
         if ([operation.response statusCode]/100==2) {
             YTHLog(@"瀑布流%@",jasonDic);
             
-            self.dataArrays = [NSMutableArray array];
+            self.meetDataArrays = [NSMutableArray array];
             NSArray *showArry = [jasonDic objectForKey:@"shows"];
             
             for (NSDictionary *dict in showArry) {
@@ -108,7 +109,7 @@
                 model.width = imageWidth;
                 model.height = imageWidth;
                 
-                [self.dataArrays addObject:model];
+                [self.meetDataArrays addObject:model];
             }
         }
         
@@ -463,10 +464,21 @@
     [_collectionView reloadData];
 }
 
+//头部显示的内容
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    YTHLog(@"头部显示");
+    if (kind == UICollectionElementKindSectionHeader) {
+        YHTHomeHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView" forIndexPath:indexPath];
+        [headerView addSubview:self.collectionViewHeaderView];//头部广告栏
+        return headerView;
+    }
+    return nil;
+}
+
 #pragma mark - <HMWaterflowLayoutDelegate>
 - (CGFloat)waterflowLayout:(HMWaterflowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath withItemWidth:(CGFloat)width {
     
-    YHTHomeImageModel *model = self.dataArrays[indexPath.row];
+    YHTHomeImageModel *model = self.meetDataArrays[indexPath.row];
     
     YTHLog(@"%f  %f  %f",model.width,model.height,YTHScreenWidth);
     
@@ -490,7 +502,7 @@
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.dataArrays.count;
+    return self.meetDataArrays.count;
 }
 //定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -506,21 +518,12 @@
         YTHLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
     cell.delegate = self;
-    cell.model = self.dataArrays[indexPath.row];
+    cell.model = self.meetDataArrays[indexPath.row];
     // cell.backgroundColor = [UIColor cyanColor];
     return cell;
 }
 
-//头部显示的内容
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    YTHLog(@"头部显示");
-    if (kind == UICollectionElementKindSectionHeader) {
-        YHTHomeHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView" forIndexPath:indexPath];
-        [headerView addSubview:self.collectionViewHeaderView];//头部广告栏
-        return headerView;
-    }
-    return nil;
-}
+
 - (void)buttonUniser:(NSNotification*)notification
 {
     YTHLog(@"学校%@",myDelegate.university_name);
@@ -530,6 +533,8 @@
     
     
 }
+
+//类别cell内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *kCatTabelViewCellId = @"kCatTabelViewCellId";
@@ -551,6 +556,21 @@
     return kCatTabelViewCell;
     
 }
+//类别 cell点击事件
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [lineIV removeFromSuperview];
+    
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [_allButton setTitle:cell.textLabel.text forState:UIControlStateNormal];
+    labelId = [_kIdMutabDict objectForKey:_kCatTableViewTitles[indexPath.row]];
+    YTHLog(@"标签id%@",labelId);
+    [self kCatkCatTabelViewFooterBtnClick];
+    [self _initDataArray];
+    // [self catTableViewDidSelect:indexPath.row];
+}
+
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section{
     return 15.0;
 }
@@ -562,19 +582,6 @@
     return _kCatTableViewTitles.count;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    [lineIV removeFromSuperview];
-
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [_allButton setTitle:cell.textLabel.text forState:UIControlStateNormal];
-    labelId = [_kIdMutabDict objectForKey:_kCatTableViewTitles[indexPath.row]];
-    YTHLog(@"标签id%@",labelId);
-    [self kCatkCatTabelViewFooterBtnClick];
-    [self _initDataArray];
-    // [self catTableViewDidSelect:indexPath.row];
-}
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     if (tableView == _kCatTableView) {
         
@@ -589,13 +596,15 @@
         //线
         UIView *kGXian = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 0.4)];
         kGXian.backgroundColor = [UIColor colorWithRed:154.0f/255.0f green:154.0f/255.0f blue:154.0f/255.0f alpha:0.7f];
-         //kGXian.backgroundColor = [UIColor redColor];
+        //kGXian.backgroundColor = [UIColor redColor];
         [kCatTabelViewFooterBtn addSubview:kGXian];
         [kCatTabelViewFooterBtn addTarget:self action:@selector(kCatkCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
         return kCatTabelViewFooterBtn;
     }
     return nil;
 }
+
+
 
 
 @end

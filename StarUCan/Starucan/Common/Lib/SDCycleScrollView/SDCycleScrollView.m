@@ -23,16 +23,16 @@ NSString * const ID = @"cycleCell";
 @interface SDCycleScrollView () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 
-@property (nonatomic, weak) UICollectionView *mainView; // 显示图片的collectionView
-@property (nonatomic, weak) UICollectionViewFlowLayout *flowLayout;
-@property (nonatomic, strong) NSArray *imagePathsGroup;
-@property (nonatomic, weak) NSTimer *timer;
-@property (nonatomic, assign) NSInteger totalItemsCount;
-@property (nonatomic, weak) UIControl *pageControl;
+@property (nonatomic, weak  ) UICollectionView           *mainView;// 显示图片的collectionView
+@property (nonatomic, weak  ) UICollectionViewFlowLayout *flowLayout;
+@property (nonatomic, strong) NSArray                    *imagePathsGroup;
+@property (nonatomic, weak  ) NSTimer                    *timer;
+@property (nonatomic, assign) NSInteger                  totalItemsCount;
+@property (nonatomic, weak  ) UIControl                  *pageControl;
 
-@property (nonatomic, weak) UIImageView *backgroundImageView; // 当imageURLs为空时的背景图
+@property (nonatomic, weak  ) UIImageView                *backgroundImageView;// 当imageURLs为空时的背景图
 
-@property (nonatomic, assign) NSInteger networkFailedRetryCount;
+@property (nonatomic, assign) NSInteger                  networkFailedRetryCount;
 
 @end
 
@@ -55,20 +55,21 @@ NSString * const ID = @"cycleCell";
 
 - (void)initialization
 {
-    _pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
-    _autoScrollTimeInterval = 2.0;
-    _titleLabelTextColor = [UIColor whiteColor];
-    _titleLabelTextFont= [UIFont systemFontOfSize:14];
-    _titleLabelBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
-    _titleLabelHeight = 30;
-    _autoScroll = YES;
-    _infiniteLoop = YES;
-    _showPageControl = YES;
-    _pageControlDotSize = CGSizeMake(10, 10);
-    _pageControlStyle = SDCycleScrollViewPageContolStyleClassic;
-    _hidesForSinglePage = YES;
-    _currentPageDotColor = [UIColor whiteColor];
-    _pageDotColor = [UIColor lightGrayColor];
+    
+    _pageControlAliment         = SDCycleScrollViewPageContolAlimentCenter;
+    _autoScrollTimeInterval     = 2.0;
+    _titleLabelTextColor        = [UIColor whiteColor];
+    _titleLabelTextFont         = [UIFont systemFontOfSize:14];
+    _titleLabelBackgroundColor  = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    _titleLabelHeight           = 30;
+    _autoScroll                 = YES;
+    _infiniteLoop               = YES;
+    _showPageControl            = YES;
+    _pageControlDotSize         = CGSizeMake(10, 10);
+    _pageControlStyle           = SDCycleScrollViewPageContolStyleClassic;
+    _hidesForSinglePage         = YES;
+    _currentPageDotColor        = [UIColor whiteColor];
+    _pageDotColor               = [UIColor lightGrayColor];
     _bannerImageViewContentMode = UIViewContentModeScaleToFill;
     
     self.backgroundColor = [UIColor lightGrayColor];
@@ -109,21 +110,21 @@ NSString * const ID = @"cycleCell";
 // 设置显示图片的collectionView
 - (void)setupMainView
 {
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.minimumLineSpacing = 0;
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    _flowLayout = flowLayout;
-    
-    UICollectionView *mainView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:flowLayout];
-    mainView.backgroundColor = [UIColor clearColor];
-    mainView.pagingEnabled = YES;
+    UICollectionViewFlowLayout *flowLayout  = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.minimumLineSpacing           = 0;
+    flowLayout.scrollDirection              = UICollectionViewScrollDirectionHorizontal;
+    _flowLayout                             = flowLayout;
+
+    UICollectionView *mainView              = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:flowLayout];
+    mainView.backgroundColor                = [UIColor clearColor];
+    mainView.pagingEnabled                  = YES;
     mainView.showsHorizontalScrollIndicator = NO;
-    mainView.showsVerticalScrollIndicator = NO;
+    mainView.showsVerticalScrollIndicator   = NO;
     [mainView registerClass:[SDCollectionViewCell class] forCellWithReuseIdentifier:ID];
-    mainView.dataSource = self;
-    mainView.delegate = self;
+    mainView.dataSource                     = self;
+    mainView.delegate                       = self;
     [self addSubview:mainView];
-    _mainView = mainView;
+    _mainView                               = mainView;
 }
 
 
@@ -134,8 +135,9 @@ NSString * const ID = @"cycleCell";
     _placeholderImage = placeholderImage;
     
     if (!self.backgroundImageView) {
+        
         UIImageView *bgImageView = [UIImageView new];
-        bgImageView.contentMode = UIViewContentModeScaleAspectFit;
+        bgImageView.contentMode  = UIViewContentModeScaleAspectFit;
         [self insertSubview:bgImageView belowSubview:self.mainView];
         self.backgroundImageView = bgImageView;
     }
@@ -145,11 +147,11 @@ NSString * const ID = @"cycleCell";
 
 - (void)setPageControlDotSize:(CGSize)pageControlDotSize
 {
-    _pageControlDotSize = pageControlDotSize;
+    _pageControlDotSize       = pageControlDotSize;
     [self setupPageControl];
     if ([self.pageControl isKindOfClass:[TAPageControl class]]) {
-        TAPageControl *pageContol = (TAPageControl *)_pageControl;
-        pageContol.dotSize = pageControlDotSize;
+    TAPageControl *pageContol = (TAPageControl *)_pageControl;
+    pageContol.dotSize        = pageControlDotSize;
     }
 }
 

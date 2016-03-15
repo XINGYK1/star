@@ -64,15 +64,15 @@
     
 }
 //
-@property (nonatomic,strong) UIImageView *headImgV;//头像
-@property (nonatomic,strong) UIView      *headView;//头视图
-@property (nonatomic,strong) NSString    *urlString;
-@property (nonatomic,strong) UILabel     *nameLabel;//姓名
-@property (nonatomic,strong) UIImageView *sexImV;//性别
-@property (nonatomic,strong) UILabel     *uniserLabel;//学校
-@property (nonatomic,strong) UIButton    *addAttionBtn;//加关注
-@property (nonatomic,strong) UIView      *viewBgDesc;//文字详情view
-@property (nonatomic,strong) UILabel     *labelDesc;
+@property (nonatomic,strong ) UIImageView    *headImgV;//头像
+@property (nonatomic,strong ) UIView         *headView;//头视图
+@property (nonatomic,strong ) NSString       *urlString;
+@property (nonatomic,strong ) UILabel        *nameLabel;//姓名
+@property (nonatomic,strong ) UIImageView    *sexImV;//性别
+@property (nonatomic,strong ) UILabel        *uniserLabel;//学校
+@property (nonatomic,strong ) UIButton       *addAttionBtn;//加关注
+@property (nonatomic,strong ) UIView         *viewBgDesc;//文字详情view
+@property (nonatomic,strong ) UILabel        *labelDesc;
 
 //大图
 @property (nonatomic,strong ) UIImageView    *bigImage;
@@ -87,7 +87,7 @@
 @property (nonatomic,strong ) NSDictionary   *showdic;
 @property (nonatomic,strong ) NSMutableArray *sourceArray;
 @property (nonatomic, assign) BOOL           flag;
-@property (nonatomic,strong ) NSURL       *bigString;
+@property (nonatomic,strong ) NSURL          *bigString;
 
 @end
 
@@ -127,7 +127,7 @@
     
     [self _initViewBgDesc];
     
-     [self _initComment];
+    [self _initComment];
     
     
     // 左边的取消按钮

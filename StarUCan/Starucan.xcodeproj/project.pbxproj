@@ -288,6 +288,7 @@
 		EC7D0D521C9002550061BAA9 /* SDCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7D0D491C9002550061BAA9 /* SDCollectionViewCell.m */; };
 		EC7D0D531C9002550061BAA9 /* SDCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7D0D4B1C9002550061BAA9 /* SDCycleScrollView.m */; };
 		EC7D0D541C9002550061BAA9 /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7D0D4D1C9002550061BAA9 /* UIView+SDExtension.m */; };
+		EC803D551C97FBC80033A428 /* Z3DScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC803D541C97FBC80033A428 /* Z3DScrollView.m */; };
 		EC923B251C92C93000FF1A8B /* TopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC923B241C92C93000FF1A8B /* TopicCell.m */; };
 		EC923B281C92C9EB00FF1A8B /* TopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EC923B271C92C9EB00FF1A8B /* TopicModel.m */; };
 		ECD35BEA1C93AE9D000D32FA /* TopicDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECD35BE91C93AE9D000D32FA /* TopicDetailModel.m */; };
@@ -862,6 +863,8 @@
 		EC7D0D4B1C9002550061BAA9 /* SDCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCycleScrollView.m; sourceTree = "<group>"; };
 		EC7D0D4C1C9002550061BAA9 /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
 		EC7D0D4D1C9002550061BAA9 /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
+		EC803D531C97FBC80033A428 /* Z3DScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Z3DScrollView.h; sourceTree = "<group>"; };
+		EC803D541C97FBC80033A428 /* Z3DScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Z3DScrollView.m; sourceTree = "<group>"; };
 		EC923B231C92C93000FF1A8B /* TopicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TopicCell.h; path = Starucan/Classes/Topic/TopicCell.h; sourceTree = SOURCE_ROOT; };
 		EC923B241C92C93000FF1A8B /* TopicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TopicCell.m; path = Starucan/Classes/Topic/TopicCell.m; sourceTree = SOURCE_ROOT; };
 		EC923B261C92C9EB00FF1A8B /* TopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TopicModel.h; path = Starucan/Classes/Topic/TopicModel.h; sourceTree = SOURCE_ROOT; };
@@ -1338,6 +1341,8 @@
 				5A8BD7B31C567041008AA7D4 /* AttentionTableViewCell.m */,
 				5AF346A91C575F7400A399B6 /* MeetView.h */,
 				5AF346AA1C575F7400A399B6 /* MeetView.m */,
+				EC803D531C97FBC80033A428 /* Z3DScrollView.h */,
+				EC803D541C97FBC80033A428 /* Z3DScrollView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2321,6 +2326,7 @@
 				5A1CBDE31C44F74E006372FF /* QNHex.m in Sources */,
 				5A1CBDDB1C44F74E006372FF /* QNNetworkInfo.m in Sources */,
 				5A0F32C11C4123D3006EBAB1 /* NSData+AES256.m in Sources */,
+				EC803D551C97FBC80033A428 /* Z3DScrollView.m in Sources */,
 				5AB34A5F1C3A837C00721D84 /* MJMember.m in Sources */,
 				5A1CBDDC1C44F74E006372FF /* QNRecord.m in Sources */,
 				5AB028A51C6EB0500042FC04 /* FeedBackViewController.m in Sources */,

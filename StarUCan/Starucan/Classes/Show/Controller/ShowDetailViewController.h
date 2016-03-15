@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 @interface ShowDetailViewController : BaseViewController
-@property(nonatomic,copy)NSString *uuid;
-@property(nonatomic,copy)NSString *userUuid;
- @property(nonatomic,copy)NSString *pinglun;
-@property(nonatomic,copy)NSString *attenuuid;
-@property(nonatomic,copy)NSString *praiseuuid;
+@property (nonatomic,copy) NSString *uuid;
+@property (nonatomic,copy) NSString *userUuid;
+@property (nonatomic,copy) NSString *pinglun;
+@property (nonatomic,copy) NSString *attenuuid;
+@property (nonatomic,copy) NSString *praiseuuid;
 @end

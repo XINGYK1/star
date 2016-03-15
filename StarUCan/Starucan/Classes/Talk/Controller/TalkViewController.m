@@ -34,7 +34,7 @@
     int count;
 }
 
-@property (strong, nonatomic)UIScrollView *catScrollView;//类别SV
+@property (strong, nonatomic)UIScrollView    *catScrollView;//类别SV
 
 @property (nonatomic, strong) NSMutableArray *imageURLs;//轮播图图片数组
 @property (strong, nonatomic) NSMutableArray *cycleArray;

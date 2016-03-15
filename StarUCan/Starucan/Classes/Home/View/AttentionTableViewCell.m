@@ -310,18 +310,18 @@
     UIView *kMarkView = [[UIView alloc]initWithFrame:CGRectMake(_kMarkRect.origin.x + _kMarkRect.size.width + 10, _kMarkRect.origin.y, length+20, 16)];
     [_kTitleView addSubview:kMarkView];
     _kMarkRect = kMarkView.frame;
-    UILabel *kTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, length+20, 16)];
-    kTitleLabel.backgroundColor = YTHColor(169, 214, 255);
-    kTitleLabel.layer.cornerRadius = 4;
+    UILabel *kTitleLabel            = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, length+20, 16)];
+    kTitleLabel.backgroundColor     = YTHColor(169, 214, 255);
+    kTitleLabel.layer.cornerRadius  = 4;
     kTitleLabel.layer.masksToBounds = YES;
-    kTitleLabel.textAlignment = NSTextAlignmentCenter;
-    kTitleLabel.font = [UIFont systemFontOfSize:12];
-    kTitleLabel.textColor = [UIColor whiteColor];
-    kTitleLabel.text = title;
+    kTitleLabel.textAlignment       = NSTextAlignmentCenter;
+    kTitleLabel.font                = [UIFont systemFontOfSize:12];
+    kTitleLabel.textColor           = [UIColor whiteColor];
+    kTitleLabel.text                = title;
     [kMarkView addSubview:kTitleLabel];
-    UIButton *kDeleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    kDeleteButton.frame = CGRectMake(CGRectGetMaxX(kMarkView.frame)-10, kMarkView.frame.origin.y-10, 20, 16);
- 
+    UIButton *kDeleteButton         = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    kDeleteButton.frame             = CGRectMake(CGRectGetMaxX(kMarkView.frame)-10, kMarkView.frame.origin.y-10, 20, 16);
+
     [_kTitleView addSubview:kDeleteButton];
     if (add) {
         [_kTitleArrays addObject:title];
