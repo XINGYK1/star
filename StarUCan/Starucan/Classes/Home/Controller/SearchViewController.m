@@ -167,9 +167,9 @@
     [clearbtn addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
     
     [clearView addSubview:clearbtn];
-
     
 }
+
 -(void)changeClearView{
     
     if (_saveGoodsNameArray.count>0) {
@@ -186,7 +186,6 @@
     }else{
         
         YTHLog(@"----------------------搜索历史数组中---没----有数据 =_= ---------------------");
-
         
         [UIView animateWithDuration:.5 animations:^{
             
@@ -220,31 +219,31 @@
 
 - (void)initSearchReaultTableView
 {
-    
     //tableView的height应该是动态改变的
     _tableViewSearchResult = [[UITableView alloc] initWithFrame:CGRectMake(0, 215, YTHScreenWidth,YTHScreenHeight) style:UITableViewStylePlain];
-    _tableViewSearchResult.delegate = self;
+    _tableViewSearchResult.delegate   = self;
     _tableViewSearchResult.dataSource = self;
-    _tableViewSearchResult.height =_saveGoodsNameArray.count *44;
+    _tableViewSearchResult.height     =_saveGoodsNameArray.count *44;
     // _tableViewSearchResult.sectionHeaderHeight=150;
-    _tableViewSearchResult.bounces = NO;
+    _tableViewSearchResult.bounces    = NO;
    
     [self.scrollView addSubview:_tableViewSearchResult];
     
-  
-    
 }
-
 
 -(void)creatNavgationItem
 {
     // 取消按钮
-    UIButton *cancelBtn = [[UIButton alloc] init];
-    cancelBtn.frame = CGRectMake(0, 0, 40, 40);
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
-    [cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    UIButton *cancelBtn                    = [[UIButton alloc] init];
     
+    cancelBtn.frame                        = CGRectMake(0, 0, 40, 40);
+    
+    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    
+    [cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    cancelBtn.titleLabel.font              = [UIFont systemFontOfSize:18];
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     [cancelBtn addTarget:self action:@selector(clickBack) forControlEvents:UIControlEventTouchUpInside];
     // 搜索框
@@ -254,12 +253,13 @@
     filterData = [NSMutableArray array];
 
 }
+
 - (void)clickBack
 {
     [self.navigationController popViewControllerAnimated:YES];
     
-    
 }
+
 /**
  *  热词界面
  */
@@ -272,9 +272,8 @@
     label.font = [UIFont systemFontOfSize:12];
     [headerView addSubview:label];
     
-    
-    CGFloat w = 0;//保存前一个button的宽以及前一个button距离屏幕边缘的距离
-    CGFloat h = 40;//用来控制button距离父视图的高
+    CGFloat w   = 0;//保存前一个button的宽以及前一个button距离屏幕边缘的距离
+    CGFloat h   = 40;//用来控制button距离父视图的高
     for (int i = 0; i < self.hotWords.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.tag =  i;
@@ -291,6 +290,7 @@
         [button setTitle:self.hotWords[i] forState:UIControlStateNormal];
         //设置button的frame
         button.frame = CGRectMake(15 + w, h, length + 15 , 30);
+        
         //当button的位置超出屏幕边缘时换行 320 只是button所在父视图的宽度
         if(15 + w + length + 15 > YTHScreenWidth){
             w = 0; //换行时将w置为0
@@ -299,9 +299,11 @@
         }
         w = button.frame.size.width + button.frame.origin.x;
         [headerView addSubview:button];
+        
         // view.backgroundColor = [UIColor yellowColor];
         button.tag =  i;
         [button addTarget:self action:@selector(clickHotBtn:) forControlEvents:UIControlEventTouchUpInside];
+        
     }
 }
 
@@ -310,7 +312,9 @@
 {
     if (tableView==_tableViewSearchResult) {
         return _saveGoodsNameArray.count;
+        
     }else
+        
     {
         // 谓词搜索
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self beginswith [cd] %@",self.searchBar.text];
