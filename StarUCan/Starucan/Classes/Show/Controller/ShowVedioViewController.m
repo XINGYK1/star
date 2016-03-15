@@ -48,9 +48,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    //NSLog(@"%@",self.vedioURL);
     
     [self.view addSubview:self.mediaButton];
     
@@ -71,8 +68,6 @@
     
     
 }
-
-
 
 -(void)buttonClicked{
     
