@@ -28,7 +28,6 @@
         [self addSubview:self.imageView];
     
     }
-    
     return self;
 }
 
