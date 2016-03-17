@@ -334,13 +334,14 @@
     
     return nil;
 }
-#pragma mark -忘记密码
--(void)forPassButton:(UIButton *)btn
-{
+//#pragma mark -忘记密码
+//-(void)forPassButton:(UIButton *)btn
+//{
+//
+//    ForgetPassViewController *forgetPassVC = [[ForgetPassViewController alloc]init];
+//    [self.navigationController pushViewController:forgetPassVC animated:YES];
+//}
 
-    ForgetPassViewController *forgetPassVC = [[ForgetPassViewController alloc]init];
-    [self.navigationController pushViewController:forgetPassVC animated:YES];
-}
 #pragma mark-第三方登录
 -(void)selectedClick:(UIButton *)btn
 {

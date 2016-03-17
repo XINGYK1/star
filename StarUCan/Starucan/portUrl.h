@@ -8,6 +8,7 @@
 
 #ifndef YTHDBL_portUrl_h
 #define YTHDBL_portUrl_h
+//http://url:8080/starucan_app
 
 //定义程序中要用到的接口
 // http://192.168.1.120:8080/starucan_app/weixinLoginAction.action?id=1

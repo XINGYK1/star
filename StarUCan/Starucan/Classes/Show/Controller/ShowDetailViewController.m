@@ -549,24 +549,26 @@
     
    
     //赞按钮
-    praiseButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(35), YTHAdaptation(13), YTHAdaptation(18),YTHAdaptation(18) )];
+    praiseButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(40), YTHAdaptation(15), YTHAdaptation(18),YTHAdaptation(18) )];
     
     [praiseButton setImage:[UIImage imageNamed:@"icon_zan"] forState:UIControlStateNormal];
     
     praiseButton.tag = 10;
     
-    [praiseButton addTarget:self action:@selector(buttonCommentBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [praiseButton addTarget:self action:@selector(commentBtn:) forControlEvents:UIControlEventTouchUpInside];
   
     [commentView addSubview:praiseButton];
     
     //更多按钮
-    moreButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(35)+YTHScreenWidth/4, YTHAdaptation(14), YTHAdaptation(18),YTHAdaptation(16) )];
+    moreButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(40)+YTHScreenWidth/4, YTHAdaptation(16), YTHAdaptation(18),YTHAdaptation(16) )];
     
     [moreButton setImage:[UIImage imageNamed:@"icon_operate"] forState:UIControlStateNormal];
     
     moreButton.tag = 15;
     
-    [moreButton addTarget:self action:@selector(buttonCommentBtn:) forControlEvents:UIControlEventTouchUpInside];
+    moreButton.showsTouchWhenHighlighted = YES;
+    
+    [moreButton addTarget:self action:@selector(commentBtn:) forControlEvents:UIControlEventTouchUpInside];
     
     //self.praiseButton = moreButton;
     
@@ -591,7 +593,7 @@
     
     commentButton.tag = 20;
     
-    [commentButton addTarget:self action:@selector(buttonCommentBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [commentButton addTarget:self action:@selector(commentBtn:) forControlEvents:UIControlEventTouchUpInside];
     
     [commentView addSubview:commentButton];
     
@@ -732,7 +734,7 @@
 }
 
 #pragma mark -- 点击 赞、 更多、评论
--(void)buttonCommentBtn:(UIButton *)btn
+-(void)commentBtn:(UIButton *)btn
 {
     
     YTHLog(@"-----------------------点击了底部某个按钮----------------");

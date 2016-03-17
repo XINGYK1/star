@@ -27,12 +27,22 @@
     _dataArray=@[@"所有人可见",@"仅自己可见",@"我关注的人可见",@"我的粉丝可见",@"跟我同校的校友可见"];
     
 }
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _dataArray.count;
 }
+//
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 44.0f;
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //避免出现没有内容的cell 
+    _tableView.height = 60.0f*_dataArray.count;
+    
     UITableViewCell * cell=[tableView dequeueReusableCellWithIdentifier:@"id"];
     if (!cell) {
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"id"];

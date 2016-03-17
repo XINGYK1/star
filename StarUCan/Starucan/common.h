@@ -70,11 +70,8 @@
 #define IsNilOrNull(_ref) (((_ref) == nil) || ([(_ref) isEqual:[NSNull null]]))
 
 #define Url @"http://test.platform.vgool.cn/starucan/";
-
-
-
-
-
+//新的接口
+#define newUrl @"http://url:8080/starucan_app/";
 
 
 //#define Url @"http://api.starucan.com/"

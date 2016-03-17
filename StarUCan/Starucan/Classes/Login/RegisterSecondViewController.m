@@ -296,11 +296,14 @@
 }
 #pragma mark 上传头像
 - (void)uploadFace:(UIImage *)image {
-    
-    NSData *data = UIImagePNGRepresentation(image);
-    
-    //    NSString *unicodeStr = [NSString stringWithCString:[self.tokenKey UTF8String] encoding:NSUnicodeStringEncoding];
-    //     NSData *data1 = [image dataUsingEncoding : NSUTF8StringEncoding];
+    NSData *data;
+    if (UIImagePNGRepresentation(image)) {
+                //返回为png图像。
+        data = UIImagePNGRepresentation(image);
+    }else {
+                //返回为JPEG图像。
+        data = UIImageJPEGRepresentation(image, 1.0);
+    }
     
     QNUploadManager *upManager = [[QNUploadManager alloc] init];
     

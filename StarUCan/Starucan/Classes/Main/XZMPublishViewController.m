@@ -134,7 +134,6 @@ static CGFloat XZMSpringDelay = 0.1;
                     //判断登录状态
                     if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
 
-                        
                         //进入秀的页面
                         ShowViewController *show = [[ShowViewController alloc]init];
                         

@@ -412,6 +412,7 @@
     label.font = [UIFont systemFontOfSize:14];
     label.textColor = [UIColor blackColor];
     [viewLook addSubview:label];
+    
     UIButton *lookButton = [UIButton buttonWithType:UIButtonTypeCustom];
     lookButton.frame = CGRectMake(YTHScreenWidth-150, 0, 150, 44);
     // lookButton.backgroundColor = [UIColor yellowColor];
@@ -595,8 +596,8 @@
     [_kVIPhotoView removeFromSuperview];
     _kVIPhotoView = nil;
 }
-
-
+#pragma mark  注意！！！
+#warning 第二次选图片的时候点取消也会进入选图片页面，且选完图片点击完成按钮会崩！！
 //
 -(void)addButtonAction{
     
