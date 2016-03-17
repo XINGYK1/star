@@ -9,9 +9,8 @@
 #import "AddInformationViewController.h"
 #import "UnListViewController.h"
 #import "GXHttpTool.h"
-#import "AppDelegate.h"
+ 
 #import "MBProgressHUD+NJ.h"
-#import "AFHTTPRequestOperationManager.h"
 #import "SUCArchive.h"
 #import "SUCUser.h"
 #import "AttentionViewController.h"

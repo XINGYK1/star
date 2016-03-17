@@ -7,10 +7,9 @@
 //
 
 #import "MobileBandViewController.h"
-#import "AppDelegate.h"
+ 
 #import "NSData+AES256.h"
 #import <CommonCrypto/CommonDigest.h>
-#import "AFHTTPRequestOperationManager.h"
 #import "MBProgressHUD+NJ.h"
 @interface MobileBandViewController ()<UITextFieldDelegate>
 {

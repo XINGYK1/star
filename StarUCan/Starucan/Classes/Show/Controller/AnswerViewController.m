@@ -7,9 +7,8 @@
 //
 
 #import "AnswerViewController.h"
-#import "AFHTTPRequestOperationManager.h"
 #import "MBProgressHUD+NJ.h"
-#import "AppDelegate.h"
+ 
 #import "NSData+AES256.h"
 @interface AnswerViewController ()
 {

@@ -9,8 +9,7 @@
 #import "ForgetPassViewController.h"
 #import "LoginFirstViewController.h"
 #import "MBProgressHUD+NJ.h"
-#import "AppDelegate.h"
-#import "AFHTTPRequestOperationManager.h"
+ 
 #import <CommonCrypto/CommonDigest.h>
 #import "NSData+AES256.h"
 @interface ForgetPassViewController ()<UITextFieldDelegate,UIScrollViewDelegate>

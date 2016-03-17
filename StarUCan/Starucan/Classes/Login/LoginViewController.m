@@ -15,9 +15,8 @@
 #import "UnListViewController.h"
 #import "RegisterSecondViewController.h"
 #import "AddInformationViewController.h"
-#import "AppDelegate.h"
+ 
 #import <CommonCrypto/CommonDigest.h>
-#import "AFHTTPRequestOperationManager.h"
 #import "MBProgressHUD.h"
 #import "WXApi.h"
 #import "UIViewExt.h"
@@ -269,17 +268,35 @@
 
    // buttonLook.frame = CGRectMake(0, CGRectGetMaxY(viewbg.frame)+YTHAdaptation(10), YTHScreenWidth, YTHAdaptation(30));
     [buttonLook setTitle:@"先看看去" forState:UIControlStateNormal];
+    [buttonLook setShowsTouchWhenHighlighted:YES];
     buttonLook.titleLabel.font = [UIFont systemFontOfSize:14];
     [buttonLook setTitleColor:YTHColor(197, 197, 197) forState:UIControlStateNormal];
-    [buttonLook addTarget:self action:@selector(buttonLoolAction:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonLook addTarget:self action:@selector(buttonLookAction:) forControlEvents:UIControlEventTouchUpInside];
 
 
 }
 #pragma mark-先看看去
--(void)buttonLoolAction:(UIButton *)btn
+-(void)buttonLookAction:(UIButton *)btn
 {
+   
     SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
     [self presentViewController:mainVC animated:NO completion:nil];
+
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    
+//    NSString *urlString = [NSString stringWithFormat:@"http://192.168.1.120:8080/starucan_app/weixinLoginAction.action?id=1"];
+//    
+//    [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        YTHLog(@"登录信息：%@",responseObject);
+//        YTHLog(@"微信状态 code %ld",(long)[operation.response statusCode]);
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//        YTHLog(@"微信状态错误 code %ld",(long)[operation.response statusCode]);
+//        
+//    }];
+
 }
 #pragma mark -注册
 -(void)regisBuAction:(UIButton *)btn
@@ -291,9 +308,7 @@
     
     [self presentViewController:nav animated:NO completion:nil];
 //
-    
-    
-    //[self.navigationController pushViewController:regisVC animated:YES];
+    //[self.navigationController pushViewController:regisVC animated:YES];13810361076
 }
 
 
@@ -305,9 +320,7 @@
     WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:loginVC];
       [self presentViewController:nav animated:YES completion:nil];
   
-//    RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
-//   [self presentViewController:regisSuccV animated:NO completion:nil];
-    
+
 }
 - (UINavigationController *)navigationControllerV
 {
@@ -324,6 +337,7 @@
 #pragma mark -忘记密码
 -(void)forPassButton:(UIButton *)btn
 {
+
     ForgetPassViewController *forgetPassVC = [[ForgetPassViewController alloc]init];
     [self.navigationController pushViewController:forgetPassVC animated:YES];
 }
@@ -344,7 +358,6 @@
                 }
                 
             }];
-            
 
         }
             
@@ -391,36 +404,28 @@
                     md[@"password"]=myDelegate.passText;
                     myDelegate.regist_u_account =user.uid;
                     NSString *url = Url;
+                   
+                    //http://192.168.1.168:8080/starucan_app/weixinLoginAction.action?id=1
+                    
                     NSString *urlString = [NSString stringWithFormat:@"%@v1/user/weixin/login",url];
+                    
                     [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         YTHLog(@"登录信息：%@",responseObject);
                          YTHLog(@"微信状态 code %ld",(long)[operation.response statusCode]);
-                        
-                        
-                        
+    
                         if ([operation.response statusCode]/100==2) {
 //                            [MBProgressHUD showSuccess:@"注册成功"];
                             YTHLog(@"微信登录成功");
                             
                              myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
-                            
-                            
 
                         }
-                        
-                        
-                        
+    
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                          YTHLog(@"微信状态错误 code %ld",(long)[operation.response statusCode]);
                     }];
                     
-
-                    
-                    
-                    
-                    
-                    
-                    
+ 
                     AddInformationViewController *regisVC = [[AddInformationViewController alloc]init];
                     WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:regisVC];
                     [self presentViewController:nav animated:NO completion:nil];
@@ -441,9 +446,7 @@
                     YTHLog(@"qq%@",user.credential);
                     YTHLog(@"qq_token=%@",user.credential.token);
                     YTHLog(@"nickname=%@",user.nickname);
-                    
-                    
-                    
+      
                 }{
                     YTHLog(@"qq%@",error);
                 }

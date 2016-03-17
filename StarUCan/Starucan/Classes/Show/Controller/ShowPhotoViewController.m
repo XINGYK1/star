@@ -13,12 +13,11 @@
 #import "VIPhotoView.h"
 #import "WordViewController.h"
 #import "AddLabelViewController.h"
-#import "AFHTTPRequestOperationManager.h"
 #import "QiniuSDK.h"
 #import "MBProgressHUD+NJ.h"
 #import "LookViewController.h"
 #import "Index.h"
-#import "AppDelegate.h"
+ 
 #import "NSData+AES256.h"
 #import "ShowDetailViewController.h"
 @interface ShowPhotoViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,DoImagePickerControllerDelegate,WordsomeDelegate,LookViewDelegate,AddLabelDelegate>

@@ -7,9 +7,8 @@
 //
 
 #import "CommentViewController.h"
-#import "AFHTTPRequestOperationManager.h"
 #import "NSData+AES256.h"
-#import "AppDelegate.h"
+ 
 #import "MBProgressHUD+NJ.h"
 @interface CommentViewController ()<UITextViewDelegate>
 {

@@ -10,7 +10,7 @@
 #import "POP.h"
 #import "XZMButton.h"
 #import "LoginFirstViewController.h"
-#import "AppDelegate.h"
+ 
 #import "DoImagePickerController.h"
 #import "AssetHelper.h"
 #import "ShowPhotoViewController.h"

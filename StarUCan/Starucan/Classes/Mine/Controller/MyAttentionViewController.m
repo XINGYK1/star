@@ -8,11 +8,10 @@
 
 #import "MyAttentionViewController.h"
 #import "MyFanTableViewCell.h"
-#import "AFHTTPRequestOperationManager.h"
 #import "NSData+AES256.h"
 #import "MBProgressHUD+NJ.h"
 #import "ShowDetailModel.h"
-#import "AppDelegate.h"
+ 
 @interface MyAttentionViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     AppDelegate *myDelegate;

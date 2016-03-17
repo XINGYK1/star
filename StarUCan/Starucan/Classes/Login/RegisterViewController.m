@@ -11,7 +11,7 @@
 #import "RegisterSecondViewController.h"
 #import "GXHttpTool.h"
 #import "AddInformationViewController.h"
-#import "AppDelegate.h"
+ 
 #import "NSData+AES256.h"
 #import <CommonCrypto/CommonDigest.h>
 @interface RegisterViewController ()<UITextFieldDelegate,UIScrollViewDelegate>{

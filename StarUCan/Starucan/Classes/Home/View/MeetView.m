@@ -15,8 +15,7 @@
 #import "HMWaterflowLayout.h"
 #import "YHTHomeCollectionViewCell.h"
 #import "YHTHomeImageModel.h"
-#import "AFHTTPRequestOperationManager.h"
-#import "AppDelegate.h"
+ 
 #import "MBProgressHUD+NJ.h"
 #import "YHTHomeHeaderView.h"
 

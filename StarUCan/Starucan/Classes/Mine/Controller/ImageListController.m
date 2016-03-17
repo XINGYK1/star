@@ -8,9 +8,8 @@
 
 #import "ImageListController.h"
 #import "ShowDetailModel.h"
-#import "AFHTTPRequestOperationManager.h"
 #import "NSData+AES256.h"
-#import "AppDelegate.h"
+ 
 #import "UIImageView+WebCache.h"
 #import "ImageCollectionViewCell.h"
 @interface ImageListController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>

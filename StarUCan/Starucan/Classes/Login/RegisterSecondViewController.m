@@ -11,7 +11,7 @@
 #import "GXHttpTool.h"
 #import "MBProgressHUD+NJ.h"
 #import "QiniuSDK.h"
-#import "AppDelegate.h"
+ 
 #import "WXNavigationController.h"
 @interface RegisterSecondViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {

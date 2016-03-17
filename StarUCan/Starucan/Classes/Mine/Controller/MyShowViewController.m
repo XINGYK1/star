@@ -9,8 +9,7 @@
 #import "MyShowViewController.h"
 #import "ShowDetailModel.h"
 #import "MyShowLayoutFrame.h"
-#import "AFHTTPRequestOperationManager.h"
-#import "AppDelegate.h"
+ 
 #import "NSData+AES256.h"
 #import "MyShowTableViewCell.h"
 @interface MyShowViewController ()<UITableViewDataSource,UITableViewDelegate>
