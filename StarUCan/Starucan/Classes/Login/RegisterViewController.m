@@ -456,12 +456,12 @@
 }
 
 - (void)dismissKeyboard{
+    
     [self.phoneTF resignFirstResponder];
     [self.authCodeTF resignFirstResponder];
     [self.passwordTF resignFirstResponder];
     [self.passwordSecondTF resignFirstResponder];
-    
-    
+
 }
 
 #pragma mark - 验证手机号合法性

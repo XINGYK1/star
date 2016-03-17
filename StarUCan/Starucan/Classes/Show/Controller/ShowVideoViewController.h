@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShowVedioViewController : UIViewController
+@interface ShowVideoViewController : UIViewController
 
 @property(nonatomic,copy)NSString *vedioURL;
 

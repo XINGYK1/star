@@ -6,18 +6,18 @@
 //  Copyright © 2016年 vgool. All rights reserved.
 //
 
-#import "ShowVedioViewController.h"
+#import "ShowVideoViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "WMPlayer.h"
 
 
-@interface ShowVedioViewController ()
+@interface ShowVideoViewController ()
 
 @property(nonatomic,strong)UIButton *mediaButton;
 
 @end
 
-@implementation ShowVedioViewController
+@implementation ShowVideoViewController
 
 {
     

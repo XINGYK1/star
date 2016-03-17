@@ -166,7 +166,7 @@
 		5AB34A631C3A837C00721D84 /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A561C3A837C00721D84 /* NSObject+MJCoding.m */; };
 		5AB34A641C3A837C00721D84 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A581C3A837C00721D84 /* NSObject+MJKeyValue.m */; };
 		5AB34A651C3A837C00721D84 /* NSObject+MJMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */; };
-		5AC206921C96863B004B0899 /* ShowVedioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC206911C96863B004B0899 /* ShowVedioViewController.m */; };
+		5AC206921C96863B004B0899 /* ShowVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC206911C96863B004B0899 /* ShowVideoViewController.m */; };
 		5AC206941C96884E004B0899 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC206931C96884E004B0899 /* MediaPlayer.framework */; };
 		5AC206BA1C96C0DE004B0899 /* WMPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5AC206AE1C96C0DE004B0899 /* WMPlayer.bundle */; };
 		5AC206BB1C96C0DE004B0899 /* WMPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC206B01C96C0DE004B0899 /* WMPlayer.m */; };
@@ -689,8 +689,8 @@
 		5AB34A581C3A837C00721D84 /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
 		5AB34A591C3A837C00721D84 /* NSObject+MJMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJMember.h"; sourceTree = "<group>"; };
 		5AB34A5A1C3A837C00721D84 /* NSObject+MJMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJMember.m"; sourceTree = "<group>"; };
-		5AC206901C96863B004B0899 /* ShowVedioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowVedioViewController.h; sourceTree = "<group>"; };
-		5AC206911C96863B004B0899 /* ShowVedioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowVedioViewController.m; sourceTree = "<group>"; };
+		5AC206901C96863B004B0899 /* ShowVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowVideoViewController.h; sourceTree = "<group>"; };
+		5AC206911C96863B004B0899 /* ShowVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowVideoViewController.m; sourceTree = "<group>"; };
 		5AC206931C96884E004B0899 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5AC206AE1C96C0DE004B0899 /* WMPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WMPlayer.bundle; sourceTree = "<group>"; };
 		5AC206AF1C96C0DE004B0899 /* WMPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPlayer.h; sourceTree = "<group>"; };
@@ -1637,8 +1637,8 @@
 				5A86F70D1C3F97120073C14F /* creatActivitybg4.png */,
 				5AD72E131C3F91D7005E4236 /* ShowPhotoViewController.h */,
 				5AD72E141C3F91D7005E4236 /* ShowPhotoViewController.m */,
-				5AC206901C96863B004B0899 /* ShowVedioViewController.h */,
-				5AC206911C96863B004B0899 /* ShowVedioViewController.m */,
+				5AC206901C96863B004B0899 /* ShowVideoViewController.h */,
+				5AC206911C96863B004B0899 /* ShowVideoViewController.m */,
 				5AEE2EF81C97FB19007AF062 /* ShowViewController.h */,
 				5AEE2EF91C97FB19007AF062 /* ShowViewController.m */,
 				5AF69F091C4A2A0C00B22C1A /* WordViewController.h */,
@@ -2735,7 +2735,7 @@
 				5AEE2F711C9806A8007AF062 /* CALayer+AddUIColor.m in Sources */,
 				5A649A911C69BDFD0067EB58 /* View+MASAdditions.m in Sources */,
 				5A65D0661C478FD9005C24AE /* LabelModel.m in Sources */,
-				5AC206921C96863B004B0899 /* ShowVedioViewController.m in Sources */,
+				5AC206921C96863B004B0899 /* ShowVideoViewController.m in Sources */,
 				5AB0289F1C6EB0070042FC04 /* SettingViewController.m in Sources */,
 				5A1CBDE41C44F74E006372FF /* GTM_Base64.m in Sources */,
 				5AEE2EFA1C97FB19007AF062 /* ShowViewController.m in Sources */,

@@ -27,6 +27,7 @@
     UIImageView         *lineIV;
     NSArray             *_kCatTableViewTitles;
     NSMutableDictionary *_kIdMutabDict;
+    UIButton *kCatScrollViewBgView;
     
     int start;
     int count;
@@ -176,25 +177,33 @@
     _kCatTableView.bounces = NO;
     
     //透明图
-    UIButton *kCatScrollViewBgView = [UIButton buttonWithType:UIButtonTypeCustom];
+    kCatScrollViewBgView = [UIButton buttonWithType:UIButtonTypeCustom];
     kCatScrollViewBgView.frame = CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight);
     [self.catScrollView addSubview:kCatScrollViewBgView];
     [self.catScrollView addSubview:_kCatTableView];
-    [self.catScrollView addSubview:_kCatTableView];
     [self.catScrollView bringSubviewToFront:_kCatTableView];
     [_kCatTableView reloadData];
+    
     self.catScrollView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+   
     self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, 0);
+    
     CGFloat kCatScrollViewCntentSizeHeight;
+    
     if (YTHScreenHeight- self.viewButton.frame.origin.y + self.viewButton.frame.size.height>_kCatTableView.frame.size.height) {
+    
         kCatScrollViewCntentSizeHeight = YTHScreenHeight- self.viewButton.frame.origin.y + self.viewButton.frame.size.height;
+    
     }else{
+    
         kCatScrollViewCntentSizeHeight = _kCatTableView.frame.size.height;
     }
     self.catScrollView.contentSize = CGSizeMake(YTHScreenWidth, kCatScrollViewCntentSizeHeight);
-    [kCatScrollViewBgView addTarget:self action:@selector(kCatkCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
+   
+    //点击空白处隐藏类别列表
+    [kCatScrollViewBgView addTarget:self action:@selector(kCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
     
-    
+      
 }
 
 
@@ -258,8 +267,7 @@
             [lineIV removeFromSuperview];
             
             _kCatTableView.frame = CGRectMake(0, 0, YTHScreenWidth, 0);
-            
-            //self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, 0);
+
             
             self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, YTHScreenHeight- self.viewButton.frame.origin.y + self.viewButton.frame.size.height);
             
@@ -410,7 +418,13 @@
 - (CGSize)sizeForPageInFlowView:(PagedFlowView *)flowView;{
     return CGSizeMake(TupuSize3.width-20, TupuSize3.height-20);
 }
--(void)kCatkCatTabelViewFooterBtnClick{
+
+//收回类别View
+-(void)kCatTabelViewFooterBtnClick{
+    
+    NSLog( @"高度1：------%f    高度2：------%f",self.catScrollView.height,kCatScrollViewBgView.height);
+
+    
     [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
     
         self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height,
@@ -565,7 +579,7 @@
     [_allButton setTitle:cell.textLabel.text forState:UIControlStateNormal];
     labelId = [_kIdMutabDict objectForKey:_kCatTableViewTitles[indexPath.row]];
     YTHLog(@"标签id%@",labelId);
-    [self kCatkCatTabelViewFooterBtnClick];
+    [self kCatTabelViewFooterBtnClick];
     [self _initDataArray];
     // [self catTableViewDidSelect:indexPath.row];
 }
@@ -597,7 +611,7 @@
         kGXian.backgroundColor = [UIColor colorWithRed:154.0f/255.0f green:154.0f/255.0f blue:154.0f/255.0f alpha:0.7f];
         //kGXian.backgroundColor = [UIColor redColor];
         [kCatTabelViewFooterBtn addSubview:kGXian];
-        [kCatTabelViewFooterBtn addTarget:self action:@selector(kCatkCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [kCatTabelViewFooterBtn addTarget:self action:@selector(kCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
         return kCatTabelViewFooterBtn;
     }
     return nil;

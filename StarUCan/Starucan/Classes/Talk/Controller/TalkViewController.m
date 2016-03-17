@@ -21,6 +21,7 @@
     NSArray *_kCatTableViewTitles;
     NSMutableDictionary *_kIdMutabDict;
     UIButton *typeBtn;
+    UIButton *kCatScrollViewBgView;
     
     UIScrollView *bannerSV;//轮播图
     
@@ -60,45 +61,16 @@
     [self _initNation];
     
     [self initTableView];
-    [self _initTableView];//类别TV
     [self getData];
     [self _initDataArray];
-    
+    [self _initTableView];//类别TV
+
     start = 1;
 
     count = 10;
     
 }
-//
-//-(void)initTypeBtn:(NSString *)string{
-//    
-//    
-//    if (typeBtn.title.length>3) {
-//    typeBtn.frame         = CGRectMake(0, 0, 90, 40);
-//
-//    [typeBtn setTitle:string forState:UIControlStateNormal];
-//  
-//    UIImageView *unfoldIV = [[UIImageView alloc]initWithFrame:CGRectMake(80, 18, 10, 4)];
-//        
-//    unfoldIV.image        = [UIImage imageNamed:@"unfold"];
-//        
-//    [typeBtn addSubview:unfoldIV];
-//    }else{
-//    typeBtn.frame         = CGRectMake(0, 0, 50, 40);
-//    
-//    [typeBtn setTitle:@"全部" forState:UIControlStateNormal];
-//        
-//    UIImageView *unfoldIV = [[UIImageView alloc]initWithFrame:CGRectMake(40, 18, 10, 4)];
-//        
-//    unfoldIV.image        = [UIImage imageNamed:@"unfold"];
-//    [typeBtn addSubview:unfoldIV];
-//    }
-//    
-//    [typeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    typeBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-//    [typeBtn addTarget:self action:@selector(typeChoose) forControlEvents:UIControlEventTouchUpInside];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:typeBtn];
-//}
+
 #pragma mark 搜索
 -(void)_initNation
 {
@@ -124,7 +96,7 @@
     
     self.catScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 40)];
     
-    [self.view addSubview:_catScrollView];
+    [self.view addSubview:self.catScrollView];
     
     [self.catScrollView setContentSize:CGSizeMake(0, 280)];
     
@@ -136,7 +108,7 @@
     SearchViewController *searchVC = [[SearchViewController alloc]init];
     [self.navigationController pushViewController:searchVC animated:YES];
 }
-
+//选择类别
 -(void)typeChoose
 {
     
@@ -148,10 +120,7 @@
         
         _kCatTableView.frame = CGRectMake(0, 0, YTHScreenWidth, 0);
         
-        //self.catScrollView.frame = CGRectMake(0, self.viewButton.frame.origin.y + self.viewButton.frame.size.height, YTHScreenWidth, 0);
-        
-        self.catScrollView.frame = CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight- 64 );
-        
+        self.catScrollView.frame = CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight- 24 );
         
         [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
             
@@ -168,6 +137,7 @@
         
     }else{
         [lineIV removeFromSuperview];
+        
         self.catScrollView.frame = CGRectMake(0, 0, YTHScreenWidth, 300-64);
         
         [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
@@ -230,40 +200,56 @@
         YTHLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
         
     }];
-    _kCatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 300) style:UITableViewStylePlain];
+    
+    _kCatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, YTHScreenWidth, 300) style:UITableViewStylePlain];
     _kCatTableView.delegate = self;
     _kCatTableView.dataSource = self;
     _kCatTableView.bounces = NO;
     
     //透明图
-    UIButton *kCatScrollViewBgView = [UIButton buttonWithType:UIButtonTypeCustom];
-    kCatScrollViewBgView.frame = CGRectMake(0, 0, YTHScreenWidth, 300);
-    [self.catScrollView addSubview:kCatScrollViewBgView];
-    [self.catScrollView addSubview:_kCatTableView];
-    [self.catScrollView bringSubviewToFront:_kCatTableView];
-    [_kCatTableView reloadData];
-    self.catScrollView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-    self.catScrollView.frame = CGRectMake(0, 64, YTHScreenWidth, 0);
-    CGFloat kCatScrollViewCntentSizeHeight;
-//    if (YTHScreenHeight- 64 + self.viewButton.frame.size.height>_kCatTableView.frame.size.height) {
-//        kCatScrollViewCntentSizeHeight = YTHScreenHeight- 64 + self.viewButton.frame.size.height;
-//    }else{
-
-    kCatScrollViewCntentSizeHeight = _kCatTableView.frame.size.height;
-   
-    self.catScrollView.contentSize = CGSizeMake(YTHScreenWidth, kCatScrollViewCntentSizeHeight);
-    [kCatScrollViewBgView addTarget:self action:@selector(kCatkCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    kCatScrollViewBgView = [UIButton buttonWithType:UIButtonTypeCustom];
     
+    kCatScrollViewBgView.frame = CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight);
+    
+    [self.catScrollView addSubview:kCatScrollViewBgView];
+    
+    [self.catScrollView addSubview:_kCatTableView];
+    
+    [self.catScrollView bringSubviewToFront:_kCatTableView];
+    
+    [_kCatTableView reloadData];
+    
+    self.catScrollView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    
+    self.catScrollView.frame = CGRectMake(0, 64, YTHScreenWidth, 0);
+    
+//    CGFloat kCatScrollViewCntentSizeHeight;
+//    
+//    if (YTHScreenHeight- 64 >_kCatTableView.frame.size.height) {
+//        kCatScrollViewCntentSizeHeight = YTHScreenHeight- 64;
+//
+//    }else{
+//        
+//        kCatScrollViewCntentSizeHeight = _kCatTableView.frame.size.height;
+//    }
+    
+    self.catScrollView.contentSize = CGSizeMake(YTHScreenWidth, 643.0f);
+    
+    [kCatScrollViewBgView addTarget:self action:@selector(kCatkCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
+
     
 }
 
 -(void)kCatkCatTabelViewFooterBtnClick{
+    
+//    NSLog( @"高度1：------%f    高度2：------%f",self.catScrollView.height,kCatScrollViewBgView.height);
     
     [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
         self.catScrollView.frame = CGRectMake(0, 0, YTHScreenWidth, 0);
       
         
     } completion:^(BOOL finished){
+        
     
     }];
     
@@ -381,9 +367,7 @@
             [MBProgressHUD showError:[topicDic objectForKey:@"info"]];
             
         }];
-        
  
-    
 }
 
 

@@ -10,12 +10,11 @@
 #import "POP.h"
 #import "XZMButton.h"
 #import "LoginFirstViewController.h"
- 
 #import "DoImagePickerController.h"
 #import "AssetHelper.h"
 #import "ShowPhotoViewController.h"
 #import "WXNavigationController.h"
-#import "ShowVedioViewController.h"
+#import "ShowVideoViewController.h"
 #import "WechatShortVideoController.h"
 
 @interface ShowViewController ()<DoImagePickerControllerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,WechatShortVideoDelegate>
@@ -95,7 +94,7 @@ static CGFloat XZMSpringDelay = 0.1;
         
         UISaveVideoAtPathToSavedPhotosAlbum(path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
         
-        ShowVedioViewController *showVedio = [[ShowVedioViewController alloc]init];
+        ShowVideoViewController *showVedio = [[ShowVideoViewController alloc]init];
         
         showVedio.vedioURL = path;
         
