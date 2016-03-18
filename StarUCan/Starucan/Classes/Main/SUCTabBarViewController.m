@@ -13,7 +13,7 @@
 #import "WXNavigationController.h"
 #import "TalkViewController.h"
 #import "XYTabBar.h"
- 
+#import "AppDelegate.h"
 #import "LoginFirstViewController.h"
 #import "TopicViewController.h"
 #import "ShowPhotoViewController.h"

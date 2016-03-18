@@ -8,10 +8,10 @@
 
 #ifndef common_h
 #define common_h
-
-#ifdef DEBUG // 调试状态, 打开Log功能
+// 调试状态, 打开Log功能
+#ifdef DEBUG
 #define YTHLog(...)    NSLog(__VA_ARGS__)
-#else        // 发布状态, 关闭Log功能
+#else // 发布状态, 关闭Log功能
 #define YTHLog(...)
 #endif
 
@@ -43,7 +43,7 @@
 #define sixPlus ([UIScreen mainScreen].bounds.size.height == 736.0)
 
 #define YTHColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
-// 字体颜色
+//字体颜色
 #define YTHFontColor [UIColor colorWithRed:(197)/255.0 green:(197)/255.0 blue:(197)/255.0 alpha:1.0]
 
 // 是否登录
@@ -66,7 +66,7 @@
 #define GXColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
 #define YTHAdaptation(parameter) (parameter/375.0f)*[[UIScreen mainScreen]bounds].size.width
 
-// 非空判断 宏
+//非空判断 宏
 #define IsNilOrNull(_ref) (((_ref) == nil) || ([(_ref) isEqual:[NSNull null]]))
 
 #define Url @"http://test.platform.vgool.cn/starucan/";

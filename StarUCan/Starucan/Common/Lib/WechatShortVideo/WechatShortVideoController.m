@@ -49,6 +49,7 @@
 
 @end
 
+
 @implementation WechatShortVideoController {
     BOOL captureValidFlag;
     SCRecorder *_recorder;
@@ -125,7 +126,10 @@
 #pragma mark - View Config
 - (void)configRecorder {
     _recorder = [SCRecorder recorder];
+    
+    //设置分辨率
     _recorder.captureSessionPreset = [SCRecorderTools bestCaptureSessionPresetCompatibleWithAllDevices];
+    
     _recorder.maxRecordDuration = CMTimeMake(30 * VIDEO_MAX_TIME, 30);
     _recorder.delegate = self;
     _recorder.autoSetVideoOrientation = YES;

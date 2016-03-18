@@ -7,8 +7,9 @@
 //
 
 #import "PasswordSetViewController.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "NSData+AES256.h"
- 
+#import "AppDelegate.h"
 #import "MBProgressHUD+NJ.h"
 #import <CommonCrypto/CommonDigest.h>
 

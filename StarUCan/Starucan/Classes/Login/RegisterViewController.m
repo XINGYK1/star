@@ -11,7 +11,7 @@
 #import "RegisterSecondViewController.h"
 #import "GXHttpTool.h"
 #import "AddInformationViewController.h"
- 
+#import "AppDelegate.h"
 #import "NSData+AES256.h"
 #import <CommonCrypto/CommonDigest.h>
 @interface RegisterViewController ()<UITextFieldDelegate,UIScrollViewDelegate>{
@@ -456,12 +456,12 @@
 }
 
 - (void)dismissKeyboard{
-    
     [self.phoneTF resignFirstResponder];
     [self.authCodeTF resignFirstResponder];
     [self.passwordTF resignFirstResponder];
     [self.passwordSecondTF resignFirstResponder];
-
+    
+    
 }
 
 #pragma mark - 验证手机号合法性

@@ -20,9 +20,10 @@
 #import "YHTHomeCollectionViewCell.h"
 #import "YHTHomeImageModel.h"
 #import "YHTHomeHeaderView.h"
+//#import "AFHTTPRequestOperationManager.h"
 #import "ImagePlayerView.h"
 #import "ShowDetailViewController.h"
-// 
+#import "AppDelegate.h"
 #import "LoginFirstViewController.h"
 #import "NSData+AES256.h"
 #import "MBProgressHUD+NJ.h"

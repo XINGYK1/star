@@ -10,9 +10,10 @@
 #import "UIImageView+WebCache.h"
 #import "kSuggessPhotoCollectionViewCell.h"
 #import "ShowDetailModel.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "MBProgressHUD+NJ.h"
 #import "NSData+AES256.h"
- 
+#import "AppDelegate.h"
 #import "ShowCommentModel.h"
 #import "ShowTableViewCell.h"
 #import "CommentViewController.h"
@@ -20,7 +21,6 @@
 #import "ShowDetailModel.h"
 #import "MyFanTableViewCell.h"
 #import "VIPhotoView.h"
-
 #import "CommentLayFrame.h"
 #import "PraiseTableViewCell.h"
 @interface ShowDetailViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDataSource,UITableViewDelegate>
@@ -42,6 +42,8 @@
     NSMutableArray *_kTitleArrays;
     CGRect _kMarkRect;
     UIImageView *MarkIV;
+
+    
     
     UIImageView *arrowImg;
     UIImageView *praiseImg;
@@ -161,14 +163,12 @@
     
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
-    
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     
     NSString *uS = Url;
     NSString *urlStr = [NSString stringWithFormat:@"%@v1/comment/%@/comments",uS,_pinglun];
-    YTHLog(@"评论列表拼接之后-----%@",urlStr);
+    YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //评论内容
         YTHLog(@"评论%@",responseObject);
@@ -233,9 +233,6 @@
             self.userUuid = [showdic objectForKey:@"userUuid"];
             //评论
             _pinglun = [showdic objectForKey:@"uuid"];
-            
-            YTHLog(@"--------评论是%@---------",_pinglun);
-
             _attenuuid = [[showdic objectForKey:@"user"]objectForKey:@"uuid"];
             [self _initTableView];
             [self _initHeadView];

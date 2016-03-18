@@ -17,9 +17,10 @@
 #import "SUCArchive.h"
 #import "SUCUser.h"
 #import "NSObject+MJKeyValue.h"
- 
+#import "AppDelegate.h"
 #import "UIButton+Extension.h"
 #import "NSData+AES256.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "SUCTabBarViewController.h"
 #import "AddInformationViewController.h"
 typedef enum {

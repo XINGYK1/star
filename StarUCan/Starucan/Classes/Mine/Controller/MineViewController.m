@@ -7,8 +7,9 @@
 //
 
 #import "MineViewController.h"
- 
+#import "AppDelegate.h"
 #import "NSData+AES256.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "LoginFirstViewController.h"
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD+NJ.h"

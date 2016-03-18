@@ -8,8 +8,9 @@
 
 #import "MyFanViewController.h"
 #import "MyFanTableViewCell.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "NSData+AES256.h"
- 
+#import "AppDelegate.h"
 #import "ShowDetailModel.h"
 @interface MyFanViewController ()<UITableViewDataSource,UITableViewDelegate>
 {

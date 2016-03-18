@@ -7,8 +7,9 @@
 //
 
 #import "NickNameViewController.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "NSData+AES256.h"
- 
+#import "AppDelegate.h"
 @interface NickNameViewController ()
 {
     AppDelegate *myDelegate;

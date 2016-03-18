@@ -10,11 +10,12 @@
 #import "POP.h"
 #import "XZMButton.h"
 #import "LoginFirstViewController.h"
+#import "AppDelegate.h"
 #import "DoImagePickerController.h"
 #import "AssetHelper.h"
 #import "ShowPhotoViewController.h"
 #import "WXNavigationController.h"
-#import "ShowVideoViewController.h"
+#import "ShowVedioViewController.h"
 #import "WechatShortVideoController.h"
 
 @interface ShowViewController ()<DoImagePickerControllerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,WechatShortVideoDelegate>
@@ -31,6 +32,7 @@ static CGFloat XZMSpringDelay = 0.1;
     
     AppDelegate *myDelegate;
     BOOL flag;
+    WechatShortVideoController *_shortVC;
     
 }
 
@@ -89,18 +91,7 @@ static CGFloat XZMSpringDelay = 0.1;
         
     }else if ([mediaType isEqualToString:@"public.movie"]){
         
-        // 保存
-        NSString *path = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL]path];
-        
-        UISaveVideoAtPathToSavedPhotosAlbum(path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
-        
-        ShowVideoViewController *showVedio = [[ShowVideoViewController alloc]init];
-        
-        showVedio.vedioURL = path;
-        
-        WXNavigationController *showVedioNav = [[WXNavigationController alloc]initWithRootViewController:showVedio];
-        
-        [picker presentViewController:showVedioNav animated:YES completion:nil];
+    
     }
 }
 
@@ -210,11 +201,11 @@ static CGFloat XZMSpringDelay = 0.1;
                     if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
                         
                         
-                        WechatShortVideoController * shortVC = [[WechatShortVideoController alloc]init];
+                        _shortVC = [[WechatShortVideoController alloc]init];
                         
-                        shortVC.delegate =self;
+                        _shortVC.delegate =self;
                         
-                        [self presentViewController:shortVC animated:YES completion:^{}];
+                        [self presentViewController:_shortVC animated:YES completion:^{}];
 
                         
                         return;
@@ -235,10 +226,13 @@ static CGFloat XZMSpringDelay = 0.1;
 #pragma mark - WechatShortVideoDelegate
 - (void)finishWechatShortVideoCapture:(NSURL *)filePath {
     
-
+    ShowVedioViewController *showVideoVC = [[ShowVedioViewController alloc]init];
+    
+    showVideoVC.videoURL = filePath;
+    
+    [_shortVC presentViewController:showVideoVC animated:NO completion:nil];
     
 }
-
 
 -(void)initAlertController{
     

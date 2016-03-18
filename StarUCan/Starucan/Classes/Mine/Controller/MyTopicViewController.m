@@ -7,7 +7,8 @@
 //
 
 #import "MyTopicViewController.h"
- 
+#import "AFHTTPRequestOperationManager.h"
+#import "AppDelegate.h"
 #import "NSData+AES256.h"
 #import "MyShowTableViewCell.h"
 #import "MyTopicLayoutFtame.h"

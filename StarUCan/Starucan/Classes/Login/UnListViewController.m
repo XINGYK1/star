@@ -8,7 +8,7 @@
 
 #import "UnListViewController.h"
 #import "UINavigationItem+CustomItem.h"
- 
+#import "AppDelegate.h"
 #import "CCLocationManager.h"
 #import "GXHttpTool.h"
 #import "MBProgressHUD+NJ.h"

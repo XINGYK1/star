@@ -7,8 +7,9 @@
 //
 
 #import "AddLabelViewController.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "LabelModel.h"
- 
+#import "AppDelegate.h"
 #import "NSData+AES256.h"
 @interface AddLabelViewController ()<UISearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
 {
@@ -26,7 +27,6 @@
 @end
 
 @implementation AddLabelViewController
-
 //-(NSMutableArray *)saveGoodsNameArray
 //{
 //    if (!_dataArr) {
@@ -34,7 +34,6 @@
 //    }
 //    return _dataArr;
 //}
-
 - (UITableView *)resultTableView
 {
     if (!_resultTableView) {
@@ -76,6 +75,7 @@
     NSString *url =[NSString stringWithFormat:@"%@v1/label",url1];
     
     [manager GET:url parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
         YTHLog(@"标签信息%@",responseObject);
         
         YTHLog(@"标签返回error code %ld",(long)[operation.response statusCode]);
@@ -88,11 +88,12 @@
             [myDelegate.labelIDict removeAllObjects];
             for (NSDictionary *dic in arry)
             {
+                
                 [myDelegate.labelIDict setObject:[dic objectForKey:@"uuid"] forKey:[dic objectForKey:@"name"]];
                 [self.dataArr addObject: [dic objectForKey:@"name"]];
                 
             }
-            YTHLog(@" 个数%lu",(unsigned long)self.dataArr.count);
+            YTHLog(@"个数个数%lu",(unsigned long)self.dataArr.count);
         }
         
         [self.resultTableView reloadData];
@@ -119,7 +120,7 @@
     mySearchBar.layer.borderWidth = 0.8;
     [self.view addSubview:mySearchBar];
 }
-#pragma mark - UITable
+#pragma mark - uitable
 -(void)_initTableView
 {
     UITableView *tableView= [[UITableView alloc]initWithFrame:CGRectMake(0, 92, YTHScreenWidth, YTHScreenHeight)style:UITableViewStylePlain];
@@ -131,7 +132,7 @@
     
 }
 
-#pragma mark-UITable代理
+#pragma mark-uitable代理
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView==self.tableView) {
         return 1;
@@ -145,7 +146,7 @@
     }
     
 }
-//UITable  cell行高
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return 44;
@@ -188,7 +189,6 @@
     }
     
 }
-//cell点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView==_resultTableView) {

@@ -9,12 +9,14 @@
 #import "SuggessViewController.h"
 #import "DoImagePickerController.h"
 #import "AssetHelper.h"
+//#import "AsynImageView.h"
 #import "sys/utsname.h"
 #include <sys/sysctl.h>
 #import "kSuggessPhotoCollectionViewCell.h"
 #import "VIPhotoView.h"
- 
+#import "AppDelegate.h"
 #import "NSData+AES256.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "MBProgressHUD+NJ.h"
 #import "QiniuSDK.h"
 

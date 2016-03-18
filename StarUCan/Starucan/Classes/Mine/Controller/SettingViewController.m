@@ -9,7 +9,7 @@
 #import "SettingViewController.h"
 #import "AccountSetViewController.h"
 #import "FeedBackViewController.h"
- 
+#import "AppDelegate.h"
 #import "LoginViewController.h"
 @interface SettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -131,21 +131,16 @@
         [self.navigationController pushViewController:feedVC animated:YES];
     }
     if (3==indexPath.section) {
-//退出登录时     清空账号信息
-        NSUserDefaults *user=[NSUserDefaults standardUserDefaults];
-        
-        [user setObject:@"" forKey:@"phoneNum"];
-        
-        [user setObject:@"" forKey:@"myPassword"];
-        
-        [user synchronize];
-        
         myDelegate.userInfo = [NSMutableDictionary dictionary];
         LoginViewController *loginV = [[LoginViewController alloc]init];
       
         [self.navigationController pushViewController:loginV animated:YES];
         
-        YTHLog(@"退出登录");
+        
+        
+        
+        
+               YTHLog(@"退出登录");
     }
 }
 //section底部间距

@@ -447,6 +447,7 @@ static char* SCRecorderPhotoOptionsContext = "PhotoOptionsContext";
     _lastMovieFileOutputTime = recordedDuration;
 }
 
+
 - (void)record {
     void (^block)() = ^{
         _isRecording = YES;

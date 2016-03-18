@@ -7,7 +7,7 @@
 //
 
 #import "UserInfoViewController.h"
- 
+#import "AppDelegate.h"
 #import "UIImageView+WebCache.h"
 #import "NickNameViewController.h"
 #import "GXHttpTool.h"

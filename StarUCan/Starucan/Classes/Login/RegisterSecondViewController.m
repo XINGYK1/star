@@ -11,7 +11,7 @@
 #import "GXHttpTool.h"
 #import "MBProgressHUD+NJ.h"
 #import "QiniuSDK.h"
- 
+#import "AppDelegate.h"
 #import "WXNavigationController.h"
 @interface RegisterSecondViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -56,23 +56,23 @@
     }
     self.scrollView = scrollview;
     self.view = scrollview;
+
+    
+    
+
+   
+   
+   
+    
+   
     
     [self _initCreat];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-
     [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
         self.dict = responseObject;
-        
         if ([operation.response statusCode]/100==2) {
-            
-#warning  七牛token
             self.tokenKey = [self.dict objectForKey:@"qntoken"];
-            
-            YTHLog(@"七牛token是    %@",self.tokenKey);
-            
             self.domain = [NSString stringWithFormat:@"http://%@",[self.dict objectForKey:@"domain"]];
-            
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -81,11 +81,14 @@
         
     }];
     
+   
+   
+    // Do any additional setup after loading the view.
 }
 -(void)_initCreat
 {
     self.view.backgroundColor = YTHColor(243, 243, 243);
-    //上传头像按钮
+    //上传头像
     UIImageView *logoImv = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,YTHScreenWidth,YTHAdaptation(220))];
     logoImv.image =[UIImage imageNamed:@"headground"];
     logoImv.userInteractionEnabled = YES;
@@ -219,32 +222,24 @@
     WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:addInforVC];
     [self presentViewController:nav animated:NO completion:nil];
 }
-
-
+#pragma mark- 上传头像
 - (void)updateFace:(UITapGestureRecognizer *)gesture {
     UIActionSheet *sheet;
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        
         sheet  = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照上传",@"本地上传", nil];
     }else {
-        
         sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"本地上传", nil];
     }
-    
     sheet.tag = 255;
     [sheet showInView:self.view];
-    
 }
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == 255) {
-        
         NSUInteger sourceType = 0;
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             switch (buttonIndex) {
-                case 0:{
-                
-                }
+                case 0:{}
                     return;
                 case 1:
                     sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -294,8 +289,8 @@
     self.headV.tag = 100;
     [self uploadFace:image];
 }
-#pragma mark 上传头像
 - (void)uploadFace:(UIImage *)image {
+<<<<<<< HEAD
     NSData *data;
     if (UIImagePNGRepresentation(image)) {
                 //返回为png图像。
@@ -304,33 +299,31 @@
                 //返回为JPEG图像。
         data = UIImageJPEGRepresentation(image, 1.0);
     }
+=======
+    NSData *data = UIImagePNGRepresentation(image);
+    
+    
+    //    NSString *unicodeStr = [NSString stringWithCString:[self.tokenKey UTF8String] encoding:NSUnicodeStringEncoding];
+    //     NSData *data1 = [image dataUsingEncoding : NSUTF8StringEncoding];
+>>>>>>> 4177c823456a431e67180ac6a788f970f67d840d
     
     QNUploadManager *upManager = [[QNUploadManager alloc] init];
     
     [MBProgressHUD showMessage:@"上传中"];
-    
     [upManager putData:data key:nil token:self.tokenKey
               complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
                   _qiniuText = [resp objectForKey:@"key"];
-                  
                   self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-                  
                   [MBProgressHUD hideHUD];
-                  
                   [MBProgressHUD showSuccess:@"上传成功"];
-                  
                   [self.headV setImage:image];
-              
               } option:nil];
     
     self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
     
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-    }];
-    
+    [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
 - (void)didReceiveMemoryWarning {

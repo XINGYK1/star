@@ -8,8 +8,9 @@
 
 #import "MyFanTableViewCell.h"
 #import "UIImageView+WebCache.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "NSData+AES256.h"
- 
+#import "AppDelegate.h"
 @implementation MyFanTableViewCell
 {
      AppDelegate *myDelegate;
