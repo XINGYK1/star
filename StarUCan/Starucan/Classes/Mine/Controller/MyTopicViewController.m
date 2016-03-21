@@ -130,17 +130,14 @@
             }
             
         }
-        
-        
+  
         [self.tableview reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         YTHLog(@"我参与error code %ld",(long)[operation.response statusCode]);
         
     }];
-    
-
-    
+  
 }
 #pragma mark - 我关注请求
 -(void)requestMyatten

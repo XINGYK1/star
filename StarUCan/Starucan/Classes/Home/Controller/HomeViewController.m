@@ -20,7 +20,6 @@
 #import "YHTHomeCollectionViewCell.h"
 #import "YHTHomeImageModel.h"
 #import "YHTHomeHeaderView.h"
-//#import "AFHTTPRequestOperationManager.h"
 #import "ImagePlayerView.h"
 #import "ShowDetailViewController.h"
 #import "AppDelegate.h"
@@ -33,7 +32,9 @@
 #import "UnListViewController.h"
 #import "WXNavigationController.h"
 #import "MyShowLayoutFrame.h"
+
 #define YTHUserInfo [SUCUser initWithUserInfo]
+
 @interface HomeViewController ()<HMWaterflowLayoutDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ImagePlayerViewDelegate,UITableViewDataSource,UITableViewDelegate,MeetViewDelegate>
 {
     UIImageView *arrowImg;
@@ -46,22 +47,22 @@
     MeetView *meetV;
     
 }
-@property (nonatomic,strong ) CycleScrollView  *cycleScorllView;
+//轮播图
+@property (nonatomic,strong ) CycleScrollView  *cycleScorllView;//轮播图SV
 @property (nonatomic,strong ) UIPageControl    *pageControl;
-@property (assign, nonatomic) UIScrollView     *scrollView;
-@property (strong, nonatomic) NSMutableArray   *cycleArray;
+@property (strong, nonatomic) NSMutableArray   *cycleArray;//轮播图片数组
+@property (nonatomic,strong ) NSDictionary     *cycleDict;
 
+@property (assign, nonatomic) UIScrollView     *scrollView;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray   *focusDataArrays;
 @property (nonatomic, strong) UIView           *collectionViewHeaderView;
-@property (nonatomic, strong) UILabel          *videoTitleLabel;
+
 //视频view
 @property (nonatomic, strong) UIView           *viewVideo;
 @property (nonatomic, strong) ImagePlayerView  *imagePlayerView;
-
+@property (nonatomic, strong) UILabel          *videoTitleLabel;
 @property (nonatomic, strong) NSMutableArray   *imageURLs;
-
-@property (nonatomic,strong ) NSDictionary     *cycleDict;
 
 //
 @property (nonatomic,strong ) UIImageView      *headImgV;//头像
@@ -75,7 +76,7 @@
 @property (nonatomic,strong ) UILabel          *labelDesc;//文字详情内容
 @property (nonatomic,strong ) NSDictionary     *attenDic;
 @property (nonatomic,strong ) UITableView      *tableview;
-@property (nonatomic,strong ) NSMutableArray   *data;
+@property (nonatomic,strong ) NSMutableArray   *attentionData;       //
 @property (nonatomic,strong ) NSDictionary     *commentJason;
 @property (nonatomic,strong ) UIButton         *buttonPoint;//焦点 按钮
 @property (nonatomic,strong ) UIButton         *buttonMeet;//遇见 按钮
@@ -90,7 +91,6 @@
      [super viewWillAppear:YES];
     //视图将要出现的时候显示tableBar,解决在遇见的大学搜索页面返回主页面时，tableBar不显示的问题
     self.tabBarController.tabBar.hidden= NO;
-   
     
 }
 
@@ -101,6 +101,7 @@
     if (!_imageURLs) {
         
 #warning 首页轮播图的请求地址    http://192.168.30.25:8082/ythbk/app/home/getHomeJosn
+       
         NSMutableArray *imageURLs = [NSMutableArray array];
         _imageURLs = imageURLs;
     
@@ -120,9 +121,9 @@
     }
     return _scrollView;
 }
+
 - (ImagePlayerView *)imagePlayerView
 {
-    
     //imagePlayerView封装好的轮播视图。
     if (!_imagePlayerView) {
         ImagePlayerView *imagePlayerView= [[ImagePlayerView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, YTHAdaptation(175))];//175
@@ -149,20 +150,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     // Do any additional setup after loading the view.
     if (!myDelegate) {
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     
-    self.cycleArray = [[NSMutableArray alloc]init];
+    self.cycleArray = [[NSMutableArray alloc]init];    //轮播图数组
     
     _kTitleArrays = [[NSMutableArray alloc]init];
     
-    self.data = [[NSMutableArray alloc]init];
+    self.attentionData = [[NSMutableArray alloc]init]; //关注内容数组
     
     start = 1;
-    //count = 15;
+
     count = 20;
     
     self.title = @"首页";
@@ -180,6 +180,7 @@
     [self _initCollectionView];
     
 }
+
 //视图加载出来
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -198,60 +199,58 @@
     NSArray *titleArray = @[@"焦点",@"遇见",@"关注"];
     
     //焦点
-    UIButton *buttonPoint = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *focusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
     CGFloat width = viewbg.frame.size.width/3;
     
-    [buttonPoint setFrame:CGRectMake(0, 7, width, 30)];
+    [focusBtn setFrame:CGRectMake(0, 7, width, 30)];
     
-    [buttonPoint setTitle:titleArray[0] forState:UIControlStateNormal];
+    [focusBtn setTitle:titleArray[0] forState:UIControlStateNormal];
     
-    [buttonPoint setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [focusBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    [buttonPoint addTarget:self action:@selector(buttonPoint:) forControlEvents:UIControlEventTouchUpInside];
+    [focusBtn addTarget:self action:@selector(buttonPoint:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.buttonPoint = buttonPoint;
+    self.buttonPoint = focusBtn;
     
-    [viewbg addSubview:buttonPoint];
+    [viewbg addSubview:focusBtn];
     
     
     //遇见
-    UIButton *buttonMeet = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *meetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
    
-    [buttonMeet setFrame:CGRectMake(width, 7, width, 30)];
+    [meetBtn setFrame:CGRectMake(width, 7, width, 30)];
     
-    [buttonMeet setTitle:titleArray[1] forState:UIControlStateNormal];
+    [meetBtn setTitle:titleArray[1] forState:UIControlStateNormal];
     
-    [buttonMeet setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
+    [meetBtn setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
     
-    [buttonMeet addTarget:self action:@selector(buttonMeet:) forControlEvents:UIControlEventTouchUpInside];
+    [meetBtn addTarget:self action:@selector(buttonMeet:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.buttonMeet =buttonMeet;
+    self.buttonMeet =meetBtn;
     
-    [viewbg addSubview:buttonMeet];
-    
+    [viewbg addSubview:meetBtn];
     
     //关注
-    UIButton *buttonAtten = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *attentionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [buttonAtten setFrame:CGRectMake(width*2, 7, width, 30)];
+    [attentionBtn setFrame:CGRectMake(width*2, 7, width, 30)];
     
-    [buttonAtten setTitle:titleArray[2] forState:UIControlStateNormal];
+    [attentionBtn setTitle:titleArray[2] forState:UIControlStateNormal];
     
-    [buttonAtten setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
+    [attentionBtn setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
     
-    [buttonAtten addTarget:self action:@selector(buttonAtten:) forControlEvents:UIControlEventTouchUpInside];
+    [attentionBtn addTarget:self action:@selector(buttonAtten:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.buttonAtten =buttonAtten;
+    self.buttonAtten =attentionBtn;
     
-    [viewbg addSubview:buttonAtten];
+    [viewbg addSubview:attentionBtn];
     
     self.buttonPoint.transform = CGAffineTransformMakeScale(1.2,1.2);
     
     self.buttonMeet.transform = CGAffineTransformMakeScale(0.9,0.9);
     
     self.buttonAtten.transform =CGAffineTransformMakeScale(0.9,0.9);
-    
     
     // 右边的搜索按钮
     UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
@@ -282,7 +281,6 @@
                          //隐藏状态栏，iOS7要改info里面的属性
                          
                      }];
-   
     
     [self.tableview removeFromSuperview];
     
@@ -310,7 +308,6 @@
                          [self.buttonAtten setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
                          [self.buttonPoint setTitleColor:YTHColor(255, 159, 164) forState:UIControlStateNormal];
                          [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                         
                          
                      }
                      completion:^(BOOL finished) {
@@ -398,7 +395,7 @@
 {
     self.collectionViewHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 411)];//411
     
-    // pageControl.backgroundColor= [UIColor whiteColor];
+    //pageControl.backgroundColor= [UIColor whiteColor];
     
     //创建一个轮播图
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
@@ -566,6 +563,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         YTHLog(@"瀑布流错误 %ld",(long)[operation.response statusCode]);
+        
 #warning 初始化两次，检测内存泄露时出现问题
     
         NSDictionary *hMwatarDict = [[NSDictionary alloc]init];
@@ -575,8 +573,8 @@
         YTHLog(@"瀑布流错误%@",hMwatarDict);
         
         [MBProgressHUD showError:[hMwatarDict objectForKey:@"info"]];
-
-          }];
+      
+        }];
     
 }
 
@@ -585,7 +583,7 @@
     HMWaterflowLayout *layout = [[HMWaterflowLayout alloc] init];
     
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    //    layout.headerReferenceSize = CGSizeMake(YTHScreenWidth, YTHAdaptation(20));
+//    layout.headerReferenceSize = CGSizeMake(YTHScreenWidth, YTHAdaptation(20));
     
     layout.delegate = self;
     
@@ -670,7 +668,6 @@
     return cell;
 }
 
-
 #pragma mark  秀焦点、 遇见 CollectionView 点击事件
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -678,7 +675,8 @@
     if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
         
         if (meetV) {     //秀 遇见
-            YHTHomeImageModel *imagLoveModel =meetV.meetDataArrays[indexPath.row];
+            YHTHomeImageModel *imagLoveModel = meetV.meetDataArrays[indexPath.row];
+            
             ShowDetailViewController *showVC = [[ShowDetailViewController alloc] init];
             
             showVC.uuid =imagLoveModel.uuid;
@@ -832,12 +830,10 @@
                 
                 myFrame.showModel = showModel;
                 
-                [self.data addObject:myFrame];
+                [self.attentionData addObject:myFrame];
               
             }
-            
         }
-        
         
         [self.tableview reloadData];
         
@@ -852,13 +848,12 @@
         [MBProgressHUD showError:[self.attenDic objectForKey:@"info"]];
       
     }];
-    
 }
 
 #pragma mark-UITableViewDelegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    return self.data.count;
+    return self.attentionData.count;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -875,7 +870,7 @@
     if (cell == nil) {
         cell = [[AttentionTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
-    cell.myLayoutFrame = self.data[indexPath.section];
+    cell.myLayoutFrame = self.attentionData[indexPath.section];
     
     return cell;
     
@@ -883,11 +878,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MyShowLayoutFrame *weiboF = self.data[indexPath.section];
+    MyShowLayoutFrame *weiboF = self.attentionData[indexPath.section];
+    
     return weiboF.cellHeight;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
     if(section == 0){
     
         return 0.1f;

@@ -110,34 +110,43 @@
 {
     
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
-    NSString *latitude = [NSString stringWithFormat:@"%f",locationCorrrdinate.latitude];
-    NSString *longitude = [NSString stringWithFormat:@"%f",locationCorrrdinate.longitude];
+//    NSString *latitude = [NSString stringWithFormat:@"%f",locationCorrrdinate.latitude];
+//    NSString *longitude = [NSString stringWithFormat:@"%f",locationCorrrdinate.longitude];
+//    
+//    md[@"lat"] =latitude;
+//    md[@"lng"] =longitude;
     
-    md[@"lat"] =latitude;
-    md[@"lng"] =longitude;
-    md[@"name"]=_searchBar.text;
+    md[@"schoolName"]=@"";
     
   //  [MBProgressHUD showMessage:@"加载中"];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSString *url = Url;
-    NSString *urlString = [NSString stringWithFormat:@"%@v1/base/universities",url];
+
+    NSString *url = theUrl;
     
+//    NSString *url = Url;
+//    NSString *urlString = [NSString stringWithFormat:@"%@v1/base/universities",url];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@getUniversityListAction.action",url];
+
     YTHLog(@"地址为：%@",urlString);
     
-    [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-   //     YTHLog(@"学校%@",responseObject);
+        NSLog(@"学校名：%@",md);
+     
+        YTHLog(@"学校%@",responseObject);
         
         YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         if ([operation.response statusCode]/100==2) {
             
-            [self saveDictionary:[responseObject objectForKey:@"universities"] forKey:@"universitys" toFile:@"universitys"];
+//            [self saveDictionary:[responseObject objectForKey:@"name"] forKey:@"universityList" toFile:@"universitys"];
+//            
+//            [self showUniversitys:[responseObject objectForKey:@"name"]];
             
-                        [self showUniversitys:[responseObject objectForKey:@"universities"]];
-            
-            
+            YTHLog(@"学校%@",responseObject);
+
         }
         
         [MBProgressHUD hideHUD];
@@ -156,7 +165,7 @@
     }];
     
     [MBProgressHUD showMessage:@"加载中"];
-    [GXHttpTool POST:@"http://platform.vgool.cn/api/university/universityList" parameters:md success:^(id responseObject) {
+    [GXHttpTool POST:url parameters:md success:^(id responseObject) {
         YTHLog(@"%@",responseObject);
         NSDictionary *jsonDict = responseObject;
         if (jsonDict == nil) {
@@ -166,7 +175,7 @@
         
         if([[jsonDict objectForKey:@"code"] intValue] == 0){
             
-    //         NSMutableArray *list = [jsonDict objectForKey:@"nearUniversityList"];
+//         NSMutableArray *list = [jsonDict objectForKey:@"nearUniversityList"];
             
             //保存
             [self saveDictionary:[jsonDict objectForKey:@"list"] forKey:@"universitys" toFile:@"universitys"];
@@ -344,20 +353,12 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-//        if (myDelegate.university_name.length>0) {//大学
-//            cell.textLabel.text = [NSString stringWithFormat: @"我的学校：%@",myDelegate.university_name];
-//        }else{
-//            cell.textLabel.text = self.dataSource[indexPath.section][@"data"][indexPath.row][@"name"];
-//            cell.textLabel.tag = [self.dataSource[indexPath.section][@"data"][indexPath.row][@"uuid"] intValue];
-//            
-//        }
+
         cell.textLabel.text = self.dataSource[indexPath.section][@"data"][indexPath.row][@"name"];
         cell.textLabel.tag = [self.dataSource[indexPath.section][@"data"][indexPath.row][@"uuid"] intValue];
-
-       
-        
-        
+ 
         return cell;
+        
     }else
     {
         static NSString *cellId = @"mycell";
@@ -369,15 +370,12 @@
         return cell;
 
     }
-    
-    
-        
-
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
     myDelegate.university_name = cell.textLabel.text;
 
     myDelegate.universityId = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
@@ -390,6 +388,7 @@
 {
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"noticeRefreshCollectList" object:nil userInfo:nil];
+    
     [self.navigationController popViewControllerAnimated:YES];
 
 }

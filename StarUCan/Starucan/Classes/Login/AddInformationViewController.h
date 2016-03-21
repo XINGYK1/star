@@ -13,6 +13,8 @@
 @property(nonatomic,copy)NSString *img;
 @property(nonatomic,copy)NSString *nameText;
 @property(nonatomic,copy)NSString *title;
+@property (nonatomic,strong)NSData *imgData;
+
 
 
 

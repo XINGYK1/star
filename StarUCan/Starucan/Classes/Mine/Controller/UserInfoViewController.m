@@ -468,6 +468,7 @@
     
     
     //    NSString *unicodeStr = [NSString stringWithCString:[self.tokenKey UTF8String] encoding:NSUnicodeStringEncoding];
+   
     //     NSData *data1 = [image dataUsingEncoding : NSUTF8StringEncoding];
     
     QNUploadManager *upManager = [[QNUploadManager alloc] init];

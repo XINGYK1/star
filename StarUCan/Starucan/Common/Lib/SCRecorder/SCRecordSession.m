@@ -936,9 +936,11 @@ NSString * const SCRecordSessionDocumentDirectory = @"DocumentDirectory";
     [self dispatchSyncOnSessionQueue:^{
         NSFileManager *fileManager = [NSFileManager defaultManager];
         for (SCRecordSessionSegment *recordSegment in self.segments) {
+            
             NSURL *newUrl = [SCRecordSessionSegment segmentURLForFilename:recordSegment.url.lastPathComponent andDirectory:_segmentsDirectory];
             
             if (![newUrl isEqual:recordSegment.url]) {
+            
                 NSError *error = nil;
                 if ([fileManager moveItemAtURL:recordSegment.url toURL:newUrl error:&error]) {
                     recordSegment.url = newUrl;

@@ -241,10 +241,13 @@ typedef enum {
     [MBProgressHUD showMessage:@"正在登录..." toView:self.view];
     
     [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // self.jsonDict = [[NSDictionary alloc]init];
+
         self.jsonDict = responseObject;
         
         if ([operation.response statusCode]/100==2) {
+            
+            NSLog(@"-----------%@",self.jsonDict);
+            
             SUCArchive *archive = [SUCArchive shareArchiveManager];
             // 网络请求成功, 就在用户偏好中设置登录状态
             NSUserDefaults *user=[NSUserDefaults standardUserDefaults];

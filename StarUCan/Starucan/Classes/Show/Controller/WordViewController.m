@@ -55,9 +55,7 @@
     [_textView addSubview:labelText];
     //弹出键盘
     [_textView becomeFirstResponder];
-    
-    
-    
+
     [self.view addSubview:_textView];
     
     //创建编辑工具栏
@@ -115,10 +113,7 @@
         [alert show];
         return;
     }
-    
-    
-    
-    
+ 
     if ([self.delegate respondsToSelector:@selector(wordsomeView:didClickTitle:)]) {
         [self.delegate wordsomeView:self didClickTitle:_textView.text];
     }

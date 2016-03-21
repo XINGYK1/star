@@ -22,13 +22,13 @@
 @synthesize currentPageIndex = _currentPageIndex;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
 #pragma mark Private Methods
 
 - (void)initialize{
     self.clipsToBounds = YES;
     
     _needsReload = YES;
+    
     _pageSize = self.bounds.size;
     _pageCount = 0;
     _currentPageIndex = 0;
@@ -56,7 +56,7 @@
     [superViewOfScrollView setBackgroundColor:[UIColor clearColor]];
     [superViewOfScrollView addSubview:_scrollView];
     [self addSubview:superViewOfScrollView];
-    [superViewOfScrollView release];
+//    [superViewOfScrollView release];
 }
 
 -(void)removeAllSubViews

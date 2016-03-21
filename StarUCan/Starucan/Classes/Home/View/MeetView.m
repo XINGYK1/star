@@ -99,9 +99,11 @@
             YTHLog(@"瀑布流%@",jasonDic);
             
             self.meetDataArrays = [NSMutableArray array];
+            
             NSArray *showArry = [jasonDic objectForKey:@"shows"];
             
             for (NSDictionary *dict in showArry) {
+            
                 YHTHomeImageModel *model =[[YHTHomeImageModel alloc]initContentWithDic:dict];
                 
                 CGFloat imageWidth = (YTHScreenWidth-YTHAdaptation(30))/2.0f;
@@ -359,8 +361,6 @@
     }];
     
     
-    
-    
     _pageFlowView = [[PagedFlowView alloc]initWithFrame:CGRectMake(0, 40, YTHScreenWidth, 144)];
     
     _pageFlowView.delegate = self;
@@ -518,6 +518,7 @@
         YTHLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
     cell.delegate = self;
+    
     cell.model = self.meetDataArrays[indexPath.row];
     // cell.backgroundColor = [UIColor cyanColor];
     return cell;
@@ -529,6 +530,7 @@
     YTHLog(@"学校%@",myDelegate.university_name);
     
     [_unisverButton setTitle:myDelegate.university_name forState:UIControlStateNormal];
+    
     [self _initDataArray];
     
     

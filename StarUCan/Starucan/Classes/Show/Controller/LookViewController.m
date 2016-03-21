@@ -58,10 +58,7 @@
     if ([self.delegate respondsToSelector:@selector(looksomeView:didClickTitle:)]) {
         [self.delegate looksomeView:self didClickTitle:cell.textLabel.text];
     }
-    //    if ([self.delegate respondsToSelector:@selector(wordsomeView:didClickTitle:)]) {
-    //        [self.delegate wordsomeView:self didClickTitle:_textView.text];
-    //    }
-    
+
     [self.navigationController popViewControllerAnimated:YES];
     
 }

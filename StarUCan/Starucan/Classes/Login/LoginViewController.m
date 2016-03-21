@@ -32,6 +32,18 @@
 }
 @property (weak, nonatomic) UIScrollView *scrollView;
 @property(strong,nonatomic)UIView *loginView;
+
+//登录信息
+@property (nonatomic,strong) NSDictionary *jsonDic;
+@property (nonatomic,strong) NSDictionary *userInfoDic;
+
+@property (nonatomic,strong) NSString * status;
+
+@property (nonatomic,strong) NSString * flag;//Y第一次登录；N 非第一次
+@property (nonatomic,strong) NSString *theFlag;
+@property (nonatomic,strong) NSString * userName;//用户名，显示在下一页面
+@property (nonatomic,strong) NSString * userUdid;//用户唯一标识 udid
+@property (nonatomic,strong) NSString *huanxin;//环信
 @end
 
 @implementation LoginViewController
@@ -321,23 +333,7 @@
     
     return nil;
 }
-<<<<<<< HEAD
-//#pragma mark -忘记密码
-//-(void)forPassButton:(UIButton *)btn
-//{
-//
-//    ForgetPassViewController *forgetPassVC = [[ForgetPassViewController alloc]init];
-//    [self.navigationController pushViewController:forgetPassVC animated:YES];
-//}
 
-=======
-#pragma mark -忘记密码
--(void)forPassButton:(UIButton *)btn
-{
-    ForgetPassViewController *forgetPassVC = [[ForgetPassViewController alloc]init];
-    [self.navigationController pushViewController:forgetPassVC animated:YES];
-}
->>>>>>> 4177c823456a431e67180ac6a788f970f67d840d
 #pragma mark-第三方登录
 -(void)selectedClick:(UIButton *)btn
 {
@@ -360,6 +356,7 @@
         }
             
             break;
+#pragma mark **********WeChat登录**********
         case 1:
             YTHLog(@"微信");
         {
@@ -425,12 +422,7 @@
                          YTHLog(@"微信状态错误 code %ld",(long)[operation.response statusCode]);
                     }];
                     
-
-                    
-                    
-                    
-                    
-                    
+    
                     
                     AddInformationViewController *regisVC = [[AddInformationViewController alloc]init];
                     WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:regisVC];
@@ -442,23 +434,92 @@
             }];
         }
             break;
+#pragma mark **********QQ登录**********
         case 2:{
           
-            YTHLog(@"QQ");
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
             
-            [ShareSDK getUserInfo:SSDKPlatformTypeQQ onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
-                if (state==SSDKResponseStateSuccess) {
-                    YTHLog(@"qquid=%@",user.uid);
-                    YTHLog(@"qq%@",user.credential);
-                    YTHLog(@"qq_token=%@",user.credential.token);
-                    YTHLog(@"nickname=%@",user.nickname);
+            _theFlag = [ud objectForKey:@"flag"];
+            
+            YTHLog(@"内存里的flag ------%@",_theFlag);
+            
+            if (_theFlag.length > 0) {//非第一次，跳到首页
+                
+                SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+                
+                [self presentViewController:mainVC animated:NO completion:nil];
+                
+            }else{//第一次登录
+                
+                [ShareSDK getUserInfo:SSDKPlatformTypeQQ onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
                     
-                    
-                    
-                }{
-                    YTHLog(@"qq%@",error);
-                }
-            }];
+                    if (state==SSDKResponseStateSuccess) {
+                        
+                        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+                        NSMutableDictionary *md = [NSMutableDictionary dictionary];
+                        
+                        md[@"openId"] = @"123";
+                        
+//                       md[@"name"]   = user.nickname;
+                        
+                        md[@"udid"]   = @"D633CBA4-91C2-4FB6-A17A-92917B301EA6";
+                        
+//                    NSString *udidStr =[[UIDevice currentDevice] identifierForVendor];
+                        
+//                    NSLog(@"设备号：%@",udidStr);
+                        
+#warning    http://192.168.1.120:8080/starucan_app/weixinLoginAction.action
+                        
+                        NSString *urlString = @"http://192.168.1.120:8080/starucan_app/thirdLoginAction.action";
+                        
+                        [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                            
+                            self.jsonDic = responseObject;
+              
+                            NSLog( @"登录成功--- %@",self.jsonDic);
+                            
+                            _status = [self.jsonDic objectForKey:@"status"];
+                            
+                            if ([_status isEqualToString:@"success"]) {//登录成功
+                                
+                                self.userInfoDic = [self.jsonDic objectForKey:@"userInfo"];
+                                self.flag = [self.userInfoDic objectForKey:@"flag"];
+                                self.userName = [self.userInfoDic objectForKey:@"name"];
+                                self.userUdid = [self.userInfoDic objectForKey:@"udid"];
+                                self.huanxin = [self.userInfoDic objectForKey:@"huanxin"];
+                                
+                                NSUserDefaults *userInfoUD = [NSUserDefaults standardUserDefaults];
+                                
+                                [userInfoUD setObject:self.flag forKey:@"flag"];
+                                [userInfoUD setObject:self.huanxin forKey:@"huanxin"];
+                                [userInfoUD setObject:self.userName forKey:@"userName"];
+                                [userInfoUD setObject:self.userUdid forKey:@"userUdid"];
+                                
+                                [userInfoUD synchronize];
+                                
+                                YTHLog(@"flag------%@",self.flag);
+                                
+                                if ([self.flag isEqualToString:@"N"]) {//非第一次，跳到首页
+                                    
+                                    SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+                                    
+                                    [self presentViewController:mainVC animated:NO completion:nil];
+//                                    
+                                }else{
+                            
+                                //跳转到补全信息页 (选择头像和性别)
+                                RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
+                                [self presentViewController:regisSuccV animated:NO completion:nil];
+                                }
+                            }
+                            
+                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                            NSLog(@"QQ状态错误 code %ld",(long)[operation.response statusCode]);
+                        }];
+                    }
+                }];
+            }
+
         }
             break;
         default:

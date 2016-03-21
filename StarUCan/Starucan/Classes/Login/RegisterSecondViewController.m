@@ -18,6 +18,7 @@
     AddInformationViewController *addInforVC;
     NSString *sex;
     AppDelegate *myDelegate;
+    
 
 }
 @property (nonatomic, weak) UIScrollView *scrollView;
@@ -121,10 +122,16 @@
     
    
     UITextField *nameTF = [[UITextField alloc]initWithFrame:CGRectMake(YTHAdaptation(102), CGRectGetMaxY(headV.frame)+YTHAdaptation(40), YTHScreenWidth-YTHAdaptation(102),YTHAdaptation(30))];
-    nameTF.text = [myDelegate.userInfo objectForKey:@"name"];
-    nameTF.text  = @"zxl1111";
+    
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    nameTF.text = [ud objectForKey:@"userName"];
+
     nameTF.font = [UIFont systemFontOfSize:14];
-       self.nameTF = nameTF;
+    
+    self.nameTF = nameTF;
+    
     [self.view addSubview:nameTF];
     //男或女
     _manButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(82), CGRectGetMaxY(nameTF.frame)+YTHAdaptation(70),YTHAdaptation(68),YTHAdaptation(68))];
@@ -209,16 +216,17 @@
 
     
 }
+
+#pragma mark 点击下一步
 -(void)nextButtonAction
 {
    
    addInforVC = [[AddInformationViewController alloc]init];
     addInforVC.sex = sex;
-//    if (!IsNilOrNull(self.urlString)) {
-//        self.urlString = @"http://pic23.nipic.com/20120911/5219173_233509072371_2.jpg";
-//    }
     addInforVC.nameText = self.nameTF.text;
     addInforVC.stringUrl = self.urlString;
+    addInforVC.imgData = _imgData;
+    
     WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:addInforVC];
     [self presentViewController:nav animated:NO completion:nil];
 }
@@ -232,6 +240,7 @@
     }
     sheet.tag = 255;
     [sheet showInView:self.view];
+    
 }
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -290,37 +299,30 @@
     [self uploadFace:image];
 }
 - (void)uploadFace:(UIImage *)image {
-<<<<<<< HEAD
-    NSData *data;
+
+    
     if (UIImagePNGRepresentation(image)) {
                 //返回为png图像。
-        data = UIImagePNGRepresentation(image);
+        _imgData = UIImagePNGRepresentation(image);
     }else {
                 //返回为JPEG图像。
-        data = UIImageJPEGRepresentation(image, 1.0);
+        _imgData = UIImageJPEGRepresentation(image, 1.0);
     }
-=======
-    NSData *data = UIImagePNGRepresentation(image);
     
-    
-    //    NSString *unicodeStr = [NSString stringWithCString:[self.tokenKey UTF8String] encoding:NSUnicodeStringEncoding];
-    //     NSData *data1 = [image dataUsingEncoding : NSUTF8StringEncoding];
->>>>>>> 4177c823456a431e67180ac6a788f970f67d840d
-    
-    QNUploadManager *upManager = [[QNUploadManager alloc] init];
-    
-    [MBProgressHUD showMessage:@"上传中"];
-    [upManager putData:data key:nil token:self.tokenKey
-              complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
-                  _qiniuText = [resp objectForKey:@"key"];
-                  self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-                  [MBProgressHUD hideHUD];
+//    QNUploadManager *upManager = [[QNUploadManager alloc] init];
+//    
+//    [MBProgressHUD showMessage:@"上传中"];
+//    [upManager putData:data key:nil token:self.tokenKey
+//              complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
+//                  _qiniuText = [resp objectForKey:@"key"];
+//                  self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
+//                  [MBProgressHUD hideHUD];
                   [MBProgressHUD showSuccess:@"上传成功"];
-                  [self.headV setImage:image];
-              } option:nil];
-    
-    self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-    
+//                  [self.headV setImage:image];
+//              } option:nil];
+//    
+//    self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
+//    
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self dismissViewControllerAnimated:YES completion:^{}];

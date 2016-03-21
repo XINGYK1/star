@@ -71,7 +71,7 @@
 
 #define Url @"http://test.platform.vgool.cn/starucan/";
 //新的接口
-#define newUrl @"http://url:8080/starucan_app/";
+#define theUrl @"http://192.168.1.120:8080/starucan_app/";
 
 
 //#define Url @"http://api.starucan.com/"

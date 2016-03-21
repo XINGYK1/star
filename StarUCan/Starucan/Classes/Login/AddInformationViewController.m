@@ -168,7 +168,11 @@
     [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
     [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    //选择大学
     univerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
     univerButton.frame = CGRectMake(YTHAdaptation(16),YTHAdaptation(20), YTHScreenWidth-YTHAdaptation(32),YTHAdaptation(40));
     [univerButton addTarget:self action:@selector(buttonAction) forControlEvents:UIControlEventTouchUpInside];
     univerButton.backgroundColor = [UIColor whiteColor];
@@ -199,6 +203,7 @@
     self.labelText = labelText;
     [self.view addSubview:labelText];
 }
+
 -(void)_initButton
 {
     _kHandsomeView = [[HandsomeView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.labelText.frame)+YTHAdaptation(10), YTHScreenWidth, YTHAdaptation(250))andData:labelArray];
@@ -239,15 +244,23 @@
     NSString *sex = self.sex;
     YTHLog(@"性别--%@",sex);
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
+    
     md[@"name"]=self.nameText;//昵称
+    
     md[@"avatar"]=self.stringUrl;//头像
+    
     md[@"sex"]=sex;//性别
+    
     md[@"universityId"] = myDelegate.universityId;//学校
+    
     md[@"universityName"] = myDelegate.university_name;//学校名字
+  
     NSMutableArray *kIdArray = [[NSMutableArray alloc]init];
+    
     for (NSString *key in _kTitleArrays) {
         [kIdArray addObject:[_kIdMutabDict objectForKey:key]];
     }
+    
     NSString *strId = [kIdArray componentsJoinedByString:@","];
     md[@"labelIds"] = strId;//标签列表
     
@@ -260,7 +273,6 @@
     YTHLog(@"密码md5:%@",myDelegate.accessToken);
     SUCUser *u = [SUCUser initWithUserInfo];
     YTHLog(@"\n=====uid====\n%@", u.account);
-    
     
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
     YTHLog(@"微信密码=%@",myDelegate.accessToken);
@@ -294,11 +306,13 @@
     
     
 }
+
+//选择大学
 -(void)buttonAction
 {
     UnListViewController *unList = [[UnListViewController alloc]init];
-    [self.navigationController pushViewController:unList animated:YES
-     ];
+    [self.navigationController pushViewController:unList animated:YES];
+    
 }
 -(void)handsomeView:(HandsomeView *)zheView didClickTag:(UIButton *)button didClickTitle:(NSString *)title
 {

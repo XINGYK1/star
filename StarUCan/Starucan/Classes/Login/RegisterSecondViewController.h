@@ -10,4 +10,6 @@
 
 @interface RegisterSecondViewController : UIViewController
 
+@property (nonatomic,strong)NSData *imgData;//头像数据保存在二进制
+
 @end
