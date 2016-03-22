@@ -47,6 +47,8 @@
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     
+    sex = @"1";
+    
     UIScrollView *scrollview = [[UIScrollView alloc] init];
     scrollview.frame =CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight);
     scrollview.backgroundColor = YTHColor(235, 235, 241);
@@ -58,11 +60,6 @@
     self.scrollView = scrollview;
     self.view = scrollview;
 
-    
-    
-
-   
-   
    
     
    
@@ -86,6 +83,8 @@
    
     // Do any additional setup after loading the view.
 }
+
+
 -(void)_initCreat
 {
     self.view.backgroundColor = YTHColor(243, 243, 243);
@@ -135,8 +134,7 @@
     [self.view addSubview:nameTF];
     //男或女
     _manButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHAdaptation(82), CGRectGetMaxY(nameTF.frame)+YTHAdaptation(70),YTHAdaptation(68),YTHAdaptation(68))];
- 
-    NSString *sextitle = [myDelegate.userInfo objectForKey:@"sex"];
+    
 //    logoImv.image =[UIImage imageNamed:@"120-1"];
    // manImv.backgroundColor = [UIColor yellowColor];
     [_manButton.layer setMasksToBounds:YES];
@@ -157,8 +155,13 @@
     [_womanButton addTarget:self action:@selector(womanButton:) forControlEvents:UIControlEventTouchUpInside];
     //womanImv.userInteractionEnabled=YES;
     [self.view addSubview:_womanButton];
+    
+    NSString *sextitle = [myDelegate.userInfo objectForKey:@"sex"];
+    
     sextitle = @"1";
+    
     if ([sextitle isEqualToString:@"1"]) {
+        
          [_manButton setImage:[UIImage imageNamed:@"sexmale_on"] forState:UIControlStateNormal];
         [_womanButton setImage:[UIImage imageNamed:@"sexmale_off"] forState:UIControlStateNormal];
         
@@ -192,6 +195,7 @@
 
     [_manButton setImage:[UIImage imageNamed:@"sexmale_on"] forState:UIControlStateNormal];
      [_womanButton setImage:[UIImage imageNamed:@"sexmale_off"] forState:UIControlStateNormal];
+    
     if (IsNilOrNull(self.urlString)) {
         
         self.headV.image =  [UIImage imageNamed:@"male_shade"];
@@ -222,14 +226,19 @@
 {
    
    addInforVC = [[AddInformationViewController alloc]init];
+    
     addInforVC.sex = sex;
+    
     addInforVC.nameText = self.nameTF.text;
+    
     addInforVC.stringUrl = self.urlString;
+    
     addInforVC.imgData = _imgData;
     
     WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:addInforVC];
     [self presentViewController:nav animated:NO completion:nil];
 }
+
 #pragma mark- 上传头像
 - (void)updateFace:(UITapGestureRecognizer *)gesture {
     UIActionSheet *sheet;
@@ -278,6 +287,7 @@
     NSData *imageData = UIImageJPEGRepresentation(currentImage, 0.5);
     NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:imageName];
     [imageData writeToFile:fullPath atomically:NO];
+    
 }
 -(UIImage *)scaleImage:(UIImage *)img ToSize:(CGSize)itemSize{
     UIImage *i;
@@ -288,6 +298,7 @@
     UIGraphicsEndImageContext();
     return i;
 }
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^{}];
     [self saveImage:[info objectForKey:UIImagePickerControllerEditedImage] withName:@"currentImage.png"];
@@ -298,6 +309,7 @@
     self.headV.tag = 100;
     [self uploadFace:image];
 }
+
 - (void)uploadFace:(UIImage *)image {
 
     
@@ -308,16 +320,20 @@
                 //返回为JPEG图像。
         _imgData = UIImageJPEGRepresentation(image, 1.0);
     }
+//    [MBProgressHUD showMessage:@"上传中"];
     
+    [self.headV setImage:image];
+
+    [MBProgressHUD showSuccess:@"上传成功"];
+
 //    QNUploadManager *upManager = [[QNUploadManager alloc] init];
 //    
-//    [MBProgressHUD showMessage:@"上传中"];
+
 //    [upManager putData:data key:nil token:self.tokenKey
 //              complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
 //                  _qiniuText = [resp objectForKey:@"key"];
 //                  self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
 //                  [MBProgressHUD hideHUD];
-                  [MBProgressHUD showSuccess:@"上传成功"];
 //                  [self.headV setImage:image];
 //              } option:nil];
 //    
@@ -325,6 +341,7 @@
 //    
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 

@@ -27,6 +27,8 @@
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (nonatomic, strong) NSMutableArray * dataSource;
 @property (weak, nonatomic) UITableView *resultTableView;
+@property (nonatomic,strong)NSMutableDictionary *universityDic;
+
 @end
 
 @implementation UnListViewController
@@ -93,7 +95,24 @@
    
     TableView.sectionIndexBackgroundColor = [UIColor clearColor];//右侧索引背景颜色
 
-     [self requestData];
+    [self requestData];
+    
+//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+//    
+//    BOOL isExist = [ud objectForKey:@"university"];
+//    
+//    if (isExist ==YES) {
+//        
+//        [self showUniversitys:[_universityDic objectForKey:@"universityList"]];
+// 
+//        NSLog(@"大学列表存在————————%@",_universityDic);
+//        
+//    }else{
+//     
+//        [self requestData];
+//
+//    }
+    
 }
 
 //- (void) locationBack:(CLLocationCoordinate2D ) loc{
@@ -115,37 +134,58 @@
 //    
 //    md[@"lat"] =latitude;
 //    md[@"lng"] =longitude;
-    
-    md[@"schoolName"]=@"";
-    
-  //  [MBProgressHUD showMessage:@"加载中"];
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-
-    NSString *url = theUrl;
+//    md[@"name"]=_searchBar.text;
     
 //    NSString *url = Url;
+//
 //    NSString *urlString = [NSString stringWithFormat:@"%@v1/base/universities",url];
+
+    md[@"schoolName"]=_searchBar.text;
+    
+    NSString *url = theUrl;
     
     NSString *urlString = [NSString stringWithFormat:@"%@getUniversityListAction.action",url];
 
     YTHLog(@"地址为：%@",urlString);
     
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+
     [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"学校名：%@",md);
+        NSLog(@"学校参数-------：%@",md);
      
-        YTHLog(@"学校%@",responseObject);
+        YTHLog(@"学校信息%@",responseObject);
         
-        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
+        NSString *status = [responseObject objectForKey:@"status"];
         
-        if ([operation.response statusCode]/100==2) {
+        if ([status isEqualToString:@"success"]) {
             
-//            [self saveDictionary:[responseObject objectForKey:@"name"] forKey:@"universityList" toFile:@"universitys"];
+            _universityDic = responseObject;
+            
+            [self saveDictionary:[_universityDic objectForKey:@"universityList"] forKey:@"universitys" toFile:@"universitys"];
+            
+            [self showUniversitys:[_universityDic objectForKey:@"universityList"]];
+            
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            
+            [ud setBool:YES forKey:@"university"];
+            
+            [ud synchronize];
+            
+            
+//            NSArray *universityArr =[responseObject objectForKey:@"universityList"];
 //            
-//            [self showUniversitys:[responseObject objectForKey:@"name"]];
+//            
+//            for (NSDictionary *dic in universityArr) {
+//                
+//                
+//            }
+//            
+//            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+//            
+//            [ud setObject:[responseObject objectForKey:@"uuid"] forKey:@"universityUuid"];
             
-            YTHLog(@"学校%@",responseObject);
+//            YTHLog(@"学校%@",responseObject);
 
         }
         
@@ -160,16 +200,21 @@
 
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
          YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
     }];
     
     [MBProgressHUD showMessage:@"加载中"];
-    [GXHttpTool POST:url parameters:md success:^(id responseObject) {
+    
+    [GXHttpTool POST:urlString parameters:md success:^(id responseObject) {
         YTHLog(@"%@",responseObject);
+        
         NSDictionary *jsonDict = responseObject;
         if (jsonDict == nil) {
-          [MBProgressHUD showError:@"服务器连接失败"];
+          
+            [MBProgressHUD showError:@"服务器连接失败"];
+            
             return;
         }
         
@@ -356,7 +401,7 @@
 
         cell.textLabel.text = self.dataSource[indexPath.section][@"data"][indexPath.row][@"name"];
         cell.textLabel.tag = [self.dataSource[indexPath.section][@"data"][indexPath.row][@"uuid"] intValue];
- 
+        
         return cell;
         
     }else
@@ -376,10 +421,18 @@
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
+    
     myDelegate.university_name = cell.textLabel.text;
+    
+    YTHLog(@"学校名----------:%@",myDelegate.university_name);
 
-    myDelegate.universityId = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-     YTHLog(@"学校id----------:%@",myDelegate.universityId);
+
+//    myDelegate.universityId = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+
+    myDelegate.universityId = [NSString stringWithFormat:@"%ld",cell.textLabel.tag];
+
+    
+    YTHLog(@"学校id----------:%@",myDelegate.universityId);
    
     [self back];
     

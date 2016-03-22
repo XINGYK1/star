@@ -42,7 +42,7 @@
 @property (nonatomic,strong) NSString * flag;//Y第一次登录；N 非第一次
 @property (nonatomic,strong) NSString *theFlag;
 @property (nonatomic,strong) NSString * userName;//用户名，显示在下一页面
-@property (nonatomic,strong) NSString * userUdid;//用户唯一标识 udid
+@property (nonatomic,strong) NSString * userUuid;//用户唯一标识 udid
 @property (nonatomic,strong) NSString *huanxin;//环信
 @end
 
@@ -445,10 +445,14 @@
             
             if (_theFlag.length > 0) {//非第一次，跳到首页
                 
-                SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+                //跳转到补全信息页 (选择头像和性别)
+                RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
+                [self presentViewController:regisSuccV animated:NO completion:nil];
                 
-                [self presentViewController:mainVC animated:NO completion:nil];
-                
+//                SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+//                
+//                [self presentViewController:mainVC animated:NO completion:nil];
+//                
             }else{//第一次登录
                 
                 [ShareSDK getUserInfo:SSDKPlatformTypeQQ onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
@@ -460,7 +464,7 @@
                         
                         md[@"openId"] = @"123";
                         
-//                       md[@"name"]   = user.nickname;
+                        md[@"name"]   = user.nickname;// QQ 昵称
                         
                         md[@"udid"]   = @"D633CBA4-91C2-4FB6-A17A-92917B301EA6";
                         
@@ -485,7 +489,7 @@
                                 self.userInfoDic = [self.jsonDic objectForKey:@"userInfo"];
                                 self.flag = [self.userInfoDic objectForKey:@"flag"];
                                 self.userName = [self.userInfoDic objectForKey:@"name"];
-                                self.userUdid = [self.userInfoDic objectForKey:@"udid"];
+                                self.userUuid = [self.userInfoDic objectForKey:@"uuid"];
                                 self.huanxin = [self.userInfoDic objectForKey:@"huanxin"];
                                 
                                 NSUserDefaults *userInfoUD = [NSUserDefaults standardUserDefaults];
@@ -493,23 +497,45 @@
                                 [userInfoUD setObject:self.flag forKey:@"flag"];
                                 [userInfoUD setObject:self.huanxin forKey:@"huanxin"];
                                 [userInfoUD setObject:self.userName forKey:@"userName"];
-                                [userInfoUD setObject:self.userUdid forKey:@"userUdid"];
+                                [userInfoUD setObject:self.userUuid forKey:@"userUuid"];
                                 
                                 [userInfoUD synchronize];
+                                
+                                if (self.userUuid.length <1) {
+                                    
+                                    [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+                                        self.userUuid = [self.userInfoDic objectForKey:@"uuid"];
+
+                                        NSUserDefaults *userInfoUD = [NSUserDefaults standardUserDefaults];
+                                        
+                                        [userInfoUD setObject:self.userUuid forKey:@"userUuid"];
+                                        
+                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                        NSLog(@"QQ状态错误 code %ld",(long)[operation.response statusCode]);
+                                    }];
+                                    
+                                }else{
                                 
                                 YTHLog(@"flag------%@",self.flag);
                                 
                                 if ([self.flag isEqualToString:@"N"]) {//非第一次，跳到首页
                                     
-                                    SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+                                    //跳转到补全信息页 (选择头像和性别)
+                                    RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
+                                    [self presentViewController:regisSuccV animated:NO completion:nil];
                                     
-                                    [self presentViewController:mainVC animated:NO completion:nil];
+//                                    SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
 //                                    
+//                                    [self presentViewController:mainVC animated:NO completion:nil];
+//
                                 }else{
                             
                                 //跳转到补全信息页 (选择头像和性别)
                                 RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
                                 [self presentViewController:regisSuccV animated:NO completion:nil];
+                                
+                                }
                                 }
                             }
                             

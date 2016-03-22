@@ -112,11 +112,17 @@
 }
 
 -(void)reloadDataArray:(NSArray *)array{
+    
     dataArray = array;
+    
     for (UIButton *btn in btnArray) {
+        
         [btn removeFromSuperview];
+    
     }
+   
     [btnArray removeAllObjects];
+    
     [self initBtn];
 }
 

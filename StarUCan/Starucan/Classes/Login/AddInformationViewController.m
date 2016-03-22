@@ -43,8 +43,11 @@
 @property (nonatomic, strong) UIButton *finishButton;
 @property (nonatomic, strong)UILabel *labelText;
 @property (nonatomic, strong)NSMutableDictionary *jason;
-@property (nonatomic, strong)UIButton *kDeleteButton;
-@property (nonatomic, strong)UILabel *univerLabel;
+
+@property (nonatomic,strong)NSMutableArray *labelUuidArr;
+@property (nonatomic,strong)UIButton *kDeleteButton;
+@property (nonatomic,strong)UILabel *univerLabel;
+@property (nonatomic,strong)NSString *imgflag;
 @end
 
 @implementation AddInformationViewController
@@ -58,6 +61,9 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _labelUuidArr = [NSMutableArray array];
+    
     if (!myDelegate) {
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
@@ -73,8 +79,8 @@
     self.scrollView = scrollview;
     self.view = scrollview;
     
-    start = 1;
-    count = 12;
+    start = 0;
+    count = 10;
     labelArray = [[NSMutableArray alloc]init];
     
     // Do any additional setup after loading the view.
@@ -88,38 +94,73 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receivedNotifDetail:) name:@"noticeRefreshCollectList" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(labelAddStart:) name:@"labelSrart" object:nil];
 }
+
+
+#pragma mark 请求标签
 -(void)requestData
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
-    md[@"type"]=@"0";//
-    md[@"start"] = [NSString stringWithFormat:@"%d",start];
-    md[@"count"] =[NSString stringWithFormat:@"%d",count];
-    NSString *url1 = Url;
-    NSString *url =[NSString stringWithFormat:@"%@v1/label",url1];
+
+//    md[@"type"]=@"0";//
+//    md[@"start"] = [NSString stringWithFormat:@"%d",start];
+//    md[@"count"] =[NSString stringWithFormat:@"%d",count];
+//
+//    NSString *url1 = Url;
+    
+    md[@"startPage"] = [NSString stringWithFormat:@"%d",start];//起始页
+    md[@"pageSize"] =[NSString stringWithFormat:@"%d",count];//每页多少数据
+
+    
+    NSString *labelList = theUrl;
+    
+    NSString *url =[NSString stringWithFormat:@"%@getLabelListAction.action",labelList];
+    
     // @"http://test.platform.vgool.cn/starucan/v1/label"
+    
     //[labelArray removeAllObjects];
-    [manager GET:url parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager POST:url parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
         self.jason =responseObject;
+        
         YTHLog(@"error code %ld",(long)[operation.response statusCode]);
+        
+        YTHLog(@"标签 -----%@",responseObject);
+        
         if (!_kIdMutabDict) {
             _kIdMutabDict = [[NSMutableDictionary alloc]init];
         }
+        
         [_kIdMutabDict removeAllObjects];
-        if ([operation.response statusCode]/100==2)
-        {
-            NSArray *arry = [responseObject objectForKey:@"labels"];
-            myDelegate.labelId =[responseObject objectForKey:@"labels"];
+        
+        NSString *status = [responseObject objectForKey:@"status"];
+        
+        if ([status isEqualToString:@"success"]) {
+            
+            NSArray *arry = [responseObject objectForKey:@"labelList"];
+            
+            myDelegate.labelId =[responseObject objectForKey:@"labelList"];
+            
             for (NSDictionary *dic in arry)
             {
                 [_kIdMutabDict setObject:[dic objectForKey:@"uuid"] forKey:[dic objectForKey:@"name"]];
             }
             labelArray = [NSMutableArray arrayWithArray:_kIdMutabDict.allKeys];
+            
+            YTHLog(@"标签uuid：%@",_kIdMutabDict);
         }
+        
         if (_kHandsomeView) {
+            
             [self reloadDataArray];
+            
         }else{
+            
             [self _initButton];
+            
         }
         
         
@@ -128,7 +169,9 @@
         YTHLog(@"error code %ld",(long)[operation.response statusCode]);
     }];
 }
+
 -(void)reloadDataArray{
+    
     [_kHandsomeView reloadDataArray:labelArray];
 }
 
@@ -139,6 +182,7 @@
     self.univerLabel.textAlignment = NSTextAlignmentCenter;
    
 }
+#pragma mark 标签换一换
 - (void)labelAddStart:(NSNotification*)notification
 {
     start=start+count;
@@ -146,14 +190,21 @@
     [labelArray removeAllObjects];
     [self requestData];
 }
+
 - (void)labelAddStart
 {
-    start=start+count;
-    if (start== [[self.jason objectForKey:@"total"]integerValue]) {
-        start=1;
+    start = start+1;
+    
+    if (start== [[self.jason objectForKey:@"page"]integerValue]) {
+        
+        start=0;
+        
     }
     
+    NSLog( @"页码%d",start);
+    
     [labelArray removeAllObjects];
+    
     [self requestData];
  
     
@@ -233,77 +284,88 @@
     
     
 }
+
 #pragma mark-点击完成
 -(void)finishButtonAction
 {
     
-    YTHLog(@"--xcfsa--%@",self.univerLabel.text);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+
     if ([self.univerLabel.text isEqualToString:@"选择你的真实学校，(一旦选择将不可更改)"]) {
-        [MBProgressHUD showError:@"选择所在的学校"];
+        
+        [MBProgressHUD showError:@"请选择所在的学校"];
     }
-    NSString *sex = self.sex;
-    YTHLog(@"性别--%@",sex);
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    NSString *uuid = [ud objectForKey:@"userUuid"];
+    
+    NSMutableDictionary *mdd = [NSMutableDictionary dictionary];
+    
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     
-    md[@"name"]=self.nameText;//昵称
+    NSMutableDictionary *mddd = [NSMutableDictionary dictionary];
     
-    md[@"avatar"]=self.stringUrl;//头像
+    NSString *universityId = myDelegate.universityId;
     
-    md[@"sex"]=sex;//性别
+    md[@"user_uuid"] = uuid;//用户id
     
-    md[@"universityId"] = myDelegate.universityId;//学校
+    md[@"user_sex"]= self.sex;//性别
     
-    md[@"universityName"] = myDelegate.university_name;//学校名字
-  
-    NSMutableArray *kIdArray = [[NSMutableArray alloc]init];
+    md[@"university_id"] = universityId;//学校
     
-    for (NSString *key in _kTitleArrays) {
-        [kIdArray addObject:[_kIdMutabDict objectForKey:key]];
+    md[@"parameterList"] = _labelUuidArr;//标签uuid数组
+    
+    md[@"file"] = _imgData;
+    if (_imgData >0) {
+        
+        md[@"flag"] =@"Y";
+        
+    }else{
+        md[@"flag"] =@"N";
     }
     
-    NSString *strId = [kIdArray componentsJoinedByString:@","];
-    md[@"labelIds"] = strId;//标签列表
+    mdd[@"model"] = md;
     
-    YTHLog(@"标签列表id%@",strId);
-    YTHLog(@"昵称%@",self.nameText);
-    NSString *urlUpdate = @"v1/user/";
-    NSString *url1 = [NSString stringWithFormat:@"%@%@",urlUpdate,[myDelegate.userInfo objectForKey:@"uuid"]];
+  
     
-    YTHLog(@"URL11=%@",url1);
-    YTHLog(@"密码md5:%@",myDelegate.accessToken);
-    SUCUser *u = [SUCUser initWithUserInfo];
-    YTHLog(@"\n=====uid====\n%@", u.account);
+    YTHLog(@"头像——————%@",_imgData);
     
-    NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
-    YTHLog(@"微信密码=%@",myDelegate.accessToken);
-    YTHLog(@"加密后密码%@",text);
-    //
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    YTHLog(@"uuid:%@——————————性别： %@————————学校id：%@————————————标签数组%@",uuid,self.sex,myDelegate.universityId,_labelUuidArr);
     
-    //请求头
-    [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
-    [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
-    NSString *uS = Url;
-    NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
-    YTHLog(@"拼接之后%@",urlStr);
-    [manager PUT:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *url = theUrl;
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@registrationRegistrationAction.action",url];
+    
+    //转成json
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mdd options:0 error:nil];
+    
+    NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    mddd[@"jsonStr"] = jsonString;
+    
+      YTHLog(@"完成注册信息参数%@",mddd);
+    
+    [manager POST:urlString parameters:mdd success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
         YTHLog(@"完成%@",responseObject);
-        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
-        if ([operation.response statusCode]/100==2)
-        {
+        
+        NSString *status = [responseObject objectForKey:@"status"];
+        
+        if ([status isEqualToString:@"success"]) {
             
             SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+            
             [self presentViewController:mainVC animated:NO completion:nil];
+        
         }
-        
-        
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         YTHLog(@"完成error code %ld",(long)[operation.response statusCode]);
         [MBProgressHUD showError:[operation.responseObject objectForKey:@"info"]];
+    
     }];
-    
-    
-    
     
 }
 
@@ -349,7 +411,7 @@
     }
     
 }
-
+//
 -(void)_addTitleBtn:(NSString *)title andAdd:(BOOL)add{
     if (!_kTitleView) {
         _kTitleView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(univerButton.frame)+ YTHAdaptation(330), YTHScreenWidth,YTHAdaptation(130))];
@@ -387,29 +449,58 @@
     [kDeleteButton addTarget:self action:@selector(btnDeleteClick:) forControlEvents:UIControlEventTouchUpInside];
     self.kDeleteButton = kDeleteButton;
     [_kTitleView addSubview:kDeleteButton];
+    
+    
+    
     if (add) {
+        
         [_kTitleArrays addObject:title];
+        
+        NSString *labelUuid = [_kIdMutabDict objectForKey:title];
+        
+        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+        
+        [dic setObject:labelUuid forKey:@"main_uuid"];
+        
+        [_labelUuidArr addObject:dic];
+        
+        
     }
-    kDeleteButton.tag = [_kTitleArrays indexOfObject:title] + 999;
+    kDeleteButton.tag = [_kTitleArrays indexOfObject:title] + 10;
     _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
     _kHandsomeView.kYDataArray = _kTitleArrays;
+    
 }
+
+#pragma mark 删除选中的标签
+
 -(void)btnDeleteClick:(UIButton *)btn{
+    
     [_kTitleView removeFromSuperview];
+    
     _kTitleView = nil;
-    NSString *string = _kTitleArrays[btn.tag - 999];
+    
+    NSString *string = _kTitleArrays[btn.tag - 10];
+    
     [_kHandsomeView removeBtnSelected:string];
-    [_kTitleArrays removeObjectAtIndex:btn.tag - 999];
+    
+    [_kTitleArrays removeObjectAtIndex:btn.tag - 10];
+    
     _kMarkRect = CGRectMake(0, 0, 0, 0);
+    
     for (NSString *title in _kTitleArrays) {
+    
         [self _addTitleBtn:title andAdd:NO];
+    
     }
 }
+
 -(void)clickCode
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     
 }
+
 - (void)dealloc
 {
     
