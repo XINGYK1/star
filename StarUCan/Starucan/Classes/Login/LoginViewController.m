@@ -21,7 +21,6 @@
 #import "MBProgressHUD.h"
 #import "WXApi.h"
 #import "UIViewExt.h"
-#import "SUCTabBarViewController.h"
 
 
 @interface LoginViewController ()
@@ -77,6 +76,7 @@
     // Do any additional setup after loading the view.
     
     if (!myDelegate) {
+        
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
 
@@ -444,15 +444,16 @@
             YTHLog(@"内存里的flag ------%@",_theFlag);
             
             if (_theFlag.length > 0) {//非第一次，跳到首页
+//                                
+//                SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+//                
+//                [self presentViewController:mainVC animated:NO completion:nil];
                 
                 //跳转到补全信息页 (选择头像和性别)
                 RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
                 [self presentViewController:regisSuccV animated:NO completion:nil];
                 
-//                SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
-//                
-//                [self presentViewController:mainVC animated:NO completion:nil];
-//                
+                
             }else{//第一次登录
                 
                 [ShareSDK getUserInfo:SSDKPlatformTypeQQ onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
@@ -497,9 +498,11 @@
                                 [userInfoUD setObject:self.flag forKey:@"flag"];
                                 [userInfoUD setObject:self.huanxin forKey:@"huanxin"];
                                 [userInfoUD setObject:self.userName forKey:@"userName"];
-                                [userInfoUD setObject:self.userUuid forKey:@"userUuid"];
+                                [userInfoUD setObject:self.userUuid forKey:@"user_uuid"];
                                 
                                 [userInfoUD synchronize];
+                                
+                                [myDelegate.userInfo setObject:self.userUuid forKey:@"user_uuid"];
                                 
                                 if (self.userUuid.length <1) {
                                     
@@ -512,7 +515,9 @@
                                         [userInfoUD setObject:self.userUuid forKey:@"userUuid"];
                                         
                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                        
                                         NSLog(@"QQ状态错误 code %ld",(long)[operation.response statusCode]);
+                                        
                                     }];
                                     
                                 }else{
@@ -521,14 +526,10 @@
                                 
                                 if ([self.flag isEqualToString:@"N"]) {//非第一次，跳到首页
                                     
-                                    //跳转到补全信息页 (选择头像和性别)
-                                    RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
-                                    [self presentViewController:regisSuccV animated:NO completion:nil];
+                                    SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
                                     
-//                                    SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
-//                                    
-//                                    [self presentViewController:mainVC animated:NO completion:nil];
-//
+                                    [self presentViewController:mainVC animated:NO completion:nil];
+
                                 }else{
                             
                                 //跳转到补全信息页 (选择头像和性别)

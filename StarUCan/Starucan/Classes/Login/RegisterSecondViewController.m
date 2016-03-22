@@ -13,6 +13,7 @@
 #import "QiniuSDK.h"
 #import "AppDelegate.h"
 #import "WXNavigationController.h"
+#import "AttentionViewController.h"
 @interface RegisterSecondViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     AddInformationViewController *addInforVC;
@@ -47,7 +48,7 @@
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
     
-    sex = @"1";
+    sex = @"0";
     
     UIScrollView *scrollview = [[UIScrollView alloc] init];
     scrollview.frame =CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight);
@@ -58,30 +59,26 @@
     scrollview.contentSize =CGSizeMake(YTHScreenWidth,YTHScreenHeight);
     }
     self.scrollView = scrollview;
+    
     self.view = scrollview;
 
-   
-    
-   
     
     [self _initCreat];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.dict = responseObject;
-        if ([operation.response statusCode]/100==2) {
-            self.tokenKey = [self.dict objectForKey:@"qntoken"];
-            self.domain = [NSString stringWithFormat:@"http://%@",[self.dict objectForKey:@"domain"]];
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
-        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
-        
-    }];
-    
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    
+//    [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        self.dict = responseObject;
+//        if ([operation.response statusCode]/100==2) {
+//            self.tokenKey = [self.dict objectForKey:@"qntoken"];
+//            self.domain = [NSString stringWithFormat:@"http://%@",[self.dict objectForKey:@"domain"]];
+//        }
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
+//        YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
+//        
+//    }];
    
-   
-    // Do any additional setup after loading the view.
 }
 
 
@@ -129,6 +126,8 @@
 
     nameTF.font = [UIFont systemFontOfSize:14];
     
+    nameTF.enabled = NO;//不允许编辑
+    
     self.nameTF = nameTF;
     
     [self.view addSubview:nameTF];
@@ -158,15 +157,15 @@
     
     NSString *sextitle = [myDelegate.userInfo objectForKey:@"sex"];
     
-    sextitle = @"1";
+    sextitle = @"0";
     
-    if ([sextitle isEqualToString:@"1"]) {
+    if ([sextitle isEqualToString:@"0"]) {
         
          [_manButton setImage:[UIImage imageNamed:@"sexmale_on"] forState:UIControlStateNormal];
         [_womanButton setImage:[UIImage imageNamed:@"sexmale_off"] forState:UIControlStateNormal];
         
         
-    }else if ([sextitle isEqualToString:@"2"])
+    }else if ([sextitle isEqualToString:@"1"])
     {
         [_womanButton setImage:[UIImage imageNamed:@"sexfemale_on"] forState:UIControlStateNormal];
         [_manButton setImage:[UIImage imageNamed:@"sexmale_off"] forState:UIControlStateNormal];
@@ -201,9 +200,10 @@
         self.headV.image =  [UIImage imageNamed:@"male_shade"];
         
     }
-    sex = @"1";
-
+    sex = @"0";
 }
+
+
 - (void)womanButton:(UIButton *)btn
 {
     [_womanButton setImage:[UIImage imageNamed:@"sexfemale_on"] forState:UIControlStateNormal];
@@ -211,7 +211,7 @@
            if (IsNilOrNull(self.urlString)) {
                self.headV.image = [UIImage imageNamed:@"female_shade"];
         }
-   sex = @"2";
+   sex = @"1";
     
 }
 -(void)buttonBack:(UIButton *)btn
@@ -224,7 +224,12 @@
 #pragma mark 点击下一步
 -(void)nextButtonAction
 {
-   
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    [ud setObject:sex forKey:@"user_sex"];
+    
+    [ud synchronize];
+    
    addInforVC = [[AddInformationViewController alloc]init];
     
     addInforVC.sex = sex;
@@ -235,8 +240,11 @@
     
     addInforVC.imgData = _imgData;
     
-    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:addInforVC];
+    AttentionViewController *att = [[AttentionViewController alloc]init];//推荐
+    
+    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:att];
     [self presentViewController:nav animated:NO completion:nil];
+    
 }
 
 #pragma mark- 上传头像
@@ -284,8 +292,10 @@
 
 
 - (void) saveImage:(UIImage *)currentImage withName:(NSString *)imageName {
+    
     NSData *imageData = UIImageJPEGRepresentation(currentImage, 0.5);
     NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:imageName];
+    
     [imageData writeToFile:fullPath atomically:NO];
     
 }
@@ -301,7 +311,9 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^{}];
+    
     [self saveImage:[info objectForKey:UIImagePickerControllerEditedImage] withName:@"currentImage.png"];
+    
     NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"currentImage.png"];
     //	UIImage *image = [[UIImage alloc] initWithCGImage:[self scaleImage:[UIImage imageWithContentsOfFile:fullPath] ToSize:CGSizeMake(71, 71)].CGImage];
     UIImage *image = [UIImage imageWithContentsOfFile:fullPath];
@@ -326,19 +338,7 @@
 
     [MBProgressHUD showSuccess:@"上传成功"];
 
-//    QNUploadManager *upManager = [[QNUploadManager alloc] init];
-//    
 
-//    [upManager putData:data key:nil token:self.tokenKey
-//              complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
-//                  _qiniuText = [resp objectForKey:@"key"];
-//                  self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-//                  [MBProgressHUD hideHUD];
-//                  [self.headV setImage:image];
-//              } option:nil];
-//    
-//    self.urlString = [NSString stringWithFormat:@"%@/%@",self.domain,self.qiniuText];
-//    
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     

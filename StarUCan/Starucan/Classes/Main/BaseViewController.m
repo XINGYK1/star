@@ -96,21 +96,32 @@
     
 }
 -(id)getDictionaryWithKey:(NSString *)key fromFile:(NSString *)fileName{
+    
     NSString *filename = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
+    
     if ([NSKeyedUnarchiver unarchiveObjectWithFile: filename] != NULL) {
         NSMutableDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile: filename];
         return [dict objectForKey:key];
     }
+    
     return nil;
 }
 -(void) saveDictionary:(id)value forKey:(NSString *)key toFile:(NSString *)fileName{
+    
     NSString *filename = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:fileName];
+   
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+
     if ([NSKeyedUnarchiver unarchiveObjectWithFile: filename] != NULL) {
+        
         dict = [NSKeyedUnarchiver unarchiveObjectWithFile: filename];
+    
     }
+    
     [dict setObject:value forKey:key];
+    
     [NSKeyedArchiver archiveRootObject:dict toFile:filename];
+
 }
 
 

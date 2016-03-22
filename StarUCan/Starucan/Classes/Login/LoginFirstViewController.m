@@ -21,7 +21,6 @@
 #import "UIButton+Extension.h"
 #import "NSData+AES256.h"
 #import "AFHTTPRequestOperationManager.h"
-#import "SUCTabBarViewController.h"
 #import "AddInformationViewController.h"
 typedef enum {
     YTHLoginTextFieldAccount = 100, // 帐号输入框

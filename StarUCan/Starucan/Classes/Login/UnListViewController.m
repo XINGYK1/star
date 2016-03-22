@@ -94,26 +94,31 @@
     TableView.sectionIndexColor = YTHColor(180, 180, 180);//右侧索引文本颜色
    
     TableView.sectionIndexBackgroundColor = [UIColor clearColor];//右侧索引背景颜色
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+        BOOL isExist = [ud objectForKey:@"universityExist"];
+    
+    if (isExist ==YES) {//从本地读取学校列表
+        
+        NSString *filename = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"universitys"];
+        
+        if ([NSKeyedUnarchiver unarchiveObjectWithFile: filename] != NULL) {
+            
+            NSMutableDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile: filename];
+            
+             [self showUniversitys:[dict objectForKey:@"universitys"]];
+            
+//                NSLog(@"本地学校列表————————%@",dict);
+        }
 
-    [self requestData];
-    
-//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-//    
-//    BOOL isExist = [ud objectForKey:@"university"];
-//    
-//    if (isExist ==YES) {
-//        
-//        [self showUniversitys:[_universityDic objectForKey:@"universityList"]];
-// 
-//        NSLog(@"大学列表存在————————%@",_universityDic);
-//        
-//    }else{
-//     
-//        [self requestData];
-//
-//    }
-    
+        }else{
+            
+            [self requestData];
+
+        }
 }
+
 
 //- (void) locationBack:(CLLocationCoordinate2D ) loc{
 //    locationCorrrdinate = loc;
@@ -127,18 +132,8 @@
 
 -(void)requestData
 {
-    
+
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
-//    NSString *latitude = [NSString stringWithFormat:@"%f",locationCorrrdinate.latitude];
-//    NSString *longitude = [NSString stringWithFormat:@"%f",locationCorrrdinate.longitude];
-//    
-//    md[@"lat"] =latitude;
-//    md[@"lng"] =longitude;
-//    md[@"name"]=_searchBar.text;
-    
-//    NSString *url = Url;
-//
-//    NSString *urlString = [NSString stringWithFormat:@"%@v1/base/universities",url];
 
     md[@"schoolName"]=_searchBar.text;
     
@@ -152,9 +147,9 @@
 
     [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"学校参数-------：%@",md);
+//        NSLog(@"学校参数-------：%@",md);
      
-        YTHLog(@"学校信息%@",responseObject);
+//        YTHLog(@"学校信息%@",responseObject);
         
         NSString *status = [responseObject objectForKey:@"status"];
         
@@ -166,26 +161,13 @@
             
             [self showUniversitys:[_universityDic objectForKey:@"universityList"]];
             
+            NSLog(@"网络学校列表————————%@",_universityDic);
+          
             NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
             
-            [ud setBool:YES forKey:@"university"];
+            [ud setBool:YES forKey:@"universityExist"];
             
             [ud synchronize];
-            
-            
-//            NSArray *universityArr =[responseObject objectForKey:@"universityList"];
-//            
-//            
-//            for (NSDictionary *dic in universityArr) {
-//                
-//                
-//            }
-//            
-//            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-//            
-//            [ud setObject:[responseObject objectForKey:@"uuid"] forKey:@"universityUuid"];
-            
-//            YTHLog(@"学校%@",responseObject);
 
         }
         
@@ -200,8 +182,10 @@
 
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-         YTHLog(@"error code %ld",(long)[operation.response statusCode]);
+
+        [MBProgressHUD hideHUD];
+
+         YTHLog(@"学校列表error code %ld",(long)[operation.response statusCode]);
         
     }];
     

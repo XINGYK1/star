@@ -9,9 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "attenModel.h"
 @interface AttentionCollectionViewCell : UICollectionViewCell
+
 @property (nonatomic,strong)UIImageView * collectionImage;
-@property (nonatomic,strong)UILabel * labelName;
-@property (nonatomic,strong)UILabel * uniserLabel;
+
+@property (nonatomic,strong)UILabel * nameLabel;//同户名
+
+@property (nonatomic,strong)UIImageView *sexIV;//性别
+
+@property (nonatomic,strong)UILabel *university;//大学
+
+@property (nonatomic,strong)UILabel * universityLabel;
+
 @property (nonatomic,strong)UIButton * selectButton;
+
 @property (nonatomic,strong)attenModel *attentionModel;
 @end

@@ -9,6 +9,7 @@
 #import "AttentionCollectionViewCell.h"
 #import "UIImageView+WebCache.h"
 @implementation AttentionCollectionViewCell
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -20,30 +21,43 @@
 }
 - (void)setupSubViews
 {
+    
+    //推荐用户头像
     _collectionImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,(YTHScreenWidth-70)/3, 120)];
    
     NSURL * url = [[NSURL alloc]initWithString:@"http://img10.3lian.com/show2013/03/37/24.jpg"];
+    
+    
+    
     [_collectionImage sd_setImageWithURL:url];
     [self.contentView addSubview:_collectionImage];
     
-     _labelName = [[UILabel alloc]initWithFrame:CGRectMake(0, 120, (YTHScreenWidth-70)/3, 30)];
+    //推荐用户姓名
+     _nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 120, (YTHScreenWidth-70)/3, 30)];
     //_labelName.backgroundColor = [UIColor redColor];
-    _labelName.text = @"某某某";
-    _labelName.numberOfLines = 1;
-    _labelName.textColor = [UIColor grayColor];
-    _labelName.textAlignment = NSTextAlignmentCenter;
-    //    _labelName.backgroundColor = [UIColor yellowColor];
-    _labelName.font = [UIFont systemFontOfSize:14];
-    [self.contentView addSubview:_labelName];
+    _nameLabel.text = @"某某某";
+    _nameLabel.numberOfLines = 1;
+    _nameLabel.textColor = [UIColor grayColor];
+    _nameLabel.textAlignment = NSTextAlignmentCenter;
+    //_labelName.backgroundColor = [UIColor yellowColor];
+    _nameLabel.font = [UIFont systemFontOfSize:14];
+    [self.contentView addSubview:_nameLabel];
     
-    _uniserLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_labelName.frame),(YTHScreenWidth-60)/3, 25 )];
-    _uniserLabel.text = @"北京大学";
-    _uniserLabel.textAlignment =NSTextAlignmentCenter;
-    _uniserLabel.font = [UIFont systemFontOfSize:14];
+    //推荐用户性别
+    _sexIV = [[UIImageView alloc]initWithFrame:CGRectMake((YTHScreenWidth-70)/3, 120,(YTHScreenWidth-70)/3, 30)];
+    
+    [_sexIV sd_setImageWithURL:url];
+    
+    [self.contentView addSubview:_sexIV];
+    
+    //推荐用户大学
+    _universityLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_nameLabel.frame),(YTHScreenWidth-60)/3, 25 )];
+    _universityLabel.text = @"北京大学";
+    _universityLabel.textAlignment =NSTextAlignmentCenter;
+    _universityLabel.font = [UIFont systemFontOfSize:14];
   //  _uniserLabel.backgroundColor = [UIColor redColor];
-    [self.contentView addSubview:_uniserLabel];
-    
-    
+    [self.contentView addSubview:_universityLabel];
+  
     
     //打钩按钮
     _selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -60,15 +74,18 @@
     [self.contentView addSubview:_selectButton];
     
     [self.contentView bringSubviewToFront:_selectButton];
+    
 }
+
+
 -(void)setAttentionModel:(attenModel *)attentionModel
 {
     
-        _attentionModel = attentionModel;
+    _attentionModel = attentionModel;
    
-        
-    [_collectionImage sd_setImageWithURL:[NSURL URLWithString:attentionModel.pic_url]];
-    _labelName.text= attentionModel.seckill_name;
+    [_collectionImage sd_setImageWithURL:[NSURL URLWithString:attentionModel.avatar]];
+    
+    _nameLabel.text= attentionModel.name;
 
 }
 -(void)buttonAttion:(UIButton *)btn

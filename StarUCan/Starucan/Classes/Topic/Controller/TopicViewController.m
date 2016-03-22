@@ -193,7 +193,7 @@
     NSString *strId = [kIdArray componentsJoinedByString:@","];
     md[@"labelIds"] = strId;//标签列表
     YTHLog(@"标签id%@",strId);
-    //md[@"userUuid"] = [myDelegate.userInfo objectForKey:@"uuid"];
+    //md[@"userUuid"] = [myDelegate.userInfo objectForKey:@"user_uuid"];
     md[@"title"] = self.textFiled.text;
     md[@"anonymous"]=[NSString stringWithFormat:@"%d",swit];
     NSString *urlShow = @"v1/topic/";

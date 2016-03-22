@@ -373,7 +373,7 @@
     [self.navigationController pushViewController:searchVC animated:YES];
 }
 
-//轮播图
+//焦点轮播图
 #pragma mark-uitableView
 -(void)_initTableView
 {
@@ -385,12 +385,9 @@
     
     self.tableview = tableView;
     
-    //为什么要注释掉
-    //[self.view addSubview:tableView];
-    
 }
 
-#pragma mark-轮播图
+#pragma mark-焦点轮播图
 -(void)_initCycle
 {
     self.collectionViewHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 411)];//411
@@ -400,7 +397,7 @@
     //创建一个轮播图
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     
-    md[@"type"] =@"0";
+    md[@"type"] =@"0";//新接口 焦点：type 1 遇见：type 2  话题：type 3
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -413,22 +410,18 @@
     
     [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSDictionary *jasonDic = responseObject;
-        
         //NSDictionary *dataDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
         YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         self.cycleDict =responseObject;
         
-        self.cycleDict = jasonDic;
-        
         if ([operation.response statusCode]/100==2) {
             
             //打印的是一个字典
-            YTHLog(@"---轮播图---%@",jasonDic);
+            YTHLog(@"---首页轮播图 ---%@",self.cycleDict);
             
-            NSArray *cinemaList = [jasonDic objectForKey:@"banners"];
+            NSArray *cinemaList = [self.cycleDict objectForKey:@"banners"];
             
             [self.imageURLs removeAllObjects];
             
@@ -456,8 +449,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         YTHLog(@"error code %ld",(long)[operation.response statusCode]);
-        
-        
+       
     }];
     
     
@@ -485,15 +477,12 @@
     
     [viewVideo addSubview:imagVideo];
     
-    // 这里是放视频的
+    // 视频IV
     UIImageView *videoPhotoView = [[UIImageView alloc]initWithFrame:CGRectMake(10, CGRectGetMaxY(self.viewVideo.frame), YTHScreenWidth-20, YTHAdaptation(188))];
-    
-    //videoPhotoView.image = [UIImage imageNamed:@"120-1"];
     
     [videoPhotoView sd_setImageWithURL:[NSURL URLWithString:@"http://7xpt4p.com1.z0.glb.clouddn.com/Fo1EWuwKAniihGA_LYt53Y9JEaDx"]];
     
     [self.collectionViewHeaderView addSubview:videoPhotoView];
-    
     
 }
 
@@ -663,6 +652,7 @@
         YTHLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
     cell.delegate = self;
+    
     cell.model = self.focusDataArrays[indexPath.row];
 
     return cell;

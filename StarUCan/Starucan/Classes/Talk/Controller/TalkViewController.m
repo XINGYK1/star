@@ -48,57 +48,40 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
+
     self.tabBarController.tabBar.hidden=NO;
+
 }
 
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+   
+
     self.title = @"话题";
+    
+    
+    [self getBannerData];//获取轮播图数据
+
+
     [self _initNation];
     
     [self initTableView];
-    [self _initTableView];//类别TV
-    [self getData];
-    [self _initDataArray];
     
-    start = 1;
+    [self _initTableView];//类别TV
+    
+    [self _initDataArray];
+  
+    
+    start = 1;//起始页
 
-    count = 10;
+    count = 10;//每页多少数据
+    
+  
     
 }
-//
-//-(void)initTypeBtn:(NSString *)string{
-//    
-//    
-//    if (typeBtn.title.length>3) {
-//    typeBtn.frame         = CGRectMake(0, 0, 90, 40);
-//
-//    [typeBtn setTitle:string forState:UIControlStateNormal];
-//  
-//    UIImageView *unfoldIV = [[UIImageView alloc]initWithFrame:CGRectMake(80, 18, 10, 4)];
-//        
-//    unfoldIV.image        = [UIImage imageNamed:@"unfold"];
-//        
-//    [typeBtn addSubview:unfoldIV];
-//    }else{
-//    typeBtn.frame         = CGRectMake(0, 0, 50, 40);
-//    
-//    [typeBtn setTitle:@"全部" forState:UIControlStateNormal];
-//        
-//    UIImageView *unfoldIV = [[UIImageView alloc]initWithFrame:CGRectMake(40, 18, 10, 4)];
-//        
-//    unfoldIV.image        = [UIImage imageNamed:@"unfold"];
-//    [typeBtn addSubview:unfoldIV];
-//    }
-//    
-//    [typeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    typeBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-//    [typeBtn addTarget:self action:@selector(typeChoose) forControlEvents:UIControlEventTouchUpInside];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:typeBtn];
-//}
+
 #pragma mark 搜索
 -(void)_initNation
 {
@@ -115,6 +98,7 @@
     UIImageView *unfoldIV = [[UIImageView alloc]initWithFrame:CGRectMake(75, 18, 10, 4)];
     unfoldIV.image = [UIImage imageNamed:@"unfold"];
     [typeBtn addSubview:unfoldIV];
+  
     // 右边的搜索按钮
     UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     [searchButton setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
@@ -134,7 +118,9 @@
 {
     //点击进入搜索页面
     SearchViewController *searchVC = [[SearchViewController alloc]init];
+    
     [self.navigationController pushViewController:searchVC animated:YES];
+
 }
 
 -(void)typeChoose
@@ -143,6 +129,7 @@
     [self.view bringSubviewToFront:self.catScrollView];
     
     if (self.catScrollView.frame.size.height == 0) {
+       
         YTHLog(@"点击");
         [lineIV removeFromSuperview];
         
@@ -152,13 +139,15 @@
         
         self.catScrollView.frame = CGRectMake(0, 0, YTHScreenWidth, YTHScreenHeight- 64 );
         
-        
         [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
             
             _kCatTableView.frame = CGRectMake(0, 0, YTHScreenWidth, 40.0f *7+28);
+        
             //类别、大学下面的线
             lineIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 5)];
+            
             lineIV.image = [UIImage imageNamed:@"shadow"];
+            
             [self.catScrollView addSubview:lineIV];
             
         }completion:^(BOOL finished){
@@ -167,16 +156,21 @@
         
         
     }else{
+        
         [lineIV removeFromSuperview];
+        
         self.catScrollView.frame = CGRectMake(0, 0, YTHScreenWidth, 300-64);
         
         [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^(void){
             self.catScrollView.frame = CGRectMake(0, 0, YTHScreenWidth, 0);
             
         } completion:^(BOOL finished){}];
+        
         //类别、大学下面的线
         lineIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 5)];
+      
         lineIV.image = [UIImage imageNamed:@"shadow"];
+        
         [self.catScrollView addSubview:lineIV];
         
     }
@@ -196,14 +190,15 @@
     NSString *url =[NSString stringWithFormat:@"%@v1/label/cats",url1];
     
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //self.jason =responseObject;
-        
+
       //  YTHLog(@"标签是--------%@",responseObject);
         
    //     YTHLog(@"error code %ld",(long)[operation.response statusCode]);
         
         if (!_kIdMutabDict) {
+       
             _kIdMutabDict = [[NSMutableDictionary alloc]init];
+        
         }
         
         [_kIdMutabDict removeAllObjects];
@@ -225,26 +220,38 @@
         }
 #warning 修改
         [_kCatTableView reloadData];
+    
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         YTHLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
         
     }];
     _kCatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 300) style:UITableViewStylePlain];
+    
     _kCatTableView.delegate = self;
     _kCatTableView.dataSource = self;
+  
     _kCatTableView.bounces = NO;
     
     //透明图
     UIButton *kCatScrollViewBgView = [UIButton buttonWithType:UIButtonTypeCustom];
+    
     kCatScrollViewBgView.frame = CGRectMake(0, 0, YTHScreenWidth, 300);
+    
     [self.catScrollView addSubview:kCatScrollViewBgView];
+    
     [self.catScrollView addSubview:_kCatTableView];
+    
     [self.catScrollView bringSubviewToFront:_kCatTableView];
+    
     [_kCatTableView reloadData];
+    
     self.catScrollView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    
     self.catScrollView.frame = CGRectMake(0, 64, YTHScreenWidth, 0);
+    
     CGFloat kCatScrollViewCntentSizeHeight;
+    
 //    if (YTHScreenHeight- 64 + self.viewButton.frame.size.height>_kCatTableView.frame.size.height) {
 //        kCatScrollViewCntentSizeHeight = YTHScreenHeight- 64 + self.viewButton.frame.size.height;
 //    }else{
@@ -252,6 +259,7 @@
     kCatScrollViewCntentSizeHeight = _kCatTableView.frame.size.height;
    
     self.catScrollView.contentSize = CGSizeMake(YTHScreenWidth, kCatScrollViewCntentSizeHeight);
+   
     [kCatScrollViewBgView addTarget:self action:@selector(kCatkCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -272,7 +280,9 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *kCatTabelViewCellId = @"kCatTabelViewCellId";
+  
     UITableViewCell *kCatTabelViewCell = [tableView dequeueReusableCellWithIdentifier:kCatTabelViewCellId];
+    
     if (!kCatTabelViewCell) {
         kCatTabelViewCell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCatTabelViewCellId];
     }
@@ -284,8 +294,6 @@
     kCatTabelViewCell.textAlignment = UITextAlignmentCenter;
     
     kCatTabelViewCell.textLabel.font = [UIFont systemFontOfSize:14];
-    
-    //       [[_kIdMutabDict objectForKey:[_kCatTableViewTitles[indexPath.row]];
     
     return kCatTabelViewCell;
     
@@ -305,7 +313,8 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     if (tableView ==_kCatTableView) {
-    return _kCatTableViewTitles.count;
+  
+        return _kCatTableViewTitles.count;
     }
     return 1;
 }
@@ -313,17 +322,22 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [lineIV removeFromSuperview];
+  
     [typeBtn removeFromSuperview];
     
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+  
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
     [typeBtn setTitle:cell.textLabel.text forState:UIControlStateNormal];
     
   //  [self initTypeBtn:(NSString *)cell.textLabel.text];
     
     labelId = [_kIdMutabDict objectForKey:_kCatTableViewTitles[indexPath.row]];
    // YTHLog(@"标签id%@",labelId);
+ 
     [self kCatkCatTabelViewFooterBtnClick];
+    
     [self _initDataArray];
     // [self catTableViewDidSelect:indexPath.row];
 }
@@ -331,19 +345,30 @@
     if (tableView == _kCatTableView) {
         
         UIButton *kCatTabelViewFooterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        
         CGFloat kTopAndBottom = (15 - 5)/2.0f;//上下边距5.0f
+        
         CGFloat kLeftAndRight = (YTHScreenWidth - 16)/2.0f;//左右边距
+        
         kCatTabelViewFooterBtn.imageEdgeInsets = UIEdgeInsetsMake(kTopAndBottom+5.0f, kLeftAndRight, kTopAndBottom, kLeftAndRight);
+        
         [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"slide"] forState:UIControlStateNormal];
+        
         [kCatTabelViewFooterBtn setImage:[UIImage imageNamed:@"slide"] forState:UIControlStateSelected];
+        
         kCatTabelViewFooterBtn.backgroundColor = [UIColor whiteColor];
+        
         kCatTabelViewFooterBtn.frame = CGRectMake(0, 0, YTHScreenWidth, 10.0f);
         //线
         UIView *kGXian = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 0.4)];
+      
         kGXian.backgroundColor = [UIColor colorWithRed:154.0f/255.0f green:154.0f/255.0f blue:154.0f/255.0f alpha:0.7f];
         //kGXian.backgroundColor = [UIColor redColor];
+       
         [kCatTabelViewFooterBtn addSubview:kGXian];
+        
         [kCatTabelViewFooterBtn addTarget:self action:@selector(kCatkCatTabelViewFooterBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        
         return kCatTabelViewFooterBtn;
     }
     return nil;
@@ -400,81 +425,67 @@
     
     [self.view addSubview:mainTV];
     
-    [self _initBanner];
+//    [self _initBanner];
     
 }
 
--(void)getData{
+
+#pragma mark 获取话题页轮播图数据
+-(void)getBannerData{
     
-    //创建一个轮播图
+    self.imageURLs = [NSMutableArray array];
+
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     
-    md[@"type"] =@"0";
+    md[@"type"] =@"3";
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    //
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSString *url1 = theUrl;
     
-    NSString *url = Url;
-    NSString *urlString = [NSString stringWithFormat:@"%@v1/banner",url];
+    NSString *url =[NSString stringWithFormat:@"%@getAdvertListAction.action",url1];
     
-    [manager GET:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:url parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        YTHLog(@"话题轮播图%@",responseObject);
         
-        NSDictionary *jasonDic = responseObject;
-        
-        //NSDictionary *dataDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        
-        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
-        
-        self.bannerDict =responseObject;
-        
-        self.bannerDict = jasonDic;
-        
-        if ([operation.response statusCode]/100==2) {
-            
-            //打印的是一个字典
-            YTHLog(@"轮播图%@",jasonDic);
-            
-            NSArray *cinemaList = [jasonDic objectForKey:@"banners"];
-            
+        if ([[responseObject objectForKey:@"status"] isEqualToString:@"success"])
+        {
             [self.imageURLs removeAllObjects];
             
-            for (NSDictionary *dict in cinemaList) {
+            NSArray *arr = [responseObject objectForKey:@"adList"];
+            for (NSDictionary *dic in arr) {
                 
-                //YTHLog(@"%@",dict);
+                NSString *ad_pic = [dic objectForKey:@"ad_pic"];
                 
-                NSString *urlString =dict[@"photourl"];
-                
-                [self.imageURLs addObject:urlString];
-                
-                NSString *uuid  = [NSString stringWithFormat:@"%@",[dict objectForKey:@"uuid"]];
-                
-                //uuid是什么东西
-                YTHLog(@"id轮播%@",uuid);
-                
-                [self.cycleArray addObject:uuid];
-                
-             //   [self _initBanner];
+//                NSString *ad_uuid = [dic objectForKey:@"ad_uuid"];
+
+                [self.imageURLs addObject:ad_pic];
                 
             }
-        }
-        
     
+            YTHLog(@"0话题页轮播图数组：%@",self.imageURLs);
+            
+             [self _initBanner];
+            
+            YTHLog(@"success");
+        }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        YTHLog(@"error code %ld",(long)[operation.response statusCode]);
-        
+        YTHLog(@"标签错误error code %ld",(long)[operation.response statusCode]);
         
     }];
     
-
+   
+    
 }
 
 //轮播图
 -(void)_initBanner
 {
+    
+//    YTHLog(@"1话题页轮播图数组：%@",self.imageURLs);
+
     bannerSV= [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 64+YTHAdaptation(175))];//175
     
     bannerSV.backgroundColor = [UIColor clearColor];
@@ -484,31 +495,24 @@
     mainTV.tableHeaderView = bannerSV;
     
 #pragma mark  轮播图 图片数组  ------  替换成self.imageURLs
-    NSArray *imagesURLStrings = @[
-                                  @"http://image.baidu.com/search/detail?ct=503316480&z=undefined&tn=baiduimagedetail&ipn=d&word=%E8%BD%AE%E6%92%AD%E5%9B%BE&step_word=&ie=utf-8&in=&cl=2&lm=-1&st=undefined&cs=2738116507,3030577930&os=3032225611,700776754&simid=4193552102,611305042&pn=272&rn=1&di=114378488180&ln=1000&fr=&fmq=1457511369814_R&fm=&ic=undefined&s=undefined&se=&sme=&tab=0&width=&height=&face=undefined&is=&istype=0&ist=&jit=&bdtype=0&gsm=f0&objurl=http%3A%2F%2Fimg007.hc360.cn%2Fg8%2FM00%2F7E%2FCF%2FwKhQt1Nu6haEB6irAAAAABzDZZ4852.jpg",
-                                  @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
-                                  @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
-                                  ];
-    
-    // 轮播图标题
-//    NSArray *titles = @[@"",
-//                        @"",
-//                        @"",
-//                        @""
-//                        ];
-    
+
     CGFloat w = self.view.bounds.size.width;
 
     // 网络加载 --- 创建自定义图片的pageControlDot的图片轮播器
-    SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, w, YTHAdaptation(175)) delegate:self placeholderImage:[UIImage imageNamed:@"login_bg"]];
+    SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, w, YTHAdaptation(175)) delegate:self placeholderImage:[UIImage imageNamed:@""]];
+    cycleScrollView.imageURLStringsGroup = self.imageURLs;
+    
     cycleScrollView.currentPageDotImage = [UIImage imageNamed:@"checkbox_selected"];
+    
     cycleScrollView.pageDotImage = [UIImage imageNamed:@"checkbox_unselected"];
     
     cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleAnimated;
 
     cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
     
-    cycleScrollView.imageURLStringsGroup = imagesURLStrings;
+    
+    YTHLog(@"2话题页轮播图数组：%@",self.imageURLs);
+
     
     [bannerSV addSubview:cycleScrollView];
     

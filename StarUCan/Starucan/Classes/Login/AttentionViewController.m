@@ -11,11 +11,12 @@
 #import "ZxlDataServiece.h"
 #import "attenModel.h"
 @interface AttentionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
-@property (nonatomic,strong)UICollectionView * myCollection;
-@property(nonatomic,strong) NSMutableArray *data;
-@property (nonatomic, strong) NSMutableArray *arrBools;
-@property (nonatomic, weak) UIButton *finishButton;
+@property (nonatomic,strong ) UICollectionView * myCollection;
 
+@property (nonatomic,strong ) NSMutableArray   *data;
+@property (nonatomic, strong) NSMutableArray   *arrBools;
+@property (nonatomic, weak  ) UIButton         *finishButton;
+@property (nonatomic,strong ) NSDictionary     *recommendDic;
 
 
 @end
@@ -26,28 +27,98 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.title = @"为您推荐";
+    
+    [self getRecommendData];//获取推荐信息
+    
+    [self _initCreat];
     
     [self initFinishButton];
     [self initCreatCollect];
-    self.arrBools = [NSMutableArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", nil];
-    self.data = [[NSMutableArray alloc]init];
-    NSDictionary *jasonDic = [ZxlDataServiece requestData:@"movie163_detail"];
-    NSArray *cinemaList = [jasonDic objectForKey:@"seckill"];
+    
+    self.data = [NSMutableArray array];
+    
+//    self.arrBools = [NSMutableArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", nil];
+//    self.data = [[NSMutableArray alloc]init];
+//    NSDictionary *jasonDic = [ZxlDataServiece requestData:@"movie163_detail"];
+//    NSArray *cinemaList = [jasonDic objectForKey:@"seckill"];
    
-    for (NSDictionary *dic in cinemaList)
-    {
-        attenModel *attontionModel = [[attenModel alloc]initContentWithDic:dic];
-        [self.data addObject:attontionModel];
-        [self.myCollection reloadData];
-        
-    }
+//    for (NSDictionary *dic in cinemaList)
+//    {
+//        attenModel *attontionModel = [[attenModel alloc]initContentWithDic:dic];
+//        [self.data addObject:attontionModel];
+//        [self.myCollection reloadData];
+//        
+//    }
+    
     [self.myCollection reloadData];
     
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedBtnReceivedNotif) name:@"SelectedButtonClicked" object:nil];
 }
+
+//获取推荐用户数据
+-(void)getRecommendData{
+    
+    NSString *url = theUrl;
+    
+    NSString *recommendUrl = [NSString stringWithFormat:@"%@getRecommendUserListAction.action",url];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager POST:recommendUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        _recommendDic = responseObject;
+        
+        self.data = [responseObject objectForKey:@"recommendUserList"];
+        
+        YTHLog( @"推荐用户——————————%@",self.data);
+        
+        for (NSDictionary *dic in self.data) {
+           
+            _avatar = [dic objectForKey:@"avatar"];
+            _name = [dic objectForKey:@"name"];
+            _sex = [dic objectForKey:@"sex"];
+            _talentCate = [dic objectForKey:@"talentCate"];
+            _university = [dic objectForKey:@"university"];
+            _uuid = [dic objectForKey:@"uuid"];
+   
+        }
+ 
+        YTHLog(@"success");
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        
+        YTHLog(@"failure");
+        
+    }];
+    
+}
+
+-(void)_initCreat
+{
+    
+    // 左边的取消按钮
+    UIButton *cancelBtn = [[UIButton alloc] init];
+    cancelBtn.frame = CGRectMake(0, 0, 30, 30);
+    [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+
+//返回
+-(void)clickCode
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
+
 -(void)initFinishButton
 {
-    UIButton  *finishButton = [[UIButton alloc]initWithFrame:CGRectMake(15, 420, YTHScreenWidth-30, 40)];
+    UIButton  *finishButton = [[UIButton alloc]initWithFrame:CGRectMake(15, 500, YTHScreenWidth-30, 40)];
     finishButton.layer.borderColor = YTHColor(200, 200, 200).CGColor;
     [finishButton.layer setMasksToBounds:YES];
     [finishButton.layer setCornerRadius:4.5];
@@ -76,6 +147,7 @@
     [self.view addSubview:_myCollection];
     [_myCollection registerClass:[AttentionCollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
 }
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return self.data.count;
@@ -86,16 +158,18 @@
     AttentionCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.attentionModel = self.data[indexPath.row];
 
-    //cell.backgroundColor = [UIColor orangeColor];
-//    cell.layer.borderColor = YTHColor(200, 200, 200).CGColor;
-//   
-//    [cell.layer setCornerRadius:4.5];
-//    cell.layer.borderWidth = 1;
+    cell.backgroundColor = [UIColor lightGrayColor];
+    cell.layer.borderColor = YTHColor(200, 200, 200).CGColor;
+   
+    [cell.layer setCornerRadius:4.5];
+    cell.layer.borderWidth = 1;
    
     //UIButton *btn = self.arrBools[indexPath.row];
     
     if (self.data.count > 0) {
+        
         [self.arrBools replaceObjectAtIndex:indexPath.row withObject:cell.selectButton];
+    
     }
 
     return cell;
@@ -121,20 +195,69 @@
 {
     for (int i = 0; i < self.data.count; i++) {
                 attenModel *model = (attenModel *)self.data[i];
-        NSString *str2 = model.seckill_name;
+        NSString *str2 = model.name;
                YTHLog(@"%@",str2
               );
     }
 }
+
+
+
 -(void)finishButtonAction:(UIButton *)btn
 {
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+    NSString *url = theUrl;
+    
+    NSString *recommendUrl = [NSString
+                              stringWithFormat:@"%@saveUserFollowRelAction.action",url];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    NSMutableDictionary *md = [NSMutableDictionary dictionary];
+    
+    md[@"user_uuid"] = [ud objectForKey:@"user_uuid"];
+    
+    md[@"main_uuid"] = [ud objectForKey:@"user_sex"];
+    
+    YTHLog( @"推荐用户——————————%@",md);
+    
+    [manager POST:recommendUrl parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSString *status = [responseObject objectForKey:@"status"];
+        
+        if ([status isEqualToString:@"success"]) {
+               YTHLog(@"success");
+            
+            SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+            
+            [self presentViewController:mainVC animated:NO completion:nil];
+
+            
+        }else{
+   
+            [MBProgressHUD showError:@"上传失败，请稍后重试"];
+            
+            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(hideHub) userInfo:nil repeats:NO];
+                    
+        }   
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        
+        YTHLog(@"failure");
+        
+    }];
+    
+
     
       NSMutableArray *shopCarts = [NSMutableArray array];
     for (int i = 0; i < self.data.count ; i++) {
         attenModel *model = (attenModel *)self.data[i];
         UIButton *selectbtn = self.arrBools[i];
         if (selectbtn.selected) {
-            NSString *str2 = model.seckill_name;
+            NSString *str2 = model.name;
             YTHLog(@"%@",str2
                   );
             [shopCarts addObject:model];
@@ -142,6 +265,15 @@
        
     }
 }
+
+-(void)hideHub{
+    
+    [UIView animateWithDuration:1 animations:^{
+        [MBProgressHUD hideHUD];
+    }];
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

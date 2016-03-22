@@ -7,6 +7,7 @@
 //
 
 #import "AddInformationViewController.h"
+#import "AttentionViewController.h"
 #import "UnListViewController.h"
 #import "GXHttpTool.h"
 #import "AppDelegate.h"
@@ -18,7 +19,9 @@
 #import "HandsomeView.h"
 #import "LabelModel.h"
 #import "NSData+AES256.h"
-#import "SUCTabBarViewController.h"
+#import "WXNavigationController.h"
+
+
 @interface AddInformationViewController ()<HandsomeDelegate>
 {
     AppDelegate *myDelegate;
@@ -254,6 +257,12 @@
     self.labelText = labelText;
     [self.view addSubview:labelText];
 }
+//返回
+-(void)clickCode
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
 
 -(void)_initButton
 {
@@ -295,10 +304,10 @@
         
         [MBProgressHUD showError:@"请选择所在的学校"];
     }
-    
+
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
-    NSString *uuid = [ud objectForKey:@"userUuid"];
+    NSString *uuid = [ud objectForKey:@"user_uuid"];
     
     NSMutableDictionary *mdd = [NSMutableDictionary dictionary];
     
@@ -315,19 +324,16 @@
     md[@"university_id"] = universityId;//学校
     
     md[@"parameterList"] = _labelUuidArr;//标签uuid数组
-    
-    md[@"file"] = _imgData;
-    if (_imgData >0) {
-        
+//    
+//    if (_imgData <0) {
+//        
         md[@"flag"] =@"Y";
         
-    }else{
-        md[@"flag"] =@"N";
-    }
-    
+//    }else{
+//        md[@"flag"] =@"N";
+//    }
+//    
     mdd[@"model"] = md;
-    
-  
     
     YTHLog(@"头像——————%@",_imgData);
     
@@ -335,38 +341,69 @@
     
     NSString *url = theUrl;
     
-    NSString *urlString = [NSString stringWithFormat:@"%@registrationRegistrationAction.action",url];
     
-    //转成json
+    NSDictionary *dicc = [NSDictionary dictionary];
+    dicc =@{};
+    
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mdd options:0 error:nil];
     
     NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
     
     mddd[@"jsonStr"] = jsonString;
     
+    mddd[@"file"] = @"currentImage.png";
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@registrationRegistrationAction.action",url];
+    
       YTHLog(@"完成注册信息参数%@",mddd);
     
-    [manager POST:urlString parameters:mdd success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+//    [manager POST:urlString parameters:mddd success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [manager POST:urlString parameters:mddd constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
-        YTHLog(@"完成%@",responseObject);
+        //把data拼接给formData,name:是你需要传的参数名,fileName:是你要保存到服务器的参数名 mimeType是文件格式
+        [formData appendPartWithFileData:_imgData name:@"file" fileName:@"icon.png" mimeType:@"image/png"];
+        
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSString *status = [responseObject objectForKey:@"status"];
-        
-        if ([status isEqualToString:@"success"]) {
-            
-            SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
-            
-            [self presentViewController:mainVC animated:NO completion:nil];
-        
-        }
 
+            if ([status isEqualToString:@"success"]) {//补充信息上传成功，跳到推荐页
+                
+                AttentionViewController *avc = [[AttentionViewController alloc]init];
+                
+                WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:avc];
+                
+                [self presentViewController:nav animated:NO completion:nil];
+//        
+//        SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
+//        
+//        [self presentViewController:mainVC animated:NO completion:nil];
+                
+            }else{
+                
+            [MBProgressHUD showError:@"上传失败，请稍后重试"];
+                
+
+                [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(hideHub) userInfo:nil repeats:NO];
+                
+            }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        YTHLog(@"完成error code %ld",(long)[operation.response statusCode]);
-        [MBProgressHUD showError:[operation.responseObject objectForKey:@"info"]];
-    
+        NSLog(@"fail");
+        
     }];
     
+}
+
+-(void)hideHub{
+    
+    [UIView animateWithDuration:1 animations:^{
+        [MBProgressHUD hideHUD];
+    }];
 }
 
 //选择大学
@@ -495,11 +532,7 @@
     }
 }
 
--(void)clickCode
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-}
+
 
 - (void)dealloc
 {

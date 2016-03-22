@@ -513,7 +513,7 @@
 		5A86F6F41C3F96C30073C14F /* kSuggessPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = kSuggessPhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		5A86F6F71C3F96F50073C14F /* VIPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VIPhotoView.h; sourceTree = "<group>"; };
 		5A86F6F81C3F96F50073C14F /* VIPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIPhotoView.m; sourceTree = "<group>"; };
-		5A86F70D1C3F97120073C14F /* creatActivitybg4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = creatActivitybg4.png; sourceTree = "<group>"; };
+		5A86F70D1C3F97120073C14F /* creatActivitybg4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = creatActivitybg4.png; path = Classes/Show/Controller/creatActivitybg4.png; sourceTree = "<group>"; };
 		5A8BD7B21C567041008AA7D4 /* AttentionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttentionTableViewCell.h; sourceTree = "<group>"; };
 		5A8BD7B31C567041008AA7D4 /* AttentionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttentionTableViewCell.m; sourceTree = "<group>"; };
 		5A988EB01C34C7EB0073A89F /* Starucan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Starucan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1369,6 +1369,7 @@
 				5A988EBC1C34C7EB0073A89F /* Main.storyboard */,
 				5A988EC11C34C7EB0073A89F /* LaunchScreen.storyboard */,
 				5A988EC41C34C7EB0073A89F /* Info.plist */,
+				5A86F70D1C3F97120073C14F /* creatActivitybg4.png */,
 				5A988EB31C34C7EB0073A89F /* Supporting Files */,
 			);
 			path = Starucan;
@@ -1626,15 +1627,14 @@
 		5A988F041C34C8350073A89F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5A12C9181C4DEA1700DAAC92 /* LookViewController.h */,
-				5A12C9191C4DEA1700DAAC92 /* LookViewController.m */,
-				5A86F70D1C3F97120073C14F /* creatActivitybg4.png */,
+				5AEE2EF81C97FB19007AF062 /* ShowViewController.h */,
+				5AEE2EF91C97FB19007AF062 /* ShowViewController.m */,
 				5AD72E131C3F91D7005E4236 /* ShowPhotoViewController.h */,
 				5AD72E141C3F91D7005E4236 /* ShowPhotoViewController.m */,
 				5AC206901C96863B004B0899 /* ShowVedioViewController.h */,
 				5AC206911C96863B004B0899 /* ShowVedioViewController.m */,
-				5AEE2EF81C97FB19007AF062 /* ShowViewController.h */,
-				5AEE2EF91C97FB19007AF062 /* ShowViewController.m */,
+				5A12C9181C4DEA1700DAAC92 /* LookViewController.h */,
+				5A12C9191C4DEA1700DAAC92 /* LookViewController.m */,
 				5AF69F091C4A2A0C00B22C1A /* WordViewController.h */,
 				5AF69F0A1C4A2A0C00B22C1A /* WordViewController.m */,
 				5AF69F0F1C4A3C8500B22C1A /* AddLabelViewController.h */,
@@ -2305,12 +2305,12 @@
 				5AB34A2F1C3A499900721D84 /* RegisterSecondViewController.m */,
 				5AB34A311C3A53A400721D84 /* AddInformationViewController.h */,
 				5AB34A321C3A53A400721D84 /* AddInformationViewController.m */,
+				5A045A521C439ADC008BA99A /* AttentionViewController.h */,
+				5A045A531C439ADC008BA99A /* AttentionViewController.m */,
 				5AB34A341C3A558000721D84 /* UnListViewController.h */,
 				5AB34A351C3A558000721D84 /* UnListViewController.m */,
 				5A988F361C352E100073A89F /* ForgetPassViewController.h */,
 				5A988F371C352E100073A89F /* ForgetPassViewController.m */,
-				5A045A521C439ADC008BA99A /* AttentionViewController.h */,
-				5A045A531C439ADC008BA99A /* AttentionViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";

@@ -103,6 +103,31 @@
     [self _initLook];
 
 }
+- (void)_loadNavigationViews
+{
+    // 左边的取消按钮
+    UIButton *cancelBtn = [[UIButton alloc] init];
+    cancelBtn.frame = CGRectMake(0, 0, 30, 30);
+    [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
+    
+    //发送按钮
+    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    // sendButton.imgName = @"button_icon_ok.png";
+    [sendButton setTitle:@"发送" forState:UIControlStateNormal];
+    [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [sendButton addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *sendItem = [[UIBarButtonItem alloc] initWithCustomView:sendButton];
+    self.navigationItem.rightBarButtonItem = sendItem;
+    
+}
+-(void)clickCode
+{
+    //    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
 
 //获取数据,这个方法为了获取7牛的qntoken和domain
 -(void)createData{
@@ -127,34 +152,10 @@
         YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         
     }];
-    
-    
+  
 }
-- (void)_loadNavigationViews
-{
-    // 左边的取消按钮
-    UIButton *cancelBtn = [[UIButton alloc] init];
-    cancelBtn.frame = CGRectMake(0, 0, 30, 30);
-    [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
-    [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
-   
-    //发送按钮
-    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    // sendButton.imgName = @"button_icon_ok.png";
-    [sendButton setTitle:@"发送" forState:UIControlStateNormal];
-    [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [sendButton addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *sendItem = [[UIBarButtonItem alloc] initWithCustomView:sendButton];
-    self.navigationItem.rightBarButtonItem = sendItem;
-    
-}
--(void)clickCode
-{
-//    [self.navigationController popViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
 
-}
+
 #pragma mark-发送
 - (void)sendAction
 {
@@ -214,8 +215,8 @@
                           NSString *strId = [kIdArray componentsJoinedByString:@","];
                           md[@"labelIds"] = strId;//标签列表
                           YTHLog(@"标签id%@",strId);
-                          md[@"userUuid"] = [myDelegate.userInfo objectForKey:@"uuid"];
-                          YTHLog(@"用户%@",[myDelegate.userInfo objectForKey:@"uuid"]);
+                          md[@"userUuid"] = [myDelegate.userInfo objectForKey:@"user_uuid"];
+                          YTHLog(@"用户%@",[myDelegate.userInfo objectForKey:@"user_uuid"]);
                           
                           NSString *visibleId = nil;
                           if ([lookLabel.text isEqualToString:@"所有人可见"]) {

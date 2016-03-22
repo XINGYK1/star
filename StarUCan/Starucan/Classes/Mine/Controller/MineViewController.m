@@ -112,7 +112,7 @@
 #pragma mark-请求数据
 -(void)requestData
 {
-    NSString *userUuid =[myDelegate.userInfo objectForKey:@"uuid"];
+    NSString *userUuid =[myDelegate.userInfo objectForKey:@"user_uuid"];
     NSString *url1 = [NSString stringWithFormat:@"v1/user/%@",userUuid];
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
     YTHLog(@"登录密码=%@",myDelegate.accessToken);

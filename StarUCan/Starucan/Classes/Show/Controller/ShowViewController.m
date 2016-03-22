@@ -98,6 +98,7 @@ static CGFloat XZMSpringDelay = 0.1;
 //回调方法
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
     
+    
 }
 //取消使用相机的代理方法
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -176,26 +177,26 @@ static CGFloat XZMSpringDelay = 0.1;
         [anima2 setCompletionBlock:^(POPAnimation *anima, BOOL finish) {
             
             //在动画2结束的回调方法中，判断点击的是哪一个按钮
-            if ( btn.tag==0) {
+            if ( btn.tag==0) {//发表图片的点击方法
                 
                 //发图片按钮的点击方法
                 [self cancelWithCompletionBlock:^{
                     
                     //判断登录状态
-                    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
+                    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {//uuid不是空的，已登录状态
                         
                         [self initAlertController];
                         
                         return;
-                    }else{
+                    }else{    //未登录
                         //如果是非登录状态，进入登录页面
                         LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
                         [self.navigationController pushViewController:loginVC animated:YES];
                     }
                 }];
                 
-            }else{
-                //发表视频的点击方法
+            }else{//发表视频的点击方法
+
                 [self cancelWithCompletionBlock:^{
                     //如果是登录状态，进入发表话题页面
                     if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
