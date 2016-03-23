@@ -10,12 +10,9 @@
 
 @interface ShowVedioViewController ()
 
-
 @end
 
 @implementation ShowVedioViewController
-
-
 
 -(PlayerVIew *)pView{
     
@@ -53,7 +50,9 @@
 //观察方法
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     AVPlayerItem *playerItem = (AVPlayerItem *)object;
+    
     if ([keyPath isEqualToString:@"status"]) {
+        
         if ([playerItem status] == AVPlayerStatusReadyToPlay) {
             
             [self.player play];
@@ -61,6 +60,7 @@
         }
     }
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

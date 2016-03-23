@@ -21,7 +21,7 @@
 @interface XZMPublishViewController ()
 {
     AppDelegate *myDelegate;
-    
+    NSString *user_uuid;
 }
 @property (nonatomic, weak)UIImageView *imageView;
 
@@ -126,6 +126,10 @@ static CGFloat XZMSpringDelay = 0.1;
         
         [anima2 setCompletionBlock:^(POPAnimation *anima, BOOL finish) {
             
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            
+            user_uuid = [ud objectForKey:@"user_uuid"];
+            
             //在动画2结束的回调方法中，判断点击的是哪一个按钮
             if ( btn.tag==0) {
                 
@@ -133,8 +137,9 @@ static CGFloat XZMSpringDelay = 0.1;
                 [self cancelWithCompletionBlock:^{
                     
                     //判断登录状态
-                    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
+                    if (!IsNilOrNull(user_uuid)) {
 
+                        
                         //进入秀的页面
                         ShowViewController *show = [[ShowViewController alloc]init];
                         
@@ -143,26 +148,34 @@ static CGFloat XZMSpringDelay = 0.1;
                         return;
                     }else{
                         //如果是非登录状态，进入登录页面
-                        LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
+                        LoginViewController *loginVC = [[LoginViewController alloc]init];
+                        
                         [self.navigationController pushViewController:loginVC animated:YES];
+                        
+                        
                     }
                 }];
                 
             }else{
+                
+                 YTHLog(@"发布页面uuid————————%@",user_uuid);
+                
                 //发文字按钮的点击方法。
                 [self cancelWithCompletionBlock:^{
                     //如果是登录状态，进入发表话题页面
-                    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
+                    if (!IsNilOrNull(user_uuid)) {
+                        
                         TopicViewController *showVC = [[TopicViewController alloc]init];
                         
                         [self.navigationController pushViewController:showVC animated:YES];
                         return;
                         
                     }else{
-                        //如果是非登录状态，进入登录页面
-                        LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
+//                        如果是非登录状态，进入登录页面
+                        LoginViewController *loginVC = [[LoginViewController alloc]init];
                         
                         [self.navigationController pushViewController:loginVC animated:YES];
+                        
                     }
                     // 切换对应控制器
                 }];//最后一个图标消失后的回调方法

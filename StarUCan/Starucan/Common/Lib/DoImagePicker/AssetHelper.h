@@ -19,6 +19,7 @@
 - (void)initAsset;
 
 //可以实现查看相册列表，增加相册，保存图片到相册等功能
+
 @property (nonatomic, strong)   ALAssetsLibrary			*assetsLibrary;
 
 @property (nonatomic, strong)   NSMutableArray          *assetPhotos;

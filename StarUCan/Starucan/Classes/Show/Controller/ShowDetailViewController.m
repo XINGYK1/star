@@ -234,9 +234,10 @@
             //评论
             _pinglun = [showdic objectForKey:@"uuid"];
             _attenuuid = [[showdic objectForKey:@"user"]objectForKey:@"uuid"];
+            
             [self _initTableView];
             [self _initHeadView];
-              [self _initComment];
+            [self _initComment];
             [self _initViewBgDesc];
             [self requestTable];
             
@@ -247,7 +248,9 @@
             
             CGSize size;
             NSDictionary *dicrary = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:14],NSFontAttributeName,nil];
+            
             size =  [self.labelDesc.text boundingRectWithSize:CGSizeMake(self.labelDesc.frame.size.width, 1000) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:dicrary context:nil].size;
+            
             float f;
             f=size.height;
             
@@ -263,6 +266,7 @@
             //是否关注
             if (!IsNilOrNull([[showdic objectForKey:@"user"]objectForKey:@"userRelStatus"])) {
                 NSString *userRelStatus=[[showdic objectForKey:@"user"]objectForKey:@"userRelStatus"];
+               
                 if ([userRelStatus isEqualToString:@"0"]) {
                     
                     [self.addAttionBtn setImage:[UIImage imageNamed:@"attention_add"] forState:UIControlStateNormal];
@@ -271,6 +275,7 @@
                 {
     
                     [self.addAttionBtn setImage:[UIImage imageNamed:@"attention_yet"] forState:UIControlStateNormal];
+                
                 }else if ([userRelStatus isEqualToString:@"2"])
                 {
                     [self.addAttionBtn setImage:[UIImage imageNamed:@"attention_together"] forState:UIControlStateNormal];
@@ -284,11 +289,14 @@
             
             
             self.praiseuuid = [showdic objectForKey:@"uuid"];
+            
             //图片
             NSArray *photosUrlArr = [[NSString stringWithFormat:@"%@",[showdic objectForKey:@"photoUrl"]] componentsSeparatedByString:@","];
             
             for (NSString *photoUrl in photosUrlArr) {
+            
                 [self.photoNameList addObject:photoUrl];
+            
             }
             
             [self.bigImage sd_setImageWithURL:[NSURL URLWithString:[self.photoNameList objectAtIndex:0]]];
@@ -306,23 +314,31 @@
             
             
             if (self.photoNameList.count>1) {
+              
                 [self.photoNameList removeObjectAtIndex:0];
+                
                 [self _initCollectionView];
+                
                 _headView.frame = CGRectMake(0, 0, YTHScreenWidth, 400);
+                
                 _viewBgDesc.frame = CGRectMake(0, CGRectGetMaxY(_kPhotoCollectionView.frame), YTHScreenWidth, size.height+10);
+                
                 _headView.frame = CGRectMake(0, 0, YTHScreenWidth, 400+f);
                 
                 _tableView.tableHeaderView = _headView;
-                
-                
+      
             }
             //标签
             NSArray *labellid=[showdic objectForKey:@"labels"];
             
             for (NSDictionary *labelDict in labellid) {
+
                 NSString *labelArry = [labelDict objectForKey:@"name"];
+                
                 [_kTitleArrays addObject:labelArry];
+            
             }
+            
             [self _initLabel];
             
             if (_kTitleArrays.count>0) {
@@ -337,10 +353,10 @@
             CGSize sizeName;
 
             sizeName =  [_nameLabel.text boundingRectWithSize:CGSizeMake(YTHScreenWidth-150, 1000) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:dicrary context:nil].size;
+            
             _nameLabel.frame = CGRectMake(YTHAdaptation(60), YTHAdaptation(10), sizeName.width, sizeName.height);
+            
             self.sexImV.frame =CGRectMake(CGRectGetMaxX(_nameLabel.frame)+3, YTHAdaptation(10),YTHAdaptation(15), YTHAdaptation(15));
-            
-            
             
             //大学
             if (!IsNilOrNull([[showdic objectForKey:@"user"]objectForKey:@"universityName"])) {
@@ -355,35 +371,47 @@
             {
                 self.sexImV.image = [UIImage imageNamed:@"sex_female"];
             }
-        
-            
+
             //头像
             self.urlString = [[showdic objectForKey:@"user"]objectForKey:@"avatar"];
+           
             YTHLog(@"头像%@",self.urlString);
             
             if (!IsNilOrNull([[showdic objectForKey:@"user"]objectForKey:@"avatar"])&&!self.urlString.length==0) {
+              
                 [self.headImgV sd_setImageWithURL:[NSURL URLWithString:self.urlString]];
                 
             }else{
+              
                 if ([sexurl isEqualToString:@"0"]) {
+                
                     self.headImgV.image = [UIImage imageNamed:@"female"];
+                
                 }else if ([sexurl isEqualToString:@"1"]){
+                
                     self.headImgV.image = [UIImage imageNamed:@"male"];
+                
                 }
             }
             
         }
         [self.tableView reloadData];
+        
         [_kPhotoCollectionView reloadData];
+    
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 #warning statusCode 500
+       
         YTHLog(@"详情错误返回状态码 %ld",(long)[operation.response statusCode]);
+        
         self.jason = operation.responseObject;
+        
         YTHLog(@"登录%@", self.jason);
+        
         [MBProgressHUD showError:[self.jason objectForKey:@"info"]];
+    
     }];
-    
-    
+ 
 }
 
 #pragma mark 添加标签
@@ -401,9 +429,7 @@
     //        [self.tableView reloadData];
     //    }
     //    _kTitleView.backgroundColor = [UIColor redColor];
-    //_kTitleView.backgroundColor = [UIColor yellowColor];
-    
-    
+    // _kTitleView.backgroundColor = [UIColor yellowColor];
     
     _kMarkRect = CGRectMake(0,0,0,0);
     
@@ -424,6 +450,7 @@
         [MarkIV removeFromSuperview];
         
         _kTitleView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,CGRectGetMaxY(self.viewBgDesc.frame) , YTHScreenWidth, 50)];
+        
 //        _kTitleView.backgroundColor = [UIColor yellowColor];
         //        _kTitleView.backgroundColor = YTHBaseVCBackgroudColor;
         
@@ -448,7 +475,6 @@
             _kTitleView.scrollEnabled = YES;
         }
     }
-
     
     NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
     
@@ -570,8 +596,8 @@
     //self.praiseButton = moreButton;
     
     [commentView addSubview:moreButton];
-    //竖线
     
+    //竖线
     UILabel *middleL = [[UILabel alloc]initWithFrame:CGRectMake(YTHScreenWidth/4-.5, 0, 1, commentView.height)];
     
     middleL.backgroundColor = YTHColor(229, 229, 229);
@@ -579,7 +605,6 @@
     [commentView addSubview:middleL];
     
     //评论按钮
-    
     commentButton = [[UIButton alloc]initWithFrame:CGRectMake(YTHScreenWidth/2, 0, YTHScreenWidth/2, commentView.height)];
     
     commentButton.backgroundColor = YTHColor(255, 70, 80);
@@ -595,6 +620,7 @@
     [commentView addSubview:commentButton];
     
     //更多操作View
+    
     moreView = [[UIView alloc]initWithFrame:CGRectMake(YTHScreenWidth/4-10, YTHScreenHeight-YTHAdaptation(46), YTHScreenWidth/4+20, 0)];
 
 //    moreView = [[UIView alloc]initWithFrame:CGRectMake(YTHScreenWidth/4-10+(YTHScreenWidth/8+10), YTHScreenHeight-YTHAdaptation(46)-YTHAdaptation(40), 0, 0)];
@@ -639,7 +665,6 @@
     
     [moreView addSubview:shareButton];
     
-    
     moreView.clipsToBounds = YES;
     
     UILabel *lineL = [[UILabel alloc]initWithFrame:CGRectMake(0, YTHAdaptation(40)-.5, YTHScreenWidth/4+20, 1)];
@@ -647,7 +672,6 @@
     lineL.backgroundColor = [UIColor lightGrayColor];
     
     [moreView addSubview:lineL];
-    
     
 }
 
@@ -700,19 +724,13 @@
                 
                 [MBProgressHUD showError:[self.praiseJason objectForKey:@"info"]];
                 
-                
             }];
 
-            
-            
-            
         
-        
-        }else{
+        }else{  //分享
             
             
-            
-            
+           
             
             
         }

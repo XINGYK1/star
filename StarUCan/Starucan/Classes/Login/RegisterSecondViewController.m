@@ -17,7 +17,7 @@
 @interface RegisterSecondViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     AddInformationViewController *addInforVC;
-    NSString *sex;
+    NSString *sex;          //性别
     AppDelegate *myDelegate;
     
 
@@ -240,9 +240,14 @@
     
     addInforVC.imgData = _imgData;
     
-    AttentionViewController *att = [[AttentionViewController alloc]init];//推荐
+    YTHLog(@"性别是-——%@___%@",sex,addInforVC.sex);
     
-    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:att];
+    AddInformationViewController *avc = [[AddInformationViewController alloc]init];//跳到选择大学、标签页
+    
+//    AttentionViewController *att = [[AttentionViewController alloc]init];//推荐
+    
+    WXNavigationController *nav = [[WXNavigationController alloc]initWithRootViewController:avc];
+    
     [self presentViewController:nav animated:NO completion:nil];
     
 }

@@ -121,6 +121,7 @@
                     }
                     
                     [_assetPhotos addObject:alPhoto];
+                    
                 }];
             }
         };
@@ -132,9 +133,11 @@
         };
         
         _assetPhotos = [[NSMutableArray alloc] init];
+        
         [_assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
                                       usingBlock:assetGroupEnumerator
                                     failureBlock:assetGroupEnumberatorFailure];
+        
     });
 }
 
@@ -150,15 +153,21 @@
 
 - (NSDictionary *)getGroupInfo:(NSInteger)nIndex
 {
+    
     return @{@"name" : [_assetGroups[nIndex] valueForProperty:ALAssetsGroupPropertyName],
+             
              @"count" : @([_assetGroups[nIndex] numberOfAssets]),
+             
              @"thumbnail" : [UIImage imageWithCGImage:[(ALAssetsGroup*)_assetGroups[nIndex] posterImage]]};
+    
 }
 
 - (void)clearData
 {
+    
 	_assetGroups = nil;
 	_assetPhotos = nil;
+
 }
 
 #pragma mark - utils
@@ -166,6 +175,7 @@
 {
     __block UIImage *iImage = nil;
     __block BOOL bBusy = YES;
+
     
     ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
     {

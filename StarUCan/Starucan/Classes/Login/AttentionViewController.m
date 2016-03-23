@@ -156,15 +156,14 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     AttentionCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.attentionModel = self.data[indexPath.row];
+    cell.attentionModel                = self.data[indexPath.row];
 
-    cell.backgroundColor = [UIColor lightGrayColor];
-    cell.layer.borderColor = YTHColor(200, 200, 200).CGColor;
-   
+    cell.backgroundColor               = [UIColor lightGrayColor];
+    cell.layer.borderColor             = YTHColor(200, 200, 200).CGColor;
+
+    cell.layer.borderWidth             = 1;
+    
     [cell.layer setCornerRadius:4.5];
-    cell.layer.borderWidth = 1;
-   
-    //UIButton *btn = self.arrBools[indexPath.row];
     
     if (self.data.count > 0) {
         
@@ -201,39 +200,39 @@
     }
 }
 
-
+#pragma mark 完成
 
 -(void)finishButtonAction:(UIButton *)btn
 {
-    
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 
-    NSString *url = theUrl;
-    
-    NSString *recommendUrl = [NSString
-                              stringWithFormat:@"%@saveUserFollowRelAction.action",url];
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
+    NSUserDefaults *ud      = [NSUserDefaults standardUserDefaults];
+
+    NSString *url           = theUrl;
+
+    NSString *recommendUrl  = [NSString stringWithFormat:@"%@saveUserFollowRelAction.action",url];
+
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
-    
-    md[@"user_uuid"] = [ud objectForKey:@"user_uuid"];
-    
-    md[@"main_uuid"] = [ud objectForKey:@"user_sex"];
+
+    md[@"user_uuid"]        = [ud objectForKey:@"user_uuid"];
+
+    md[@"main_uuid"]        = [ud objectForKey:@"user_sex"];
     
     YTHLog( @"推荐用户——————————%@",md);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+
     
     [manager POST:recommendUrl parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSString *status = [responseObject objectForKey:@"status"];
         
         if ([status isEqualToString:@"success"]) {
+            
                YTHLog(@"success");
             
             SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
             
             [self presentViewController:mainVC animated:NO completion:nil];
-
             
         }else{
    
@@ -245,24 +244,28 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
+        [MBProgressHUD showError:@"上传失败，请稍后重试"];
         
+        [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(hideHub) userInfo:nil repeats:NO];
+
         YTHLog(@"failure");
         
     }];
     
-
+    NSMutableArray *shopCarts = [NSMutableArray array];
     
-      NSMutableArray *shopCarts = [NSMutableArray array];
     for (int i = 0; i < self.data.count ; i++) {
+        
         attenModel *model = (attenModel *)self.data[i];
+        
         UIButton *selectbtn = self.arrBools[i];
         if (selectbtn.selected) {
+            
             NSString *str2 = model.name;
-            YTHLog(@"%@",str2
-                  );
+            YTHLog(@"%@",str2);
+            
             [shopCarts addObject:model];
         }
-       
     }
 }
 

@@ -46,7 +46,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
    
-    self.userNameLab.text=[myDelegate.userInfo objectForKey:@"name"];
+    self.userNameLab.text=[myDelegate.userInfo objectForKey:@"userName"];
     
     NSString *urlString = [myDelegate.userInfo objectForKey:@"avatar"];
     if (!IsNilOrNull(urlString)&&!urlString.length==0) {
@@ -121,7 +121,7 @@
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     
     NSString *uS = Url;
-    NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"user_uuid"]];
     YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         YTHLog(@"我的 %ld",(long)[operation.response statusCode]);
@@ -130,7 +130,7 @@
         {
             YTHLog(@"%@",responseObject);
             
-            myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
+//            myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
             
             //性别
             NSString *sexurl = [[responseObject objectForKey:@"userInfo"]objectForKey:@"sex"];

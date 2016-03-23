@@ -154,7 +154,7 @@
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     md[@"password"] = [self md5:self.passwordTF.text];
     NSString *urlUpdate = @"v1/user/";
-    NSString *url1 = [NSString stringWithFormat:@"%@%@",urlUpdate,[myDelegate.userInfo objectForKey:@"uuid"]];
+    NSString *url1 = [NSString stringWithFormat:@"%@%@",urlUpdate,[myDelegate.userInfo objectForKey:@"user_uuid"]];
     YTHLog(@"URL11=%@",url1);
     NSString *text = [NSData AES256EncryptWithPlainText:url1 passtext:myDelegate.accessToken];
     YTHLog(@"登录密码=%@",myDelegate.accessToken);
@@ -166,7 +166,7 @@
     [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     NSString *uS = Url;
-    NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@",uS,[myDelegate.userInfo objectForKey:@"user_uuid"]];
     YTHLog(@"拼接之后%@",urlStr);
     [manager PUT:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
         YTHLog(@"更新信息%@",responseObject);

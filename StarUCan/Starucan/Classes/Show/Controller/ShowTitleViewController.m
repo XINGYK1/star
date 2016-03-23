@@ -22,31 +22,46 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
     self.title = @"发起话题";
+    
     [self _initCreat];
     [self tapToDismissKB];
+
 }
+
 -(void)_initCreat
+
 {
     
     UIView *naView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, YTHScreenWidth, 55)];
     naView.backgroundColor = [UIColor whiteColor];
+   
     [self.view addSubview:naView];
 
     UILabel *themeLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, YTHScreenWidth, 30)];
+    
     themeLabel.text = @"主题（5-15个字）";
+    
     themeLabel.textColor = [UIColor blackColor];
+    
     themeLabel.font = [UIFont systemFontOfSize:16];
+    
     [self.view addSubview:themeLabel];
     
     //添加文本框
     textView=[[UITextView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(themeLabel.frame), YTHScreenWidth-20, 308/2)];
+   
     textView.tag=102;
+    
     textView.delegate=self;
+    
     textView.textColor = [UIColor grayColor];
+    
     [self.view addSubview:textView];
     
     [textView.layer setMasksToBounds:YES];
+    
 //    [textView.layer setCornerRadius:4];
 //    textView.layer.borderColor = [UIColor grayColor].CGColor;
 //    textView.layer.borderWidth = 0.1;
@@ -54,17 +69,24 @@
     labelText = [[UILabel alloc]initWithFrame:CGRectMake(0, 5,YTHScreenWidth-23, 20)];
     
     labelText.font = [UIFont systemFontOfSize:11];
+   
     labelText.numberOfLines = 0;
+    
     labelText.textColor =Label;
+    
     labelText.enabled = NO;//lable必须设置为不可用
+    
     labelText.backgroundColor = [UIColor clearColor];
+    
     [textView addSubview:labelText];
-      labelText.text = @"  多给小伙伴们谈谈这个话题";
+    
+    labelText.text = @"  多给小伙伴们谈谈这个话题";
 
     
 }
 #pragma mark - 设置点击空白处隐藏键盘
 - (void)tapToDismissKB{
+    
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     
     // 设置成NO表示当前控件响应后会传播到其他控件上，默认为YES
@@ -73,6 +95,7 @@
     [self.view addGestureRecognizer:tapGestureRecognizer];
     
 }
+
 -(void)dismissKeyboard
 {
     [textView resignFirstResponder];

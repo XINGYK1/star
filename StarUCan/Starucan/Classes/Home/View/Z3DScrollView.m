@@ -66,7 +66,7 @@
     [super layoutSubviews];
     
     CGFloat contentOffsetX = self.contentOffset.x;
-    CGFloat contentOffsetY = self.contentOffset.y;
+//    CGFloat contentOffsetY = self.contentOffset.y;
     
     for(UIView *view in self.subviews){
         CATransform3D t1 = view.layer.transform; // Hack for avoid visual bug

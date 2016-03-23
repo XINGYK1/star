@@ -309,6 +309,9 @@
     
     NSString *uuid = [ud objectForKey:@"user_uuid"];
     
+     _sex =[ud objectForKey:@"user_sex"];
+    
+    
     NSMutableDictionary *mdd = [NSMutableDictionary dictionary];
     
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
@@ -319,7 +322,7 @@
     
     md[@"user_uuid"] = uuid;//用户id
     
-    md[@"user_sex"]= self.sex;//性别
+    md[@"user_sex"]= _sex;//性别
     
     md[@"university_id"] = universityId;//学校
     
@@ -335,16 +338,15 @@
 //    
     mdd[@"model"] = md;
     
-    YTHLog(@"头像——————%@",_imgData);
+//    YTHLog(@"头像——————%@",_imgData);
     
     YTHLog(@"uuid:%@——————————性别： %@————————学校id：%@————————————标签数组%@",uuid,self.sex,myDelegate.universityId,_labelUuidArr);
     
     NSString *url = theUrl;
     
     
-    NSDictionary *dicc = [NSDictionary dictionary];
-    dicc =@{};
-    
+//    NSDictionary *dicc = [NSDictionary dictionary];
+
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mdd options:0 error:nil];
     
     NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -358,9 +360,7 @@
       YTHLog(@"完成注册信息参数%@",mddd);
     
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    
-//    [manager POST:urlString parameters:mddd success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    
+        
     [manager POST:urlString parameters:mddd constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
         //把data拼接给formData,name:是你需要传的参数名,fileName:是你要保存到服务器的参数名 mimeType是文件格式
@@ -387,8 +387,6 @@
             [MBProgressHUD showError:@"上传失败，请稍后重试"];
                 
 
-                [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(hideHub) userInfo:nil repeats:NO];
-                
             }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -399,12 +397,6 @@
     
 }
 
--(void)hideHub{
-    
-    [UIView animateWithDuration:1 animations:^{
-        [MBProgressHUD hideHUD];
-    }];
-}
 
 //选择大学
 -(void)buttonAction

@@ -662,7 +662,7 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
+    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"user_uuid"])&&!myDelegate.account.length==0) {
         
         if (meetV) {     //秀 遇见
             YHTHomeImageModel *imagLoveModel = meetV.meetDataArrays[indexPath.row];
@@ -735,7 +735,7 @@
         case 0:
         {
             //还有再加一个账号判断
-            if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) { //已登录
+            if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"user_uuid"])&&!myDelegate.account.length==0) { //已登录
                
                 NSString *uuid  = [self.cycleArray objectAtIndex:index];
                 

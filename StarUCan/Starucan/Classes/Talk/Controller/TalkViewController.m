@@ -23,6 +23,7 @@
     UIButton *typeBtn;
     
     UIScrollView *bannerSV;//轮播图
+    SDCycleScrollView *cycleScrollView;
     
     UITableView *mainTV;//主TableView
     
@@ -423,12 +424,13 @@
     
     [mainTV setContentSize:CGSizeMake(0, 1000)];
     
+    mainTV.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [self.view addSubview:mainTV];
     
 //    [self _initBanner];
     
 }
-
 
 #pragma mark 获取话题页轮播图数据
 -(void)getBannerData{
@@ -466,6 +468,8 @@
             YTHLog(@"0话题页轮播图数组：%@",self.imageURLs);
             
              [self _initBanner];
+    
+            cycleScrollView.imageURLStringsGroup = self.imageURLs;
             
             YTHLog(@"success");
         }
@@ -499,8 +503,7 @@
     CGFloat w = self.view.bounds.size.width;
 
     // 网络加载 --- 创建自定义图片的pageControlDot的图片轮播器
-    SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, w, YTHAdaptation(175)) delegate:self placeholderImage:[UIImage imageNamed:@""]];
-    cycleScrollView.imageURLStringsGroup = self.imageURLs;
+    cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, w, YTHAdaptation(175)) delegate:self placeholderImage:[UIImage imageNamed:@""]];
     
     cycleScrollView.currentPageDotImage = [UIImage imageNamed:@"checkbox_selected"];
     
@@ -515,7 +518,8 @@
 
     
     [bannerSV addSubview:cycleScrollView];
-    
+
+
 }
 
 

@@ -37,7 +37,7 @@
 - (UITableView *)resultTableView
 {
     if (!_resultTableView) {
-        UITableView *resultTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, YTHScreenWidth, YTHScreenHeight-64) style:UITableViewStylePlain];
+        UITableView *resultTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64+14+30, YTHScreenWidth, YTHScreenHeight-64) style:UITableViewStylePlain];
         _resultTableView = resultTableView;
         _resultTableView.delegate = self;
         _resultTableView.dataSource = self;
@@ -57,9 +57,12 @@
     count = 6;
     //创建搜索栏
     [self _initSearchBar];
-    //创建tableview
-    [self _initTableView];
     
+    //创建tableview
+//    [self _initTableView];
+    
+    [self requestData];
+
     
 }
 #pragma mark -请求标签数据
@@ -68,32 +71,40 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
    
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
-    md[@"start"] = [NSString stringWithFormat:@"%d",start];
-    md[@"count"] =[NSString stringWithFormat:@"%d",count];
-    md[@"name"] = mySearchBar.text;
-    NSString *url1 = Url;
-    NSString *url =[NSString stringWithFormat:@"%@v1/label",url1];
     
-    [manager GET:url parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    md[@"name"] = mySearchBar.text;
+    md[@"type"] = _type;
+    
+    NSString *uS = theUrl;
+    
+    NSString *urlStr = [NSString stringWithFormat:@"%@getLikeLabelListAction.action",uS];
+    
+    [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        YTHLog(@"prama——————%@",md);
         
         YTHLog(@"标签信息%@",responseObject);
         
         YTHLog(@"标签返回error code %ld",(long)[operation.response statusCode]);
+        
         if ([operation.response statusCode]/100==2)
         {
-            NSArray *arry = [responseObject objectForKey:@"labels"];
-            //            if (!_kIdMutabDict) {
-            //                _kIdMutabDict = [[NSMutableDictionary alloc]init];
-            //            }
+            NSArray *arry = [responseObject objectForKey:@"labelList"];
+            
+            YTHLog(@"标签数组%@",arry);
+            
             [myDelegate.labelIDict removeAllObjects];
+            
             for (NSDictionary *dic in arry)
             {
                 
                 [myDelegate.labelIDict setObject:[dic objectForKey:@"uuid"] forKey:[dic objectForKey:@"name"]];
+                
                 [self.dataArr addObject: [dic objectForKey:@"name"]];
                 
             }
-            YTHLog(@"个数个数%lu",(unsigned long)self.dataArr.count);
+            
+//            YTHLog(@"个数个数%lu",(unsigned long)self.dataArr.count);
         }
         
         [self.resultTableView reloadData];
@@ -109,28 +120,38 @@
 #pragma mark - 创建搜索栏
 -(void)_initSearchBar
 {
-    mySearchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(16, 7, YTHScreenWidth-32, 30)];
+    mySearchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(16,64+7, YTHScreenWidth-32, 30)];
+  
     mySearchBar.delegate = self;
+    
     mySearchBar.placeholder = @"输入标签";
+    
     [mySearchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+    
     mySearchBar.backgroundImage = [self imageWithColor:[UIColor clearColor] size:mySearchBar.bounds.size];
+
     [mySearchBar.layer setMasksToBounds:YES];
+    
     [mySearchBar.layer setCornerRadius:4.5];
+    
     mySearchBar.layer.borderColor = YTHColor(255, 69, 82).CGColor;
+    
     mySearchBar.layer.borderWidth = 0.8;
+    
     [self.view addSubview:mySearchBar];
 }
 #pragma mark - uitable
--(void)_initTableView
-{
-    UITableView *tableView= [[UITableView alloc]initWithFrame:CGRectMake(0, 92, YTHScreenWidth, YTHScreenHeight)style:UITableViewStylePlain];
-    tableView.dataSource =self;
-    tableView.delegate = self;
-    [self.view addSubview:tableView];
-    self.tableView = tableView;
-    
-    
-}
+
+//-(void)_initTableView
+//{
+//    UITableView *tableView= [[UITableView alloc]initWithFrame:CGRectMake(0, 64+14+30, YTHScreenWidth, YTHScreenHeight)style:UITableViewStylePlain];
+//    tableView.dataSource =self;
+//    tableView.delegate = self;
+//    [self.view addSubview:tableView];
+//    self.tableView = tableView;
+//    
+//    
+//}
 
 #pragma mark-uitable代理
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -138,7 +159,7 @@
         return 1;
     }else{
         if (self.dataArr.count!=0) {
-            YTHLog(@"标签个数%lu",(unsigned long)self.dataArr.count);
+//            YTHLog(@"标签个数%lu",(unsigned long)self.dataArr.count);
             return self.dataArr.count+1;
         }
         return 1;
@@ -153,6 +174,11 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+//    _resultTableView.height = 44*(self.dataArr.count+1);
+    
+    [_resultTableView setContentSize:CGSizeMake(YTHScreenWidth, 44*(self.dataArr.count+2))];
+    
     static NSString *identifier = @"cell";
     if (tableView==self.tableView) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -185,28 +211,40 @@
         
         YTHLog(@"-----%@",self.dataArr);
         
+        
         return cell;
     }
     
 }
+
+#pragma mark 添加标签
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView==_resultTableView) {
+        
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
         if (indexPath.row==0) {
             
             NSMutableDictionary *md = [NSMutableDictionary dictionary];
-            md[@"name"]=mySearchBar.text;
-            NSString *urlShow = @"v1/label";
+            
+            md[@"name"] = mySearchBar.text;
+            md[@"type"] = _type;
+            
+            NSString *urlShow = @"getLikeLabelListAction.action";
+            
             NSString *text = [NSData AES256EncryptWithPlainText:urlShow passtext:myDelegate.accessToken];
             YTHLog(@"登录密码=%@",myDelegate.accessToken);
             YTHLog(@"taken=%@",text);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            
             //请求头
             [manager.requestSerializer setAuthorizationHeaderFieldWithToken:text];
             [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
-            NSString *uS = Url;
-            NSString *urlStr = [NSString stringWithFormat:@"%@v1/label",uS];
+            
+            NSString *uS = theUrl;
+            NSString *urlStr = [NSString stringWithFormat:@"%@getLikeLabelListAction.action",uS];
+            
             YTHLog(@"拼接之后%@",urlStr);
             [manager POST:urlStr parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 YTHLog(@"新增标签信息%@",responseObject);
@@ -214,18 +252,20 @@
          
                 if ([operation.response statusCode]/100==2)
                 {
-                    NSDictionary *dic = [responseObject objectForKey:@"label"];
-                    //  [myDelegate.labelIDict removeAllObjects];
+                    NSDictionary *dic = [responseObject objectForKey:@"labelList"];
+                //  [myDelegate.labelIDict removeAllObjects];
                  
                     YTHLog(@"**%@",myDelegate.labelIDict);
                     
                     [myDelegate.labelIDict setObject:[dic objectForKey:@"uuid"] forKey:[dic objectForKey:@"name"]];
+                    
                     if ([self.delegate respondsToSelector:@selector(AddLabelView:didClickTag:didClickTitle:)]) {
                         [self.delegate AddLabelView:self didClickTag:[dic objectForKey:@"uuid"] didClickTitle:mySearchBar.text];
                     }
                 }
                 
                 label.text = @"";
+                
                 [self.resultTableView reloadData];
            
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -320,6 +360,8 @@
 {
     
     //    YTHLog(@"当textView的文本改变或者清除的时候调用此方法：%@",searchText);
+    
+    
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar

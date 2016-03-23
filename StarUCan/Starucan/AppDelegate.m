@@ -62,7 +62,7 @@
     
     
     //初始化shareSDK应用
-    [ShareSDK registerApp:@"965ad3743f81" activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),@(SSDKPlatformTypeWechat),@(SSDKPlatformTypeQQ)] onImport:^(SSDKPlatformType platformType) {
+    [ShareSDK registerApp:@"10b83f857abc4" activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),@(SSDKPlatformTypeWechat),@(SSDKPlatformTypeQQ)] onImport:^(SSDKPlatformType platformType) {
         
         switch (platformType)
         {
@@ -96,8 +96,8 @@
                                       appSecret:@"64020361b8ec4c99936c0e3999a9f249"];
                 break;
             case SSDKPlatformTypeQQ:
-                [appInfo SSDKSetupQQByAppId:@"100371282"
-                                     appKey:@"aed9b0303e3ed1e27bae87c33761161d"
+                [appInfo SSDKSetupQQByAppId:@"1105264058"
+                                     appKey:@"f2qS0rF1M8QEXJXL"
                                    authType:SSDKAuthTypeBoth];
                 break;
             default:

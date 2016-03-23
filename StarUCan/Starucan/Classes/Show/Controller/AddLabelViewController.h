@@ -14,4 +14,6 @@
 @end
 @interface AddLabelViewController : UIViewController
 @property (nonatomic, weak) id<AddLabelDelegate> delegate;
+@property (nonatomic,strong)NSString *type;
+
 @end

@@ -138,7 +138,7 @@
 
     if ([viewController.tabBarItem.title isEqualToString:@"我的"]) {
         //还有再加一个账号判断
-        if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])&&!myDelegate.account.length==0) {
+        if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"user_uuid"])&&!myDelegate.account.length==0) {
             
             //登录状态，返回yes，表示可以进入这个页面。
             return YES;

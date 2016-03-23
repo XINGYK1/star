@@ -134,6 +134,7 @@
     logoImv.translatesAutoresizingMaskIntoConstraints = NO;
     
     [logoImv mas_makeConstraints:^(MASConstraintMaker *make) {
+        
         make.size.mas_equalTo(CGSizeMake(YTHAdaptation(124), YTHAdaptation(124))); // 设置大小
        // make.center.equalTo(self.view);// 居中显示
         make.top.equalTo(self.view).offset(marginH);
@@ -436,113 +437,117 @@
             break;
 #pragma mark **********QQ登录**********
         case 2:{
-          
-            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-            
-            _theFlag = [ud objectForKey:@"flag"];
-            
+
+            NSUserDefaults *ud                       = [NSUserDefaults standardUserDefaults];
+
+            _theFlag                                 = [ud objectForKey:@"flag"];
+
             YTHLog(@"内存里的flag ------%@",_theFlag);
-            
+
             if (_theFlag.length > 0) {//非第一次，跳到首页
-//                                
-//                SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
-//                
-//                [self presentViewController:mainVC animated:NO completion:nil];
-                
-                //跳转到补全信息页 (选择头像和性别)
-                RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
-                [self presentViewController:regisSuccV animated:NO completion:nil];
-                
-                
+//
+            SUCTabBarViewController *mainVC          = [[SUCTabBarViewController alloc]init];
+
+                [self presentViewController:mainVC animated:NO completion:nil];
+
+//                //跳转到补全信息页 (选择头像和性别)
+//                RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
+//                [self presentViewController:regisSuccV animated:NO completion:nil];
+
             }else{//第一次登录
-                
+
                 [ShareSDK getUserInfo:SSDKPlatformTypeQQ onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
-                    
+
                     if (state==SSDKResponseStateSuccess) {
-                        
-                        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-                        NSMutableDictionary *md = [NSMutableDictionary dictionary];
-                        
-                        md[@"openId"] = @"123";
-                        
-                        md[@"name"]   = user.nickname;// QQ 昵称
-                        
-                        md[@"udid"]   = @"D633CBA4-91C2-4FB6-A17A-92917B301EA6";
-                        
+
+            AFHTTPRequestOperationManager *manager   = [AFHTTPRequestOperationManager manager];
+            NSMutableDictionary *md                  = [NSMutableDictionary dictionary];
+
+            md[@"openId"]                            = user.uid;
+
+            md[@"name"]                              = user.nickname;// QQ 昵称
+
+            md[@"udid"]                              = @"D633CBA4-91C2-4FB6-A17A-92917B301EA6";
+
 //                    NSString *udidStr =[[UIDevice currentDevice] identifierForVendor];
-                        
+
 //                    NSLog(@"设备号：%@",udidStr);
-                        
+
 #warning    http://192.168.1.120:8080/starucan_app/weixinLoginAction.action
-                        
-                        NSString *urlString = @"http://192.168.1.120:8080/starucan_app/thirdLoginAction.action";
-                        
+
+            NSString *urlString                      = @"http://192.168.1.120:8080/starucan_app/thirdLoginAction.action";
+
                         [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                            
-                            self.jsonDic = responseObject;
-              
+
+            self.jsonDic   = responseObject;
+
                             NSLog( @"登录成功--- %@",self.jsonDic);
-                            
-                            _status = [self.jsonDic objectForKey:@"status"];
-                            
-                            if ([_status isEqualToString:@"success"]) {//登录成功
-                                
-                                self.userInfoDic = [self.jsonDic objectForKey:@"userInfo"];
-                                self.flag = [self.userInfoDic objectForKey:@"flag"];
-                                self.userName = [self.userInfoDic objectForKey:@"name"];
-                                self.userUuid = [self.userInfoDic objectForKey:@"uuid"];
-                                self.huanxin = [self.userInfoDic objectForKey:@"huanxin"];
-                                
-                                NSUserDefaults *userInfoUD = [NSUserDefaults standardUserDefaults];
-                                
-                                [userInfoUD setObject:self.flag forKey:@"flag"];
-                                [userInfoUD setObject:self.huanxin forKey:@"huanxin"];
-                                [userInfoUD setObject:self.userName forKey:@"userName"];
-                                [userInfoUD setObject:self.userUuid forKey:@"user_uuid"];
-                                
-                                [userInfoUD synchronize];
-                                
-                                [myDelegate.userInfo setObject:self.userUuid forKey:@"user_uuid"];
-                                
-                                if (self.userUuid.length <1) {
-                                    
-                                    [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-                                        self.userUuid = [self.userInfoDic objectForKey:@"uuid"];
+            _status       = [self.jsonDic objectForKey:@"status"];
 
-                                        NSUserDefaults *userInfoUD = [NSUserDefaults standardUserDefaults];
-                                        
+                    if ([_status isEqualToString:@"success"]) {//登录成功
+
+            self.userInfoDic           = [self.jsonDic objectForKey:@"userInfo"];
+            self.flag                  = [self.userInfoDic objectForKey:@"flag"];
+            self.userName              = [self.userInfoDic objectForKey:@"name"];
+            self.userUuid              = [self.userInfoDic objectForKey:@"uuid"];
+            self.huanxin               = [self.userInfoDic objectForKey:@"huanxin"];
+
+            NSUserDefaults *userInfoUD = [NSUserDefaults standardUserDefaults];
+
+                        [userInfoUD setObject:self.flag forKey:@"flag"];
+                                
+                        [userInfoUD setObject:self.huanxin forKey:@"huanxin"];
+                              
+                        [userInfoUD setObject:self.userName forKey:@"userName"];
+                                
+                        [userInfoUD setObject:self.userUuid forKey:@"user_uuid"];//用户uuid
+                        
+                        [userInfoUD setObject:user.uid forKey:@"openId"];
+                        
+                        [userInfoUD synchronize];
+
+                        [myDelegate.userInfo setObject:self.userUuid forKey:@"user_uuid"];
+
+                        if (self.userUuid.length <1) {
+
+                            [manager POST:urlString parameters:md success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+            self.userUuid                            = [self.userInfoDic objectForKey:@"uuid"];
+
+            NSUserDefaults *userInfoUD               = [NSUserDefaults standardUserDefaults];
+
                                         [userInfoUD setObject:self.userUuid forKey:@"userUuid"];
-                                        
+
                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                        
+
                                         NSLog(@"QQ状态错误 code %ld",(long)[operation.response statusCode]);
-                                        
+
                                     }];
-                                    
+
                                 }else{
-                                
+
                                 YTHLog(@"flag------%@",self.flag);
-                                
+
                                 if ([self.flag isEqualToString:@"N"]) {//非第一次，跳到首页
-                                    
-                                    SUCTabBarViewController *mainVC = [[SUCTabBarViewController alloc]init];
-                                    
+
+            SUCTabBarViewController *mainVC          = [[SUCTabBarViewController alloc]init];
+
                                     [self presentViewController:mainVC animated:NO completion:nil];
 
                                 }else{
-                            
+
                                 //跳转到补全信息页 (选择头像和性别)
-                                RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
+            RegisterSecondViewController *regisSuccV = [[RegisterSecondViewController alloc]init];
                                 [self presentViewController:regisSuccV animated:NO completion:nil];
-                                
-                                }
+
                                 }
                             }
-                            
-                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        }
+
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                             NSLog(@"QQ状态错误 code %ld",(long)[operation.response statusCode]);
-                        }];
+                    }];
                     }
                 }];
             }

@@ -115,7 +115,7 @@
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *uS = Url;
-    NSString *urlStr = [NSString stringWithFormat:@"%@v1/topic/user_participated/%@",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@v1/topic/user_participated/%@",uS,[myDelegate.userInfo objectForKey:@"user_uuid"]];
     YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         YTHLog(@"我参与 %ld",(long)[operation.response statusCode]);

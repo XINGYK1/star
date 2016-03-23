@@ -359,9 +359,9 @@
             self.passwordTF.text = @"";
             //第二种
             myDelegate.regist_accesstoken = responseObject[@"token"];
-            myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
+//            myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
             
-            myDelegate.name = [responseObject objectForKey:@"name"];
+//            myDelegate.name = [responseObject objectForKey:@"name"];
             //保存信息第一方式测试
             SUCArchive *archive = [SUCArchive shareArchiveManager];
             
@@ -376,8 +376,8 @@
              if ([archive online]) {
                  
 #warning 内存泄露
-            SUCUser *user = [SUCUser shareUser];
-            user = [SUCUser objectWithKeyValues:responseObject[@"userInfo"]];
+//            SUCUser *user = [SUCUser shareUser];
+            SUCUser *user = [SUCUser objectWithKeyValues:responseObject[@"userInfo"]];
             NSMutableDictionary *md = [NSMutableDictionary dictionary];
             md[@"uuid"] = user.uuid;
             md[@"name"] = user.name;

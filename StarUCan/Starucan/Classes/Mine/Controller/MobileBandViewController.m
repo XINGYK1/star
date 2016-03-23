@@ -220,7 +220,7 @@
         if ([operation.response statusCode]/100==2) {
                                             //登录账号
             //            myDelegate.account = self.accountTF.text;
-                        myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
+                      //  myDelegate.userInfo = [responseObject objectForKey:@"userInfo"];
                        
                     }
 

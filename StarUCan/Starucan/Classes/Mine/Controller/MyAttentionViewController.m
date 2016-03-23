@@ -49,7 +49,7 @@
     [manager.requestSerializer setValue:myDelegate.account forHTTPHeaderField:@"account"];
     
     NSString *uS = Url;
-    NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@/follows",uS,[myDelegate.userInfo objectForKey:@"uuid"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@v1/user/%@/follows",uS,[myDelegate.userInfo objectForKey:@"user_uuid"]];
     YTHLog(@"拼接之后%@",urlStr);
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         YTHLog(@"粉丝 %ld",(long)[operation.response statusCode]);

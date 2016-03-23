@@ -115,6 +115,7 @@
     }
  
     if ([self.delegate respondsToSelector:@selector(wordsomeView:didClickTitle:)]) {
+        
         [self.delegate wordsomeView:self didClickTitle:_textView.text];
     }
     
@@ -137,17 +138,22 @@
     
     
 }
+
 -(void)textViewDidChange:(UITextView *)textView
 {
     // self.examineText =  textView.text;
     if (textView.text.length == 0) {
+        
         labelText.text = @" 秀的时候别忘了点我吹点牛逼";
-    }
-    else{
+        
+    }else{
+        
         labelText.text = @"";
+        
     }
     
 }
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *temp = [textView.text
@@ -155,13 +161,13 @@
                       stringByReplacingCharactersInRange:range
                       
                       withString:text];
+    
     NSInteger remainTextNum = 200;
     //计算剩下多少文字可以输入
     
     if(range.location>=200)
         
     {
-        
         remainTextNum = 0;
         
 //        [self showSimpleAlert:@"请输入小于100个字！"];
@@ -172,8 +178,7 @@
         
     }else
         
-    {
-        
+    {        
         NSString * nsTextContent = temp;
         
         NSInteger existTextNum = [nsTextContent length];
@@ -183,12 +188,16 @@
         label.text = [NSString stringWithFormat:@"%ld/200",(long)remainTextNum];
           
         return YES;
+        
     }
 }
 
 - (void)didReceiveMemoryWarning {
+    
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
+    
 }
 
 /*

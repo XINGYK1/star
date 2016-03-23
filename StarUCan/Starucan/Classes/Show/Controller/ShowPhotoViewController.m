@@ -24,38 +24,54 @@
 @interface ShowPhotoViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,DoImagePickerControllerDelegate,WordsomeDelegate,LookViewDelegate,AddLabelDelegate>
 {
     UIView *addPhoView;
+    
     UIButton *addButton;
+    
     UICollectionView *_kPhotoCollectionView;
+    
     UICollectionViewFlowLayout *_kPhotoCollectionViewFlowLayout;
     
     
     UICollectionView *_indexCollectionView;//上面de
+    
     CGFloat _kPhotoCollectionViewJJ;
+    
     VIPhotoView *_kVIPhotoView;
+    
     WordViewController *wordVC;
+    
     UILabel *labelText;//秀逼格文字内容
+    
     UILabel *lookLabel;//谁都可以看返回接受者
-    NSMutableArray *_kTitleArrays;//标签的
-    UIScrollView *_kTitleView;
+    
+    NSMutableArray *kTitleArrays;//标签的
+    
+    UIView *viewLabel;//标签部分底部View
+    
+    UIScrollView *kTitleSV;
+    
     CGRect _kMarkRect;
+    
     AppDelegate *myDelegate;
+    
     NSMutableDictionary *_kMutableTitleIdDict;
+    
     float viewDescH;
     
 }
-@property (nonatomic, strong) UIScrollView *scrollView;
 
-@property(nonatomic,strong)UIView *viewBgDesc;//文字详情view
-@property(nonatomic,strong)UIView *viewLabel;//添加标签view
-@property(nonatomic,strong)UIView *viewLook;//谁都可以看view
-@property (nonatomic,strong)NSString *tokenKey;//七牛tokenKey
-@property (nonatomic,strong)NSString *qiniuText;//七牛
-@property (nonatomic,strong)NSDictionary *dict;
-@property (nonatomic,strong)NSString *domain;
-@property (nonatomic,strong)NSString *urlString;
-@property(nonatomic,strong)NSMutableArray *photoArry;
-@property (nonatomic,strong)NSString *photoString;
-@property (nonatomic,strong)NSDictionary *jsonDict;
+@property (nonatomic, strong) UIScrollView   *scrollView;
+@property (nonatomic,strong ) UIView         *viewBgDesc;//文字详情view
+@property (nonatomic,strong ) UIView         *viewLabel;//添加标签view
+@property (nonatomic,strong ) UIView         *viewLook;//谁都可以看view
+@property (nonatomic,strong ) NSString       *tokenKey;//七牛tokenKey
+@property (nonatomic,strong ) NSString       *qiniuText;//七牛
+@property (nonatomic,strong ) NSDictionary   *dict;
+@property (nonatomic,strong ) NSString       *domain;
+@property (nonatomic,strong ) NSString       *urlString;
+@property (nonatomic,strong ) NSMutableArray *photoArry;
+@property (nonatomic,strong ) NSString       *photoString;
+@property (nonatomic,strong ) NSDictionary   *jsonDict;
 
 @end
 
@@ -78,6 +94,7 @@
     // Do any additional setup after loading the view.
     
     if (!myDelegate) {
+        
         myDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     }
 
@@ -86,11 +103,14 @@
     YTHLog(@"之前图片%lu",(unsigned long)self.photoNameList.count);
     
     self.photoArry = [[NSMutableArray alloc]init];
+    
     self.title = @"show图片";
+    
     self.view.backgroundColor = YTHBaseVCBackgroudColor;
     
     //获取7牛的tocken
-    [self createData];
+//    [self createData];
+    
     //创建导航栏上的视图
     [self _loadNavigationViews];
     //创建collectionView
@@ -99,7 +119,7 @@
     [self _initViewBgDesc];
     //标签
     [self _initLabel];
-    //谁都可以看
+    //观看权限
     [self _initLook];
 
 }
@@ -107,28 +127,38 @@
 {
     // 左边的取消按钮
     UIButton *cancelBtn = [[UIButton alloc] init];
+  
     cancelBtn.frame = CGRectMake(0, 0, 30, 30);
+   
     [cancelBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    
     [cancelBtn addTarget:self action:@selector(clickCode) forControlEvents:UIControlEventTouchUpInside];
     
     //发送按钮
     UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+   
     // sendButton.imgName = @"button_icon_ok.png";
     [sendButton setTitle:@"发送" forState:UIControlStateNormal];
+    
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
     [sendButton addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
+    
     UIBarButtonItem *sendItem = [[UIBarButtonItem alloc] initWithCustomView:sendButton];
+    
     self.navigationItem.rightBarButtonItem = sendItem;
     
 }
+
 -(void)clickCode
 {
-    //    [self.navigationController popViewControllerAnimated:YES];
+
     [self dismissViewControllerAnimated:YES completion:nil];
     
 }
-
+/*
 //获取数据,这个方法为了获取7牛的qntoken和domain
 -(void)createData{
     
@@ -136,7 +166,7 @@
     
     [manager GET:@"http://test.platform.vgool.cn/starucan/v1/base/qntoken" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        self.dict = responseObject;
+        self.dict = responseObject;   
         
         if ([operation.response statusCode]/100==2) {
             
@@ -148,13 +178,13 @@
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+ 
         //        [MBProgressHUD showError:[ self.dict objectForKey:@"info"]];
         YTHLog(@"-----error code %ld",(long)[operation.response statusCode]);
         
     }];
-  
 }
-
+*/
 
 #pragma mark-发送
 - (void)sendAction
@@ -162,7 +192,7 @@
     //测试
     /*
      NSMutableArray *kIdArray = [[NSMutableArray alloc]init];
-     for (NSString *key in _kTitleArrays) {
+     for (NSString *key in kTitleArrays) {
      [kIdArray addObject:[_kMutableTitleIdDict objectForKey:key]];
      }
      NSString *strId = [kIdArray componentsJoinedByString:@","];
@@ -173,7 +203,9 @@
      */
     
     __block int num = 0;
+    
     [self.photoNameList removeLastObject];
+    
     [MBProgressHUD showMessage:@"发送中"];
     
     for (UIImage *image in self.photoNameList) {
@@ -201,16 +233,20 @@
                       
                       //如果是最后一张图片，
                       if (num==self.photoNameList.count) {
+                         
                           YTHLog(@"****图片字段%@",self.photoString);
+                          
                           NSMutableDictionary *md = [NSMutableDictionary dictionary];
+                          
                           //内容
                           md[@"content"]=labelText.text;//内容
                           
                           NSMutableArray *kIdArray = [[NSMutableArray alloc]init];
                           
-                          for (NSString *key in _kTitleArrays) {
+                          for (NSString *key in kTitleArrays) {
                               [kIdArray addObject:[_kMutableTitleIdDict objectForKey:key]];
                           }
+                          
                           //标签ID
                           NSString *strId = [kIdArray componentsJoinedByString:@","];
                           md[@"labelIds"] = strId;//标签列表
@@ -234,6 +270,7 @@
                           {
                               visibleId = @"4";
                           }
+                          
                           md[@"visibleId"]= visibleId;
                           md[@"photoUrl"] = self.photoString;
                           YTHLog(@"****图片字段%@",self.photoString);
@@ -311,7 +348,6 @@
     [self.view insertSubview:_indexCollectionView belowSubview:deleBtn];
     
     //下面的
-    
     _kPhotoCollectionViewJJ = (YTHScreenWidth-20-83*4)/3.0f;
     _kPhotoCollectionViewFlowLayout = [[UICollectionViewFlowLayout alloc]init];
     _kPhotoCollectionViewFlowLayout.sectionInset =  UIEdgeInsetsMake(8, 10, 8, 10);
@@ -322,8 +358,7 @@
     _kPhotoCollectionView.dataSource = self;
     _kPhotoCollectionView.bounces = NO;
     _kPhotoCollectionView.backgroundColor = [UIColor whiteColor];
-    [_kPhotoCollectionView
-     registerClass:[kSuggessPhotoCollectionViewCell class]
+    [_kPhotoCollectionView registerClass:[kSuggessPhotoCollectionViewCell class]
      forCellWithReuseIdentifier:@"kSuggessPhotoCollectionViewCellId"];
     
     //kSuggessPhotoCollectionViewCell 下面的cell
@@ -334,8 +369,7 @@
     
     [_kPhotoCollectionView reloadData];
     [_indexCollectionView reloadData];
-    
-    
+
 }
 
 #pragma mark -  删除图片
@@ -350,9 +384,8 @@
         [_indexCollectionView reloadData];
     }
     
-    
-    
 }
+
 #pragma mark-发布文字模块
 -(void)_initViewBgDesc
 {
@@ -368,8 +401,8 @@
     labelText.numberOfLines = 0;
     labelText.font = [UIFont systemFontOfSize:14];
     
-    
     [viewBgDesc addSubview:labelText];
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showTitle)];
     viewBgDesc.userInteractionEnabled = YES;
     [viewBgDesc addGestureRecognizer:tap];
@@ -379,22 +412,32 @@
 #pragma mark-标签
 -(void)_initLabel
 {
-    UIView *viewLabel = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.viewBgDesc.frame)+10, YTHScreenWidth, 44)];
+    viewLabel = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.viewBgDesc.frame)+10, YTHScreenWidth, 44)];
     viewLabel.backgroundColor = [UIColor whiteColor];
+    
     [self.view addSubview:viewLabel];
+    
     self.viewLabel = viewLabel;
+   
     UIImageView *imagV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 14, 16, 16)];
+    
     imagV.image = [UIImage imageNamed:@"icon_lable"];
+    
     [viewLabel addSubview:imagV];
+   
     UIButton *addLabelBtn = [[UIButton alloc]initWithFrame:CGRectMake(YTHScreenWidth-10-16, 14, 16, 16)];
+    
     [addLabelBtn setImage:[UIImage imageNamed:@"icon_addlable"] forState:UIControlStateNormal];
+    
     [addLabelBtn addTarget:self action:@selector(addLabelButton:) forControlEvents:UIControlEventTouchUpInside];
+   
     [viewLabel addSubview:addLabelBtn];
     
-    _kTitleView = [[UIScrollView alloc]initWithFrame:CGRectMake(30, 0, YTHScreenWidth-54, 44)];
-    //_kTitleView.backgroundColor = [UIColor redColor];
-    _kTitleView.backgroundColor = [UIColor whiteColor];
-    [viewLabel addSubview:_kTitleView];
+    kTitleSV = [[UIScrollView alloc]initWithFrame:CGRectMake(30,0,YTHScreenWidth-54,44)];
+
+    kTitleSV.backgroundColor = [UIColor whiteColor];
+    
+    [viewLabel addSubview:kTitleSV];
     
     
 }
@@ -452,6 +495,7 @@
 -(void)addLabelButton:(UIButton *)btn
 {
     AddLabelViewController *addVC = [[AddLabelViewController alloc]init];
+    addVC.type = @"0";
     addVC.delegate = self;
     [self.navigationController pushViewController:addVC animated:YES];
     
@@ -829,27 +873,31 @@
 {
     lookLabel.text = title;
 }
+
+
 #pragma mark -添加标签实现代理方法
 -(void)AddLabelView:(AddLabelViewController *)zheView didClickTag:(NSString *)idKey didClickTitle:(NSString *)title
 {
-    if (!_kTitleArrays) {
-        _kTitleArrays = [[NSMutableArray alloc]init];
+    if (!kTitleArrays) {
+        kTitleArrays = [[NSMutableArray alloc]init];
     }
     if (!_kMutableTitleIdDict) {
         _kMutableTitleIdDict = [[NSMutableDictionary alloc]init];
     }
-    if (_kTitleArrays.count>4) {
+    if (kTitleArrays.count>4) {
+        
         [MBProgressHUD showError:@"标签最多选5个"];
         return ;
+    
     }
-    if([_kTitleArrays containsObject:title]){
-        [_kTitleView removeFromSuperview];
-        _kTitleView = nil;
-        [_kTitleArrays removeObject:title];
+    if([kTitleArrays containsObject:title]){
+        [kTitleSV removeFromSuperview];
+        kTitleSV = nil;
+        [kTitleArrays removeObject:title];
         _kMarkRect = CGRectMake(0, 0, 0, 0);
         
         [_kMutableTitleIdDict removeObjectForKey:title];
-        for (NSString *title in _kTitleArrays) {
+        for (NSString *title in kTitleArrays) {
             [self _addTitleBtn:title andAdd:NO];
         }
     }else{
@@ -860,30 +908,37 @@
     
     
 }
+
 -(void)_addTitleBtn:(NSString *)title andAdd:(BOOL)add{
-    if (!_kTitleView) {
-        _kTitleView = [[UIScrollView alloc]initWithFrame:CGRectMake(30, 0, YTHScreenWidth-54, 44)];
-        _kTitleView.backgroundColor = [UIColor whiteColor];
-        //_kTitleView.backgroundColor = YTHBaseVCBackgroudColor;
-        [self.viewLabel addSubview:_kTitleView];
+   
+    if (!kTitleSV) {
+        kTitleSV = [[UIScrollView alloc]initWithFrame:CGRectMake(30, 0, YTHScreenWidth-54, 44)];
+        kTitleSV.backgroundColor = [UIColor whiteColor];
+        //kTitleSV.backgroundColor = YTHBaseVCBackgroudColor;
+        [self.viewLabel addSubview:kTitleSV];
     }
+    
     NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
     CGFloat length = [title boundingRectWithSize:CGSizeMake(320, 2000) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size.width;
+   
     CGFloat xxxx = _kMarkRect.origin.x + _kMarkRect.size.width + length + 30;
     if (_kMarkRect.origin.y == 0) {
         _kMarkRect.origin.y = 10;
     }
-    if (xxxx>_kTitleView.frame.size.width-10) {
+    
+    if (xxxx>kTitleSV.frame.size.width-10) {
         _kMarkRect.origin.y += 37;
         _kMarkRect.origin.x = 0;
         _kMarkRect.size.width = 0;
     }
     UIView *kMarkView = [[UIView alloc]initWithFrame:CGRectMake(_kMarkRect.origin.x + _kMarkRect.size.width + 10, _kMarkRect.origin.y, length+20, 27)];
-    [_kTitleView addSubview:kMarkView];
+    [kTitleSV addSubview:kMarkView];
     _kMarkRect = kMarkView.frame;
+    
+    //标签 Label
     UILabel *kTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, length+20, 27)];
     kTitleLabel.backgroundColor = YTHColor(169, 214, 255);
-    kTitleLabel.layer.cornerRadius = 4;
+    kTitleLabel.layer.cornerRadius = 5;
     kTitleLabel.layer.masksToBounds = YES;
     kTitleLabel.textAlignment = NSTextAlignmentCenter;
     kTitleLabel.font = [UIFont systemFontOfSize:12];
@@ -897,34 +952,34 @@
     //    [kDeleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     //    [kDeleteButton addTarget:self action:@selector(btnDeleteClick:)];
     [kDeleteButton addTarget:self action:@selector(btnDeleteClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_kTitleView addSubview:kDeleteButton];
+    [kTitleSV addSubview:kDeleteButton];
     if (add) {
-        [_kTitleArrays addObject:title];
+        [kTitleArrays addObject:title];
     }
-    kDeleteButton.tag = [_kTitleArrays indexOfObject:title] + 999;
-    _kTitleView.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
+    kDeleteButton.tag = [kTitleArrays indexOfObject:title] + 999;
+    kTitleSV.contentSize = CGSizeMake(YTHScreenWidth, CGRectGetMaxY(kMarkView.frame)+10);
     // self.viewLabel.height =kMarkView.height;
     float h;
     YTHLog(@"frame标签%f",kMarkView.frame.origin.y);
     if (kMarkView.frame.origin.y>10) {
         h = kMarkView.frame.origin.y + 44;
         self.viewLabel.frame = CGRectMake(0, CGRectGetMaxY(self.viewBgDesc.frame)+10, YTHScreenWidth, h);
-        _kTitleView.frame = CGRectMake(30, 0, YTHScreenWidth-54, h);
-     //   h+= _kTitleView.frame.size.height+12;
+        kTitleSV.frame = CGRectMake(30, 0, YTHScreenWidth-54, h);
+     //   h+= kTitleSV.frame.size.height+12;
         self.viewLook.frame = CGRectMake(0, CGRectGetMaxY(self.viewLabel.frame)+1, YTHScreenWidth, 44);
     }
-    
-    
-    
+ 
 }
 -(void)btnDeleteClick:(UIButton *)btn{
-    [_kTitleView removeFromSuperview];
-    _kTitleView = nil;
-//    NSString *string = _kTitleArrays[btn.tag - 999];
+    [kTitleSV removeFromSuperview];
+    kTitleSV = nil;
+//    NSString *string = kTitleArrays[btn.tag - 999];
     //  [_kHandsomeView removeBtnSelected:string];
-    [_kTitleArrays removeObjectAtIndex:btn.tag - 999];
+    [kTitleArrays removeObjectAtIndex:btn.tag - 999];
     _kMarkRect = CGRectMake(0, 0, 0, 0);
-    for (NSString *title in _kTitleArrays) {
+    
+    for (NSString *title in kTitleArrays) {
+    
         [self _addTitleBtn:title andAdd:NO];
     }
 }

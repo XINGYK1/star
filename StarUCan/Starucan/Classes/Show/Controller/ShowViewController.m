@@ -33,6 +33,8 @@ static CGFloat XZMSpringDelay = 0.1;
     AppDelegate *myDelegate;
     BOOL flag;
     WechatShortVideoController *_shortVC;
+    NSString *user_uuid;
+    
     
 }
 
@@ -121,8 +123,8 @@ static CGFloat XZMSpringDelay = 0.1;
 //点击一个按钮后让另一个按钮也跟着消失
 - (void)cancelWithCompletionBlock:(void (^)())block
 {
-    
     int index = 0;
+ 
     for (int i = index; i < self.view.subviews.count; i++) {
         
         UIView *view = self.view.subviews[i];
@@ -176,6 +178,10 @@ static CGFloat XZMSpringDelay = 0.1;
         
         [anima2 setCompletionBlock:^(POPAnimation *anima, BOOL finish) {
             
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            
+            user_uuid = [ud objectForKey:@"user_uuid"];
+            
             //在动画2结束的回调方法中，判断点击的是哪一个按钮
             if ( btn.tag==0) {//发表图片的点击方法
                 
@@ -183,14 +189,16 @@ static CGFloat XZMSpringDelay = 0.1;
                 [self cancelWithCompletionBlock:^{
                     
                     //判断登录状态
-                    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {//uuid不是空的，已登录状态
+                    if (!IsNilOrNull(user_uuid)) {//uuid不是空的，已登录状态
                         
                         [self initAlertController];
                         
                         return;
-                    }else{    //未登录
+                    }else{
                         //如果是非登录状态，进入登录页面
-                        LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
+                        
+                        LoginViewController *loginVC = [[LoginViewController alloc]init];
+                        
                         [self.navigationController pushViewController:loginVC animated:YES];
                     }
                 }];
@@ -199,7 +207,7 @@ static CGFloat XZMSpringDelay = 0.1;
 
                 [self cancelWithCompletionBlock:^{
                     //如果是登录状态，进入发表话题页面
-                    if (!IsNilOrNull([myDelegate.userInfo objectForKey:@"uuid"])) {
+                    if (!IsNilOrNull(user_uuid)) {
                         
                         
                         _shortVC = [[WechatShortVideoController alloc]init];
@@ -213,10 +221,10 @@ static CGFloat XZMSpringDelay = 0.1;
                         
                     }else{
                         //如果是非登录状态，进入登录页面
-                        LoginFirstViewController *loginVC = [[LoginFirstViewController alloc]init];
+                  
+                        LoginViewController *loginVC = [[LoginViewController alloc]init];
                         
-                        [self.navigationController pushViewController:loginVC animated:YES];
-                    }
+                        [self.navigationController pushViewController:loginVC animated:YES];                    }
                     // 切换对应控制器
                 }];//最后一个图标消失后的回调方法
             }//发表话题按钮的点击方法
@@ -239,7 +247,6 @@ static CGFloat XZMSpringDelay = 0.1;
     
     //初始化UIAlertController
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
     
     //添加本地上传按钮
     UIAlertAction *photoAction = [UIAlertAction actionWithTitle:@"本地上传" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction *action) {
@@ -384,6 +391,7 @@ static CGFloat XZMSpringDelay = 0.1;
     NSArray *titles = @[@"秀图片", @"秀视频"];
     
     NSUInteger cols = 2;
+  
     CGFloat btnW = 60;
     CGFloat btnH = btnW + 30;
     CGFloat beginMargin = YTHAdaptation(82);//82
@@ -439,13 +447,15 @@ static CGFloat XZMSpringDelay = 0.1;
             
             //两个按钮出现动画完成后，在里面进行相关的操作
             
+            
         }];
     }
 }
 
 - (void)didReceiveMemoryWarning {
+    
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
 /*

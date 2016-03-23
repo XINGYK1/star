@@ -19,5 +19,5 @@
 #import "MBProgressHUD.h"
 #import "MBProgressHUD+NJ.h"
 #import "SUCTabBarViewController.h"
-
+#import "LoginViewController.h"
 #endif
