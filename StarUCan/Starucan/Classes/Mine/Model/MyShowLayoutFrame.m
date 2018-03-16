@@ -57,7 +57,9 @@
     
     CGSize uniserSize;
     NSDictionary *dicrary = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:14],NSFontAttributeName,nil];
+    
     uniserSize =  [[self.showModel.user objectForKey:@"universityName"] boundingRectWithSize:CGSizeMake(YTHScreenWidth-10, 1000) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:dicrary context:nil].size;
+    
     float f;
    
     
@@ -116,15 +118,7 @@
         // 没有文字的行高
         self.cellHeight = CGRectGetMaxY(self.pictrueF) + padding;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   
 }
 - (CGSize)sizeWithString:(NSString *)str font:(UIFont *)font maxSize:(CGSize)maxSize
 {

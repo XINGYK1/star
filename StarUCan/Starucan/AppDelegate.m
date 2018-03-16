@@ -13,16 +13,18 @@
 //腾讯开放平台（对应QQ和QQ空间）SDK头文件
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
+
 //微信SDK头文件
 #import "WXApi.h"
+
 //新浪微博SDK头文件
 #import "WeiboSDK.h"
+
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch
@@ -78,7 +80,6 @@
                 break;
         }
         
-        
     } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
         
         switch (platformType)
@@ -103,6 +104,7 @@
                 break;
         }
         
+    
     }];
     
     

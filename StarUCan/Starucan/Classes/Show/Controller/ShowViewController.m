@@ -383,7 +383,6 @@ static CGFloat XZMSpringDelay = 0.1;
     
 }
 
-
 #pragma mark -创建两个按钮并且添加出现动画
 -(void)createBUttonAndAddAnimated{
     
@@ -442,6 +441,7 @@ static CGFloat XZMSpringDelay = 0.1;
         [btn pop_addAnimation:anima forKey:nil];
         
         [anima setCompletionBlock:^(POPAnimation *anima, BOOL finish) {
+            
             
             //两个按钮出现动画完成后，在里面进行相关的操作
             
